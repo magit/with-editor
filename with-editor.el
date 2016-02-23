@@ -324,12 +324,14 @@ not a good idea to change such entries.")
 
 (defvar with-editor-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "\C-c\C-c"                   'with-editor-finish)
-    (define-key map [remap server-edit]          'with-editor-finish)
-    (define-key map "\C-c\C-k"                   'with-editor-cancel)
-    (define-key map [remap kill-buffer]          'with-editor-cancel)
-    (define-key map [remap ido-kill-buffer]      'with-editor-cancel)
-    (define-key map [remap iswitchb-kill-buffer] 'with-editor-cancel)
+    (define-key map "\C-c\C-c"                           'with-editor-finish)
+    (define-key map [remap server-edit]                  'with-editor-finish)
+    (define-key map [remap evil-save-modified-and-close] 'with-editor-finish)
+    (define-key map "\C-c\C-k"                           'with-editor-cancel)
+    (define-key map [remap kill-buffer]                  'with-editor-cancel)
+    (define-key map [remap ido-kill-buffer]              'with-editor-cancel)
+    (define-key map [remap iswitchb-kill-buffer]         'with-editor-cancel)
+    (define-key map [remap evil-quit]                    'with-editor-cancel)
     map))
 
 (define-minor-mode with-editor-mode
