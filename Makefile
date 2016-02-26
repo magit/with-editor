@@ -3,7 +3,6 @@ ELS = with-editor.el
 DEPS = dash
 
 INFOPAGES = with-editor.info
-TEXIPAGES = with-editor.texi
 
 ELCS    = $(ELS:.el=.elc)
 DFLAGS  = $(addprefix -L ../,$(DEPS))
@@ -38,7 +37,7 @@ info: $(INFOPAGES) dir
 	@printf "Generating $@\n"
 	@$(MAKEINFO) --no-split $< -o $@
 
-dir: $(TEXIPAGES)
+dir: $(INFOPAGES)
 	@printf "Generating dir\n"
 	@echo $^ | xargs -n 1 $(INSTALL_INFO) --dir=$@
 
