@@ -62,7 +62,6 @@ General Public License for more details.
 @insertcopying
 @end ifnottex
 
-
 @menu
 * Using the With-Editor package::
 * Using With-Editor as a library::
@@ -75,7 +74,6 @@ Using the With-Editor package
 
 * Configuring With-Editor::
 * Using With-Editor commands::
-
 @end detailmenu
 @end menu
 
