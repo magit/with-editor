@@ -181,7 +181,7 @@ appropriate mode hooks:
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'shell-mode-hook  'with-editor-export-editor)
-  (add-hook 'term-mode-hook   'with-editor-export-editor)
+  (add-hook 'term-exec-hook   'with-editor-export-editor)
   (add-hook 'eshell-mode-hook 'with-editor-export-editor)
 #+END_SRC
 
