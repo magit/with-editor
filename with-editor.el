@@ -184,7 +184,27 @@ Where the latter uses a socket to communicate with Emacs' server,
 this substitute prints edit requests to its standard output on
 which a process filter listens for such requests.  As such it is
 not a complete substitute for a proper Emacsclient, it can only
-be used as $EDITOR of child process of the current Emacs instance."
+be used as $EDITOR of child process of the current Emacs instance.
+
+Some shells do not execute traps immediately when waiting for a
+child process, but by default we do use such a blocking child
+process.
+
+If you use such a shell (e.g. `csh' on FreeBSD, but not Debian),
+then you have to edit this option.  You can either replace \"sh\"
+with \"bash\" (and install that), or you can use the older, less
+performant implementation:
+
+  \"sh -c '\\
+  echo \\\"WITH-EDITOR: $$ OPEN $0\\\"; \\
+  trap \\\"exit 0\\\" USR1; \\
+  trap \\\"exit 1\" USR2; \\
+  while true; do sleep 1; done'\"
+
+Note that this leads to a delay of up to a second.  The delay can
+be shortened by replacing \"sleep 1\" with \"sleep 0.01\", or if your
+implementation does not support floats, then by using `nanosleep'
+instead."
   :group 'with-editor
   :type 'string)
 

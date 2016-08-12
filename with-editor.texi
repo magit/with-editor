@@ -166,7 +166,26 @@ which a process filter listens for such requests.  As such it is
 not a complete substitute for a proper Emacsclient, it can only
 be used as @code{$EDITOR} of child process of the current Emacs instance.
 
-It is unlikely that you should ever have to customize this option.
+Some shells do not execute traps immediately when waiting for a
+child process, but by default we do use such a blocking child
+process.
+
+If you use such a shell (e.g. @code{csh} on FreeBSD, but not Debian), then
+you have to edit this option.  You can either replace @code{sh} with @code{bash}
+(and install that), or you can use the older, less performant
+implementation:
+
+@lisp
+"sh -c '\
+echo \"WITH-EDITOR: $$ OPEN $0\"; \
+trap \"exit 0\" USR1; \
+trap \"exit 1\" USR2; \
+while true; do sleep 1; done'"
+@end lisp
+
+This leads to a delay of up to a second.  The delay can be shortened
+by replacing @code{sleep 1} with @code{sleep 0.01}, or if your implementation does
+not support floats, then by using @code{nanosleep 0.01} instead.
 @end defopt
 
 @node Using With-Editor commands
