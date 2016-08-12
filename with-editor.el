@@ -637,27 +637,34 @@ else like the former."
 
 (defun shell-command--shell-command-with-editor-mode
     (fn command &optional output-buffer error-buffer)
-  (cond ((or (not (or with-editor--envvar shell-command-with-editor-mode))
-             (not (string-match-p "&\\'" command)))
-         (funcall fn command output-buffer error-buffer))
-        ((and with-editor-emacsclient-executable
-              (not (file-remote-p default-directory)))
-         (with-editor (funcall fn command output-buffer error-buffer)))
-        (t
-         (apply fn (format "%s=%s %s"
-                           (or with-editor--envvar "EDITOR")
-                           (shell-quote-argument with-editor-sleeping-editor)
-                           command)
-                output-buffer error-buffer)
-         (ignore-errors
-           (let ((process (get-buffer-process
-                           (or output-buffer
-                               (get-buffer "*Async Shell Command*")))))
-             (set-process-filter
-              process (lambda (proc str)
-                        (comint-output-filter proc str)
-                        (with-editor-process-filter proc str t)))
-             process)))))
+  ;; `shell-mode' and its hook are intended for buffers in which an
+  ;; interactive shell is running, but `shell-command' also turns on
+  ;; that mode, even though it only runs the shell to run a single
+  ;; command.  The `with-editor-export-editor' hook function is only
+  ;; intended to be used in buffers in which an interactive shell is
+  ;; running, so it has to be remove here.
+  (let ((shell-mode-hook (remove 'with-editor-export-editor shell-mode-hook)))
+    (cond ((or (not (or with-editor--envvar shell-command-with-editor-mode))
+               (not (string-match-p "&\\'" command)))
+           (funcall fn command output-buffer error-buffer))
+          ((and with-editor-emacsclient-executable
+                (not (file-remote-p default-directory)))
+           (with-editor (funcall fn command output-buffer error-buffer)))
+          (t
+           (apply fn (format "%s=%s %s"
+                             (or with-editor--envvar "EDITOR")
+                             (shell-quote-argument with-editor-sleeping-editor)
+                             command)
+                  output-buffer error-buffer)
+           (ignore-errors
+             (let ((process (get-buffer-process
+                             (or output-buffer
+                                 (get-buffer "*Async Shell Command*")))))
+               (set-process-filter
+                process (lambda (proc str)
+                          (comint-output-filter proc str)
+                          (with-editor-process-filter proc str t)))
+               process))))))
 
 (advice-add 'shell-command :around
             'shell-command--shell-command-with-editor-mode)
