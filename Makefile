@@ -14,9 +14,9 @@ BATCH   = $(EMACS) -batch -Q -L . $(EFLAGS)
 MAKEINFO     ?= makeinfo
 INSTALL_INFO ?= $(shell command -v ginstall-info || printf install-info)
 
-WITH_EDITOR_VERSION = 2.5.1
-ASYNC_VERSION       = 1.5
-DASH_VERSION        = 2.12.1
+WITH_EDITOR_VERSION = 2.5.2
+ASYNC_VERSION       = 1.9
+DASH_VERSION        = 2.13.0
 
 .PHONY: help clean AUTHORS.md
 
