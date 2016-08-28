@@ -545,7 +545,6 @@ This works in `shell-mode', `term-mode' and `eshell-mode'."
    ((derived-mode-p 'comint-mode 'term-mode)
     (let* ((process (get-buffer-process (current-buffer)))
            (filter  (process-filter process)))
-      (set-process-filter process 'ignore)
       (goto-char (process-mark process))
       (process-send-string
        process (format "export %s=%s\n" envvar
