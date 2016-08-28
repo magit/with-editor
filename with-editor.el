@@ -537,7 +537,7 @@ which may or may not insert the text into the PROCESS' buffer."
 
 Set and export the environment variable ENVVAR, by default
 \"EDITOR\".  The value is automatically generated to teach
-commands use the current Emacs instance as \"the editor\".
+commands to use the current Emacs instance as \"the editor\".
 
 This works in `shell-mode', `term-mode' and `eshell-mode'."
   (interactive (list (with-editor-read-envvar)))
