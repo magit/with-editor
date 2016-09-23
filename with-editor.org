@@ -269,9 +269,9 @@ package Emacs (most likely on OS X) without putting the executable on
 
 If you are having problems using ~with-editor~, e.g. you cannot commit
 in Magit, then please open a new issue at
-https://github.com/magit/magit/issues and provide information about
-your Emacs installation.  Most importantly how did you install Emacs
-and what is the output of ~M-x with-editor-debug~?
+https://github.com/magit/with-editor/issues and provide information
+about your Emacs installation.  Most importantly how did you install
+Emacs and what is the output of ~M-x with-editor-debug~?
 
 #  LocalWords:  Emacsclient LocalWords Magit async emacs emacsclient
 #  LocalWords:  hg init rebase startup

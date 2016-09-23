@@ -324,8 +324,8 @@ package Emacs (most likely on OS X) without putting the executable on
 
 If you are having problems using @code{with-editor}, e.g. you cannot commit
 in Magit, then please open a new issue at
-@uref{https://github.com/magit/magit/issues} and provide information about
-your Emacs installation.  Most importantly how did you install Emacs
-and what is the output of @code{M-x with-editor-debug}?
+@uref{https://github.com/magit/with-editor/issues} and provide information
+about your Emacs installation.  Most importantly how did you install
+Emacs and what is the output of @code{M-x with-editor-debug}?
 
 @bye
