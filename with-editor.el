@@ -541,7 +541,8 @@ which may or may not insert the text into the PROCESS' buffer."
 
 (defun server-visit-files--with-editor-file-name-history-exclude
     (files _proc &optional _nowait)
-  (pcase-dolist (`(,file _) files)
+  (dolist (file files)
+    (setq  file (car file))
     (when (--any (string-match-p it file)
                  with-editor-file-name-history-exclude)
       (setq file-name-history (delete file file-name-history)))))
