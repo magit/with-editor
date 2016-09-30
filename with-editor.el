@@ -129,7 +129,7 @@ please see https://github.com/magit/magit/wiki/Emacsclient."))
                               (setq v (mapconcat #'identity (reverse v) "."))
                               (list v (concat "-" v) (concat ".emacs" v)))
                             (reverse version-lst))
-                 (list "" "-snapshot")))
+                 (list "" "-snapshot" ".emacs-snapshot")))
          (lambda (exec)
            (ignore-errors
              (string-match-p version-reg
