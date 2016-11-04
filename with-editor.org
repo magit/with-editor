@@ -16,7 +16,7 @@
 :COPYING:    t
 :END:
 
-#+BEGIN_TEXINFO
+#+BEGIN_EXPORT texinfo
 @ifnottex
 The library @code{with-editor} makes it easy to use the Emacsclient as
 the @code{$EDITOR} of child processes, making sure they know how to call
@@ -47,7 +47,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 General Public License for more details.
 @end quotation
-#+END_TEXINFO
+#+END_EXPORT
 
 * Using the With-Editor package
 
