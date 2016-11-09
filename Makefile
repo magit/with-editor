@@ -14,7 +14,7 @@ BATCH   = $(EMACS) -batch -Q -L . $(EFLAGS)
 MAKEINFO     ?= makeinfo
 INSTALL_INFO ?= $(shell command -v ginstall-info || printf install-info)
 
-WITH_EDITOR_VERSION = 2.5.2
+WITH_EDITOR_VERSION = 2.5.7
 ASYNC_VERSION       = 1.9
 DASH_VERSION        = 2.13.0
 
@@ -82,8 +82,7 @@ export set_package_requires
 #'
 
 define set_manual_version
-(let ((version (split-string "$(WITH_EDITOR_VERSION)" "\\.")))
-  (setq version (concat (car version) "." (cadr version)))
+(let ((version "$(WITH_EDITOR_VERSION)"))
   (with-current-buffer (find-file-noselect "with-editor.org")
     (goto-char (point-min))
     (re-search-forward "^#\\+SUBTITLE: for version ")
