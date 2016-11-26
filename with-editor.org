@@ -8,7 +8,9 @@
 #+TEXINFO_DIR_TITLE: With-Editor: (with-editor).
 #+TEXINFO_DIR_DESC: Using the Emacsclient as $EDITOR
 
-#+OPTIONS: H:4 num:3 toc:2
+#+TEXINFO_DEFFN: t
+#+TEXINFO_CLASS: info+
+#+OPTIONS: H:4 num:nil toc:2
 
 * Copying
 :PROPERTIES:
@@ -274,3 +276,7 @@ Emacs and what is the output of ~M-x with-editor-debug~?
 
 #  LocalWords:  Emacsclient LocalWords Magit async emacs emacsclient
 #  LocalWords:  hg init rebase startup
+
+# Local Variables:
+# eval: (require 'ox-texinfo+ nil t)
+# End:
