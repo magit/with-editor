@@ -2,3 +2,6 @@
 /with-editor.html
 /with-editor.info
 /with-editor.pdf
+/with-editor-autoloads.el
+*.elc
+dir
