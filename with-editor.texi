@@ -47,7 +47,7 @@ General Public License for more details.
 @finalout
 @titlepage
 @title With-Editor User Manual
-@subtitle for version 2.5.7
+@subtitle for version 2.5.9
 @author Jonas Bernoulli
 @page
 @vskip 0pt plus 1filll
@@ -254,7 +254,7 @@ Some variants of this function exist; these two forms are equivalent:
 
 @lisp
 (add-hook 'shell-mode-hook
-	  (apply-partially 'with-editor-export-editor "GIT_EDITOR"))
+          (apply-partially 'with-editor-export-editor "GIT_EDITOR"))
 (add-hook 'shell-mode-hook 'with-editor-export-git-editor)
 @end lisp
 
