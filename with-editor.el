@@ -566,7 +566,7 @@ This works in `shell-mode', `term-mode' and `eshell-mode'."
            (filter  (process-filter process)))
       (goto-char (process-mark process))
       (process-send-string
-       process (format "export %s=%s\n" envvar
+       process (format " export %s=%s\n" envvar
                        (shell-quote-argument with-editor-sleeping-editor)))
       (while (accept-process-output process 0.1))
       (set-process-filter process filter)
