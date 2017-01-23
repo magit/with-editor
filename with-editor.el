@@ -254,6 +254,7 @@ Note that when a package adds an entry here then it probably
 has a reason to disrespect `server-window' and it likely is
 not a good idea to change such entries.")
 
+;;;###autoload
 (defvar with-editor-file-name-history-exclude nil
   "List of regexps for filenames `server-visit' should no remember.
 When a filename matches any of the regexps, then `server-visit'
