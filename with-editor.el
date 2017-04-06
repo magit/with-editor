@@ -762,7 +762,8 @@ See info node `(with-editor)Debugging' for instructions."
     (--each (with-editor-emacsclient-path)
       (insert (format "    %s (%s)\n" it (car (file-attributes it))))
       (when (file-directory-p it)
-        (dolist (exec (directory-files it t "emacsclient"))
+        ;; Don't match emacsclientw.exe, it makes popup windows.
+        (dolist (exec (directory-files it t "emacsclient\\(?:[^w]\\|\\'\\)"))
           (insert (format "      %s (%s)\n" exec
                           (with-editor-emacsclient-version exec))))))))
 
