@@ -748,7 +748,7 @@ See info node `(with-editor)Debugging' for instructions."
           (fun (let ((warning-minimum-level :error)
                      (warning-minimum-log-level :error))
                  (with-editor-locate-emacsclient))))
-      (insert "magit-emacsclient-executable:\n"
+      (insert "with-editor-emacsclient-executable:\n"
               (format " value:   %s (%s)\n" val
                       (and val (with-editor-emacsclient-version val)))
               (format " default: %s (%s)\n" def
