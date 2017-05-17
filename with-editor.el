@@ -82,6 +82,7 @@
 (require 'cl-lib)
 (require 'dash)
 (require 'server)
+(require 'subr-x)
 (require 'tramp)
 (require 'tramp-sh nil t)
 
@@ -108,15 +109,14 @@
 
 (defun with-editor-locate-emacsclient ()
   "Search for a suitable Emacsclient executable."
-  (--if-let (with-editor-locate-emacsclient-1 (with-editor-emacsclient-path) 3)
-      it
-    (display-warning 'with-editor (format "\
+  (or (with-editor-locate-emacsclient-1 (with-editor-emacsclient-path) 3)
+      (display-warning 'with-editor (format "\
 Cannot determine a suitable Emacsclient
 
 Determining an Emacsclient executable suitable for the
 current Emacs instance failed.  For more information
 please see https://github.com/magit/magit/wiki/Emacsclient."))
-    nil))
+      nil))
 
 (defun with-editor-locate-emacsclient-1 (path depth)
   (let* ((version-lst (-take depth (split-string emacs-version "\\.")))
@@ -140,7 +140,7 @@ please see https://github.com/magit/magit/wiki/Emacsclient."))
              (with-editor-locate-emacsclient-1 path (1- depth))))))
 
 (defun with-editor-emacsclient-version (exec)
-  (-when-let (1st-line (car (process-lines exec "--version")))
+  (when-let (1st-line (car (process-lines exec "--version")))
     (cadr (split-string 1st-line))))
 
 (defun with-editor-emacsclient-path ()
@@ -662,10 +662,10 @@ else like the former."
 (defun with-editor-shell-command-read-args (prompt &optional async)
   (let ((command (read-shell-command
                   prompt nil nil
-                  (--when-let (or buffer-file-name
-                                  (and (eq major-mode 'dired-mode)
-                                       (dired-get-filename nil t)))
-                    (file-relative-name it)))))
+                  (when-let (file (or buffer-file-name
+                                      (and (eq major-mode 'dired-mode)
+                                           (dired-get-filename nil t))))
+                    (file-relative-name file)))))
     (list command
           (if (or async (setq async (string-match-p "&[ \t]*\\'" command)))
               (< (prefix-numeric-value current-prefix-arg) 0)
