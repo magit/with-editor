@@ -82,8 +82,7 @@
 (require 'cl-lib)
 (require 'dash)
 (require 'server)
-(require 'tramp)
-(require 'tramp-sh nil t)
+(require 'shell)
 
 (and (require 'async-bytecomp nil t)
      (memq 'magit (bound-and-true-p async-bytecomp-allowed-packages))
@@ -516,10 +515,7 @@ which may or may not insert the text into the PROCESS' buffer."
           (with-current-buffer
               (find-file-noselect
                (if (file-name-absolute-p file)
-                   (if (tramp-tramp-file-p default-directory)
-                       (with-parsed-tramp-file-name default-directory nil
-                         (tramp-make-tramp-file-name method user host file hop))
-                     file)
+                   (concat (file-remote-p default-directory) file)
                  (expand-file-name file)))
             (with-editor-mode 1)
             (setq with-editor--pid pid)
