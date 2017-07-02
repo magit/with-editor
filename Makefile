@@ -32,6 +32,7 @@ help:
 	$(info make html         - generate html manual file)
 	$(info make html-dir     - generate html manual directory)
 	$(info make pdf          - generate pdf manual)
+	$(info make bump-version - bump version strings)
 	$(info make authors      - generate AUTHORS.md)
 	$(info make preview      - preview html manual)
 	$(info make publish      - publish html manual)
@@ -48,6 +49,9 @@ loaddefs: $(PKG)-autoloads.el
 	@printf "Compiling $<\n"
 	@$(EMACS) -Q --batch $(EFLAGS) -L . $(DFLAGS) -f batch-byte-compile $<
 
+bump-version:
+	@sed -i -e "s/\(#+SUBTITLE: for version \)[.0-9]*/\1$(VERSION)/" $(PKG).org
+
 texi: $(PKG).texi
 info: $(PKG).info dir
 html: $(PKG).html
@@ -58,7 +62,6 @@ pdf:  $(PKG).pdf
 	@$(EMACS) -Q --batch $(OFLAGS) \
 	-l ox-texinfo+.el $< -f org-texinfo-export-to-texinfo
 	@printf "\n" >> $@
-	@sed -i -e '/^@title /a@subtitle for version $(VERSION)' $@
 	@rm -f $@~
 
 %.info: %.texi
