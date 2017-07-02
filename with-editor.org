@@ -1,7 +1,7 @@
 #+TITLE: With-Editor User Manual
 #+AUTHOR: Jonas Bernoulli
 #+EMAIL: jonas@bernoul.li
-#+DATE: 2015-2016
+#+DATE: 2015-2017
 #+LANGUAGE: en
 
 #+TEXINFO_DIR_CATEGORY: Emacs
@@ -12,17 +12,10 @@
 #+TEXINFO_CLASS: info+
 #+OPTIONS: H:4 num:nil toc:2
 
-* Copying
-:PROPERTIES:
-:COPYING:    t
-:END:
-
-#+BEGIN_EXPORT texinfo
-@ifnottex
-The library @code{with-editor} makes it easy to use the Emacsclient as
-the @code{$EDITOR} of child processes, making sure they know how to call
-home.  For remote processes a substitute is provided, which communicates
-with Emacs on standard output instead of using a socket as the Emacsclient
+The library ~with-editor~ makes it easy to use the Emacsclient as the
+~$EDITOR~ of child processes, making sure they know how to call home.
+For remote processes a substitute is provided, which communicates with
+Emacs on standard output instead of using a socket as the Emacsclient
 does.
 
 This library was written because Magit has to be able to do the above
@@ -33,10 +26,9 @@ Because other packages can benefit from such functionality, this
 library is made available as a separate package.  It also defines some
 additional functionality which makes it useful even for end-users, who
 don't use Magit or another package which uses it internally.
-@end ifnottex
 
-@quotation
-Copyright (C) 2015-2016 Jonas Bernoulli <jonas@@bernoul.li>
+#+BEGIN_QUOTE
+Copyright (C) 2015-2017 Jonas Bernoulli <jonas@bernoul.li>
 
 You can redistribute this document and/or modify it under the terms
 of the GNU General Public License as published by the Free Software
@@ -47,8 +39,7 @@ This document is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 General Public License for more details.
-@end quotation
-#+END_EXPORT
+#+END_QUOTE
 
 * Using the With-Editor package
 
@@ -231,7 +222,7 @@ Some variants of this function exist; these two forms are equivalent:
 
 * Using With-Editor as a library
 
-This section describes how to use the =with-editor= library /outside/ of
+This section describes how to use the ~with-editor~ library /outside/ of
 Magit to teach another package how to have its child processes call
 home, just like Magit does.  You don't need to know any of this just
 to create commits using Magit.  You can also ignore this if you use
@@ -283,3 +274,21 @@ Emacs and what is the output of ~M-x with-editor-debug RET~.
 # Local Variables:
 # eval: (require 'ox-texinfo+ nil t)
 # End:
+* Copying
+:PROPERTIES:
+:COPYING:    t
+:END:
+
+#+BEGIN_QUOTE
+Copyright (C) 2015-2017 Jonas Bernoulli <jonas@bernoul.li>
+
+You can redistribute this document and/or modify it under the terms
+of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+This document is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+#+END_QUOTE
