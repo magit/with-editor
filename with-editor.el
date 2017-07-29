@@ -115,11 +115,16 @@ Determining an Emacsclient executable suitable for the
 current Emacs instance failed.  For more information
 please see https://github.com/magit/magit/wiki/Emacsclient."))))
 
+(defun with-editor--emacsclient-name ()
+  (if (s-starts-with-p (downcase invocation-name) "remacs")
+      "remacsclient"
+    "emacsclient"))
+
 (defun with-editor-locate-emacsclient-1 (path depth)
   (let* ((version-lst (-take depth (split-string emacs-version "\\.")))
          (version-reg (concat "^" (mapconcat #'identity version-lst "\\."))))
     (or (locate-file-internal
-         "emacsclient" path
+         (with-editor--emacsclient-name) path
          (cl-mapcan
           (lambda (v) (cl-mapcar (lambda (e) (concat v e)) exec-suffixes))
           (nconc (and (boundp 'debian-emacs-flavor)
