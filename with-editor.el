@@ -119,7 +119,8 @@ please see https://github.com/magit/magit/wiki/Emacsclient."))))
   (let* ((version-lst (-take depth (split-string emacs-version "\\.")))
          (version-reg (concat "^" (mapconcat #'identity version-lst "\\."))))
     (or (locate-file-internal
-         "emacsclient" path
+         (if (equal invocation-name "remacs") "remacsclient" "emacsclient")
+         path
          (cl-mapcan
           (lambda (v) (cl-mapcar (lambda (e) (concat v e)) exec-suffixes))
           (nconc (and (boundp 'debian-emacs-flavor)
