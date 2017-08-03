@@ -174,10 +174,10 @@ trap \"kill $sleep; exit 1\" USR2; \
 wait $sleep'"
   "The sleeping editor, used when the Emacsclient cannot be used.
 
-This fallback is used for asynchronous process started inside the
-macro `with-editor', when the process runs on a remote machine or
-for local processes when `with-editor-emacsclient-executable' is
-nil (i.e. when no suitable Emacsclient was found, or the user
+This fallback is used for asynchronous processes started inside
+the macro `with-editor', when the process runs on a remote machine
+or for local processes when `with-editor-emacsclient-executable'
+is nil (i.e. when no suitable Emacsclient was found, or the user
 decided not to use it).
 
 Where the latter uses a socket to communicate with Emacs' server,
@@ -253,7 +253,7 @@ has a reason to disrespect `server-window' and it likely is
 not a good idea to change such entries.")
 
 (defvar with-editor-file-name-history-exclude nil
-  "List of regexps for filenames `server-visit' should no remember.
+  "List of regexps for filenames `server-visit' should not remember.
 When a filename matches any of the regexps, then `server-visit'
 does not add it to the variable `file-name-history', which is
 used when reading a filename in the minibuffer.")
