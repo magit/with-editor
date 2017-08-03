@@ -327,15 +327,17 @@ used when reading a filename in the minibuffer.")
                  (ignore-errors
                    (server-send-string client "-error Canceled by user"))
                  (delete-process client))
-             ;; Fallback for when emacs was used as $EDITOR instead
-             ;; of emacsclient or the sleeping editor.  See #2258.
+             ;; Fallback for when emacs was used as $EDITOR
+             ;; instead of emacsclient or the sleeping editor.
+             ;; See https://github.com/magit/magit/issues/2258.
              (ignore-errors (delete-file buffer-file-name))
              (kill-buffer)))
           (t
            (save-buffer)
            (if clients
-               ;; Don't use `server-edit' because we do not want to show
-               ;; another buffer belonging to another client.  See #2197.
+               ;; Don't use `server-edit' because we do not want to
+               ;; show another buffer belonging to another client.
+               ;; See https://github.com/magit/magit/issues/2197.
                (server-done)
              (kill-buffer))))
     (when pid
