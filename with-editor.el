@@ -370,7 +370,7 @@ used when reading a filename in the minibuffer.")
   ;; either `with-editor-finish' or `with-editor-cancel',
   ;; and from removing the key bindings for these commands.
   (unless with-editor-mode
-    (error "With-Editor mode cannot be turned off"))
+    (user-error "With-Editor mode cannot be turned off"))
   (add-hook 'kill-buffer-query-functions
             'with-editor-kill-buffer-noop nil t)
   ;; `server-execute' displays a message which is not
@@ -381,7 +381,7 @@ used when reading a filename in the minibuffer.")
 (put 'with-editor-mode 'permanent-local t)
 
 (defun with-editor-kill-buffer-noop ()
-  (message (substitute-command-keys "\
+  (user-error (substitute-command-keys "\
 Don't kill this buffer.  Instead cancel using \\[with-editor-cancel]")))
 
 (defun with-editor-usage-message ()
