@@ -139,8 +139,9 @@ please see https://github.com/magit/magit/wiki/Emacsclient."))))
              (with-editor-locate-emacsclient-1 path (1- depth))))))
 
 (defun with-editor-emacsclient-version (exec)
-  (ignore-errors
-    (cadr (split-string (car (process-lines exec "--version"))))))
+  (let ((default-directory (file-name-directory exec)))
+    (ignore-errors
+      (cadr (split-string (car (process-lines exec "--version")))))))
 
 (defun with-editor-emacsclient-path ()
   (let ((path exec-path))
