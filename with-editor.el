@@ -566,14 +566,12 @@ This works in `shell-mode', `term-mode' and `eshell-mode'."
   (interactive (list (with-editor-read-envvar)))
   (cond
    ((derived-mode-p 'comint-mode 'term-mode)
-    (let* ((process (get-buffer-process (current-buffer)))
-           (filter  (process-filter process)))
+    (let ((process (get-buffer-process (current-buffer))))
       (goto-char (process-mark process))
       (process-send-string
        process (format " export %s=%s\n" envvar
                        (shell-quote-argument with-editor-sleeping-editor)))
       (while (accept-process-output process 0.1))
-      (set-process-filter process filter)
       (if (derived-mode-p 'term-mode)
           (with-editor-set-process-filter process 'with-editor-emulate-terminal)
         (add-hook 'comint-output-filter-functions 'with-editor-output-filter
