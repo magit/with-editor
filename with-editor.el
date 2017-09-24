@@ -446,7 +446,7 @@ ENVVAR is provided then bind that environment variable instead.
     ;; As last resort fallback to the sleeping editor.
     (push (concat "ALTERNATE_EDITOR=" with-editor-sleeping-editor)
           process-environment)))
-  
+
 (defun with-editor-server-window ()
   (or (and buffer-file-name
            (cdr (cl-find-if (lambda (cons)
@@ -546,8 +546,7 @@ which may or may not insert the text into the PROCESS' buffer."
 
 (defun server-visit-files--with-editor-file-name-history-exclude
     (files _proc &optional _nowait)
-  (dolist (file files)
-    (setq  file (car file))
+  (pcase-dolist (`(,file . ,_) files)
     (when (cl-find-if (lambda (regexp)
                         (string-match-p regexp file))
                       with-editor-file-name-history-exclude)
@@ -641,7 +640,7 @@ the COMMAND's output at point.
 CLIENT is automatically generated; ENVVAR=CLIENT instructs
 COMMAND to use to the current Emacs instance as \"the editor\",
 assuming it respects ENVVAR as an \"EDITOR\"-like variable.
-CLIENT maybe the path to an appropriate emacsclient executable
+CLIENT may be the path to an appropriate emacsclient executable
 with arguments, or a script which also works over Tramp.
 
 Also see `async-shell-command' and `shell-command'."
