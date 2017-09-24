@@ -521,7 +521,7 @@ which may or may not insert the text into the PROCESS' buffer."
               (file (match-string 2 string)))
           (with-current-buffer
               (find-file-noselect
-               (if (file-name-absolute-p file)
+               (if (and (file-name-absolute-p file) default-directory)
                    (concat (file-remote-p default-directory) file)
                  (expand-file-name file)))
             (with-editor-mode 1)
