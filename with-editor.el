@@ -80,6 +80,7 @@
 ;;; Code:
 
 (require 'cl-lib)
+(require 'pcase)
 (require 'server)
 (require 'shell)
 
