@@ -80,7 +80,7 @@
 ;;; Code:
 
 (require 'cl-lib)
-(require 'pcase)
+(eval-when-compile (require 'pcase))
 (require 'server)
 (require 'shell)
 
