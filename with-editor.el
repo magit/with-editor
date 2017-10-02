@@ -688,9 +688,8 @@ else like the former."
     (cond ((or (not (or with-editor--envvar shell-command-with-editor-mode))
                (not (string-match-p "&\\'" command)))
            (funcall fn command output-buffer error-buffer))
-          ((and with-editor-emacsclient-executable
-                (not (file-remote-p default-directory)))
-           (with-editor (funcall fn command output-buffer error-buffer)))
+          ;; Do not use the `emacsclient', because it currently is not
+          ;; possible to know whether `with-editor' was involved.  #23
           (t
            (apply fn (format "%s=%s %s"
                              (or with-editor--envvar "EDITOR")
