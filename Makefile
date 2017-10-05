@@ -60,7 +60,7 @@ pdf:  $(PKG).pdf
 %.texi: %.org
 	@printf "Generating $@\n"
 	@$(EMACS) -Q --batch $(OFLAGS) \
-	-l ox-texinfo+.el $< -f org-texinfo-export-to-texinfo
+	-l ox-extra.el -l ox-texinfo+.el $< -f org-texinfo-export-to-texinfo
 	@printf "\n" >> $@
 	@rm -f $@~
 
