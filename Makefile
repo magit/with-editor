@@ -7,11 +7,19 @@ ELCS  = $(ELS:.el=.elc)
 
 DEPS  = dash
 
-EMACS  ?= emacs
-EFLAGS ?=
-EFLAGS += --eval '(setq with-editor-emacsclient-executable nil)'
-DFLAGS ?= $(addprefix -L ../,$(DEPS))
-OFLAGS ?= -L ../dash -L ../org/lisp -L ../ox-texinfo+
+EMACS      ?= emacs
+EMACS_ARGS ?=
+EMACS_ARGS += --eval '(setq with-editor-emacsclient-executable nil)'
+
+LOAD_PATH  ?= $(addprefix -L ../,$(DEPS))
+LOAD_PATH  += -L .
+
+ifndef ORG_LOAD_PATH
+ORG_LOAD_PATH  = -L ../dash
+ORG_LOAD_PATH += -L ../org/lisp
+ORG_LOAD_PATH += -L ../org/contrib/lisp
+ORG_LOAD_PATH += -L ../ox-texinfo+
+endif
 
 INSTALL_INFO     ?= $(shell command -v ginstall-info || printf install-info)
 MAKEINFO         ?= makeinfo
@@ -47,7 +55,7 @@ loaddefs: $(PKG)-autoloads.el
 
 %.elc: %.el
 	@printf "Compiling $<\n"
-	@$(EMACS) -Q --batch $(EFLAGS) -L . $(DFLAGS) -f batch-byte-compile $<
+	@$(EMACS) -Q --batch $(EMACS_ARGS) $(LOAD_PATH) -f batch-byte-compile $<
 
 bump-version:
 	@sed -i -e "s/\(#+SUBTITLE: for version \)[.0-9]*/\1$(VERSION)/" $(PKG).org
@@ -59,7 +67,7 @@ pdf:  $(PKG).pdf
 
 %.texi: %.org
 	@printf "Generating $@\n"
-	@$(EMACS) -Q --batch $(OFLAGS) \
+	@$(EMACS) -Q --batch $(ORG_LOAD_PATH) \
 	-l ox-extra.el -l ox-texinfo+.el $< -f org-texinfo-export-to-texinfo
 	@printf "\n" >> $@
 	@rm -f $@~
