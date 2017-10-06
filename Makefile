@@ -41,8 +41,6 @@ help:
 	$(info make preview      - preview html manual)
 	$(info make publish      - publish html manual)
 	$(info make clean        - remove most generated files)
-	$(info make clean-texi   - remove (tracked) texi manual)
-	$(info make clean-all    - remove all generated files)
 	@printf "\n"
 
 lisp: $(ELCS) loaddefs
@@ -118,14 +116,6 @@ CLEAN += $(PKG) $(PKG).html $(PKG).pdf
 clean:
 	@printf "Cleaning...\n"
 	@rm -rf $(CLEAN)
-
-clean-texi:
-	@printf "Cleaning...\n"
-	@rm -f $(PKG).texi
-
-clean-all:
-	@printf "Cleaning...\n"
-	@rm -rf $(CLEAN) $(PKG).texi
 
 authors: AUTHORS.md
 
