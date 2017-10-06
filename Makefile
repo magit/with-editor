@@ -25,9 +25,6 @@ INSTALL_INFO     ?= $(shell command -v ginstall-info || printf install-info)
 MAKEINFO         ?= makeinfo
 MANUAL_HTML_ARGS ?= --css-ref /assets/page.css
 
-VERSION := $(shell test -e .git && \
-	git tag | cut -c2- | sort --version-sort | tail -1)
-
 all: lisp info
 doc: info html html-dir pdf
 
@@ -35,12 +32,11 @@ help:
 	$(info make all          - generate lisp and manual)
 	$(info make doc          - generate most manual formats)
 	$(info make lisp         - generate byte-code and autoloads)
-	$(info make texi         - generate texi manual)
+	$(info make texi         - generate texi manual (see comments))
 	$(info make info         - generate info manual)
 	$(info make html         - generate html manual file)
 	$(info make html-dir     - generate html manual directory)
 	$(info make pdf          - generate pdf manual)
-	$(info make bump-version - bump version strings)
 	$(info make authors      - generate AUTHORS.md)
 	$(info make preview      - preview html manual)
 	$(info make publish      - publish html manual)
@@ -57,10 +53,6 @@ loaddefs: $(PKG)-autoloads.el
 	@printf "Compiling $<\n"
 	@$(EMACS) -Q --batch $(EMACS_ARGS) $(LOAD_PATH) -f batch-byte-compile $<
 
-bump-version:
-	@sed -i -e "s/\(#+SUBTITLE: for version \)[.0-9]*/\1$(VERSION)/" $(PKG).org
-
-texi: $(PKG).texi
 info: $(PKG).info dir
 html: $(PKG).html
 pdf:  $(PKG).pdf
@@ -71,11 +63,18 @@ ORG_EVAL += --eval "(setq indent-tabs-mode nil)"
 ORG_EVAL += --eval "(setq org-src-preserve-indentation nil)"
 ORG_EVAL += --funcall org-texinfo-export-to-texinfo
 
-%.texi: %.org
-	@printf "Generating $@\n"
-	@$(EMACS) $(ORG_ARGS) $< $(ORG_EVAL)
-	@printf "\n" >> $@
-	@rm -f $@~
+# This target first bumps version strings in the Org source.  The
+# necessary tools might be missing so other targets do not depend
+# on this target and it has to be run explicitly when appropriate.
+#
+#   AMEND=t make texi    Update manual to be amended to HEAD.
+#   VERSION=N make texi  Update manual for release.
+#
+.PHONY: texi
+texi:
+	@$(EMACS) $(ORG_ARGS) $(PKG).org $(ORG_EVAL)
+	@printf "\n" >> $(PKG).texi
+	@rm -f $(PKG).texi~
 
 %.info: %.texi
 	@printf "Generating $@\n"
