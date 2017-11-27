@@ -262,6 +262,38 @@ When a filename matches any of the regexps, then `server-visit'
 does not add it to the variable `file-name-history', which is
 used when reading a filename in the minibuffer.")
 
+(defcustom with-editor-shell-command-use-emacsclient t
+  "Whether to use the emacsclient when running shell commands.
+
+This affects `with-editor-shell-command-async' and, if the input
+ends with \"&\" `with-editor-shell-command' .
+
+If `shell-command-with-editor-mode' is enabled, then it also
+affects `shell-command-async' and, if the input ends with \"&\"
+`shell-command'.
+
+This is a temporary kludge that lets you choose between two
+possible defects, the ones described in the issues #23 and #40.
+
+When t, then use the emacsclient.  This has the disadvantage that
+`with-editor-mode' won't be enabled because we don't know whether
+this package was involved at all in the call to the emacsclient,
+and when it is not, then we really should.  The problem is that
+the emacsclient doesn't pass a long any environment variables to
+the server.  This will hopefully be fixed in Emacs eventually.
+
+When nil, then use the sleeping editor.  Because in this case we
+know that this package is involved, we can enable the mode.  But
+this makes it necessary that you invoke $EDITOR in shell scripts
+like so:
+
+  eval \"$EDITOR\" file
+
+And some tools that do not handle $EDITOR properly also break."
+  :package-version '(with-editor . "2.8.0")
+  :group 'with-editor
+  :type 'boolean)
+
 ;;; Mode Commands
 
 (defvar with-editor-pre-finish-hook nil)
@@ -688,8 +720,10 @@ else like the former."
     (cond ((or (not (or with-editor--envvar shell-command-with-editor-mode))
                (not (string-match-p "&\\'" command)))
            (funcall fn command output-buffer error-buffer))
-          ;; Do not use the `emacsclient', because it currently is not
-          ;; possible to know whether `with-editor' was involved.  #23
+          ((and with-editor-shell-command-use-emacsclient
+                with-editor-emacsclient-executable
+                (not (file-remote-p default-directory)))
+           (with-editor (funcall fn command output-buffer error-buffer)))
           (t
            (apply fn (format "%s=%s %s"
                              (or with-editor--envvar "EDITOR")
