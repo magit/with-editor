@@ -1,13 +1,13 @@
 #+TITLE: With-Editor User Manual
 #+AUTHOR: Jonas Bernoulli
 #+EMAIL: jonas@bernoul.li
-#+DATE: 2015-2017
+#+DATE: 2015-2018
 #+LANGUAGE: en
 
 #+TEXINFO_DIR_CATEGORY: Emacs
 #+TEXINFO_DIR_TITLE: With-Editor: (with-editor).
 #+TEXINFO_DIR_DESC: Using the Emacsclient as $EDITOR
-#+SUBTITLE: for version 2.7.0 (v2.7.0-10-g93876b6+1)
+#+SUBTITLE: for version 2.7.1
 #+BIND: ox-texinfo+-before-export-hook ox-texinfo+-update-version-strings
 
 #+TEXINFO_DEFFN: t
@@ -29,10 +29,10 @@ additional functionality which makes it useful even for end-users, who
 don't use Magit or another package which uses it internally.
 
 #+TEXINFO: @noindent
-This manual is for With-Editor version 2.7.0 (v2.7.0-10-g93876b6+1).
+This manual is for With-Editor version 2.7.1.
 
 #+BEGIN_QUOTE
-Copyright (C) 2015-2017 Jonas Bernoulli <jonas@bernoul.li>
+Copyright (C) 2015-2018 Jonas Bernoulli <jonas@bernoul.li>
 
 You can redistribute this document and/or modify it under the terms
 of the GNU General Public License as published by the Free Software
@@ -284,7 +284,7 @@ Emacs and what is the output of ~M-x with-editor-debug RET~.
 :END:
 
 #+BEGIN_QUOTE
-Copyright (C) 2015-2017 Jonas Bernoulli <jonas@bernoul.li>
+Copyright (C) 2015-2018 Jonas Bernoulli <jonas@bernoul.li>
 
 You can redistribute this document and/or modify it under the terms
 of the GNU General Public License as published by the Free Software
