@@ -588,6 +588,7 @@ which may or may not insert the text into the PROCESS' buffer."
 
 ;;; Augmentations
 
+;;;###autoload
 (cl-defun with-editor-export-editor (&optional (envvar "EDITOR"))
   "Teach subsequent commands to use current Emacs instance as editor.
 
@@ -617,11 +618,13 @@ This works in `shell-mode', `term-mode' and `eshell-mode'."
     (error "Cannot export environment variables in this buffer")))
   (message "Successfully exported %s" envvar))
 
+;;;###autoload
 (defun with-editor-export-git-editor ()
   "Like `with-editor-export-editor' but always set `$GIT_EDITOR'."
   (interactive)
   (with-editor-export-editor "GIT_EDITOR"))
 
+;;;###autoload
 (defun with-editor-export-hg-editor ()
   "Like `with-editor-export-editor' but always set `$HG_EDITOR'."
   (interactive)
@@ -643,6 +646,7 @@ This works in `shell-mode', `term-mode' and `eshell-mode'."
                                 with-editor-envvars nil nil nil nil default)))
     (if (string= reply "") (user-error "Nothing selected") reply)))
 
+;;;###autoload
 (define-minor-mode shell-command-with-editor-mode
   "Teach `shell-command' to use current Emacs instance as editor.
 
@@ -661,6 +665,7 @@ which also allows the use of another variable instead of
 \"EDITOR\"."
   :global t)
 
+;;;###autoload
 (defun with-editor-async-shell-command
     (command &optional output-buffer error-buffer envvar)
   "Like `async-shell-command' but with `$EDITOR' set.
@@ -683,6 +688,7 @@ Also see `async-shell-command' and `shell-command'."
     (with-editor
       (async-shell-command command output-buffer error-buffer))))
 
+;;;###autoload
 (defun with-editor-shell-command
     (command &optional output-buffer error-buffer envvar)
   "Like `shell-command' or `with-editor-async-shell-command'.
