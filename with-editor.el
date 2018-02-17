@@ -457,7 +457,7 @@ ENVVAR is provided then bind that environment variable instead.
     (unless (featurep 'make-network-process '(:family local))
       (setq server-use-tcp t))
     ;; Make sure the server is running.
-    (unless server-process
+    (unless (process-live-p server-process)
       (when (server-running-p server-name)
         (setq server-name (format "server%s" (emacs-pid)))
         (when (server-running-p server-name)
