@@ -749,7 +749,7 @@ else like the former."
 (advice-add 'shell-command :around
             'shell-command--shell-command-with-editor-mode)
 
-;;; with-editor.el ends soon
+;;; _
 
 (defun with-editor-debug ()
   "Debug configuration issues.
