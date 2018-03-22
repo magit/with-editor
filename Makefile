@@ -118,12 +118,12 @@ PREVIEW_TARGET ?= $(PREVIEW_BUCKET)$(PUBLISH_PATH)
 preview: html html-dir pdf
 	@aws s3 cp $(PKG).html $(PREVIEW_TARGET)
 	@aws s3 cp $(PKG).pdf $(PREVIEW_TARGET)
-	@aws s3 sync $(PKG) $(PREVIEW_TARGET)$(PKG)/
+	@aws s3 sync --delete $(PKG) $(PREVIEW_TARGET)$(PKG)/
 
 publish: html html-dir pdf
 	@aws s3 cp $(PKG).html $(PUBLISH_TARGET)
 	@aws s3 cp $(PKG).pdf $(PUBLISH_TARGET)
-	@aws s3 sync $(PKG) $(PUBLISH_TARGET)$(PKG)/
+	@aws s3 sync --delete $(PKG) $(PUBLISH_TARGET)$(PKG)/
 	@printf "Generating CDN invalidation\n"
 	@aws cloudfront create-invalidation \
 	--distribution-id $(CFRONT_DIST) --paths "\
