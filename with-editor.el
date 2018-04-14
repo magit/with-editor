@@ -122,7 +122,9 @@ please see https://github.com/magit/magit/wiki/Emacsclient."))))
   (let* ((version-lst (cl-subseq (split-string emacs-version "\\.") 0 depth))
          (version-reg (concat "^" (mapconcat #'identity version-lst "\\."))))
     (or (locate-file-internal
-         (if (equal invocation-name "remacs") "remacsclient" "emacsclient")
+         (if (equal (downcase invocation-name) "remacs")
+             "remacsclient"
+           "emacsclient")
          path
          (cl-mapcan
           (lambda (v) (cl-mapcar (lambda (e) (concat v e)) exec-suffixes))
