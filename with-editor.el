@@ -173,7 +173,7 @@ please see https://github.com/magit/magit/wiki/Emacsclient."))))
 
 (defcustom with-editor-sleeping-editor "\
 sh -c '\
-echo \"WITH-EDITOR: $$ OPEN $0\"; \
+echo \"WITH-EDITOR: $$ OPEN $0 IN $(pwd)\"; \
 sleep 604800 & sleep=$!; \
 trap \"kill $sleep; exit 0\" USR1; \
 trap \"kill $sleep; exit 1\" USR2; \
@@ -202,7 +202,7 @@ with \"bash\" (and install that), or you can use the older, less
 performant implementation:
 
   \"sh -c '\\
-  echo \\\"WITH-EDITOR: $$ OPEN $0\\\"; \\
+  echo \\\"WITH-EDITOR: $$ OPEN $0 in $(pwd)\\\"; \\
   trap \\\"exit 0\\\" USR1; \\
   trap \\\"exit 1\" USR2; \\
   while true; do sleep 1; done'\"
@@ -211,6 +211,7 @@ Note that this leads to a delay of up to a second.  The delay can
 be shortened by replacing \"sleep 1\" with \"sleep 0.01\", or if your
 implementation does not support floats, then by using `nanosleep'
 instead."
+  :package-version '(with-editor . "2.8.0")
   :group 'with-editor
   :type 'string)
 
@@ -552,14 +553,17 @@ which may or may not insert the text into the PROCESS' buffer."
 
 (defun with-editor-output-filter (string)
   (save-match-data
-    (if (string-match "^WITH-EDITOR: \\([0-9]+\\) OPEN \\(.+?\\)\r?$" string)
+    (if (string-match "^WITH-EDITOR: \
+\\([0-9]+\\) OPEN \\([^]+?\\)\
+\\(?: IN \\([^\r]+?\\)\\)?\r?$" string)
         (let ((pid  (match-string 1 string))
-              (file (match-string 2 string)))
-          (with-current-buffer
-              (find-file-noselect
-               (if (and (file-name-absolute-p file) default-directory)
-                   (concat (file-remote-p default-directory) file)
-                 (expand-file-name file)))
+              (file (match-string 2 string))
+              (dir  (match-string 3 string)))
+          (unless (file-name-absolute-p file)
+            (setq file (expand-file-name file dir)))
+          (when default-directory
+            (setq file (concat (file-remote-p default-directory) file)))
+          (with-current-buffer (find-file-noselect file)
             (with-editor-mode 1)
             (setq with-editor--pid pid)
             (run-hooks 'with-editor-filter-visit-hook)
