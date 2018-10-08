@@ -8,7 +8,7 @@
 #+TEXINFO_DIR_CATEGORY: Emacs
 #+TEXINFO_DIR_TITLE: With-Editor: (with-editor).
 #+TEXINFO_DIR_DESC: Using the Emacsclient as $EDITOR
-#+SUBTITLE: for version 2.7.4
+#+SUBTITLE: for version 2.7.4 (v2.7.4-2-g48e1b2d+1)
 #+BIND: ox-texinfo+-before-export-hook ox-texinfo+-update-version-strings
 
 #+TEXINFO_DEFFN: t
@@ -30,7 +30,7 @@ additional functionality which makes it useful even for end-users, who
 don't use Magit or another package which uses it internally.
 
 #+TEXINFO: @noindent
-This manual is for With-Editor version 2.7.4.
+This manual is for With-Editor version 2.7.4 (v2.7.4-2-g48e1b2d+1).
 
 #+BEGIN_QUOTE
 Copyright (C) 2015-2018 Jonas Bernoulli <jonas@bernoul.li>
@@ -135,15 +135,19 @@ it receives a signal.
 
   #+BEGIN_SRC emacs-lisp
     "sh -c '\
-    echo \"WITH-EDITOR: $$ OPEN $0\"; \
+    echo \"WITH-EDITOR: $$ OPEN $0 IN $(pwd)\"; \
     trap \"exit 0\" USR1; \
     trap \"exit 1\" USR2; \
     while true; do sleep 1; done'"
   #+END_SRC
 
-  This leads to a delay of up to a second.  The delay can be shortened
-  by replacing ~sleep 1~ with ~sleep 0.01~, or if your implementation does
-  not support floats, then by using ~nanosleep 0.01~ instead.
+  Note that the unit seperator character () right after the file
+  name ($0) is required.
+
+  Also note that using this alternative implementation leads to a
+  delay of up to a second.  The delay can be shortened by replacing
+  ~sleep 1~ with ~sleep 0.01~, or if your implementation does not support
+  floats, then by using ~nanosleep~ instead.
 
 ** Using With-Editor commands
 
@@ -302,7 +306,8 @@ General Public License for more details.
 
 # IMPORTANT: Also update ORG_ARGS and ORG_EVAL in the Makefile.
 # Local Variables:
-# eval: (require 'ox-extra nil t)
+# eval: (require 'magit-utils nil t)
+# eval: (require 'ox-extra    nil t)
 # eval: (require 'ox-texinfo+ nil t)
 # eval: (and (featurep 'ox-extra) (ox-extras-activate '(ignore-headlines)))
 # indent-tabs-mode: nil

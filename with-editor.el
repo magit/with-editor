@@ -202,15 +202,18 @@ with \"bash\" (and install that), or you can use the older, less
 performant implementation:
 
   \"sh -c '\\
-  echo \\\"WITH-EDITOR: $$ OPEN $0 in $(pwd)\\\"; \\
+  echo \\\"WITH-EDITOR: $$ OPEN $0 IN $(pwd)\\\"; \\
   trap \\\"exit 0\\\" USR1; \\
   trap \\\"exit 1\" USR2; \\
   while true; do sleep 1; done'\"
 
-Note that this leads to a delay of up to a second.  The delay can
-be shortened by replacing \"sleep 1\" with \"sleep 0.01\", or if your
-implementation does not support floats, then by using `nanosleep'
-instead."
+Note that the unit seperator character () right after the file
+name ($0) is required.
+
+Also note that using this alternative implementation leads to a
+delay of up to a second.  The delay can be shortened by replacing
+\"sleep 1\" with \"sleep 0.01\", or if your implementation does
+not support floats, then by using \"nanosleep\" instead."
   :package-version '(with-editor . "2.8.0")
   :group 'with-editor
   :type 'string)

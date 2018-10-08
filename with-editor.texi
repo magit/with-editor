@@ -30,7 +30,7 @@ General Public License for more details.
 @finalout
 @titlepage
 @title With-Editor User Manual
-@subtitle for version 2.7.4
+@subtitle for version 2.7.4 (v2.7.4-2-g48e1b2d+1)
 @author Jonas Bernoulli
 @page
 @vskip 0pt plus 1filll
@@ -59,7 +59,7 @@ additional functionality which makes it useful even for end-users, who
 don't use Magit or another package which uses it internally.
 
 @noindent
-This manual is for With-Editor version 2.7.4.
+This manual is for With-Editor version 2.7.4 (v2.7.4-2-g48e1b2d+1).
 
 @quotation
 Copyright (C) 2015-2018 Jonas Bernoulli <jonas@@bernoul.li>
@@ -190,15 +190,19 @@ implementation:
 
 @lisp
 "sh -c '\
-echo \"WITH-EDITOR: $$ OPEN $0\"; \
+echo \"WITH-EDITOR: $$ OPEN $0 IN $(pwd)\"; \
 trap \"exit 0\" USR1; \
 trap \"exit 1\" USR2; \
 while true; do sleep 1; done'"
 @end lisp
 
-This leads to a delay of up to a second.  The delay can be shortened
-by replacing @code{sleep 1} with @code{sleep 0.01}, or if your implementation does
-not support floats, then by using @code{nanosleep 0.01} instead.
+Note that the unit seperator character () right after the file
+name ($0) is required.
+
+Also note that using this alternative implementation leads to a
+delay of up to a second.  The delay can be shortened by replacing
+@code{sleep 1} with @code{sleep 0.01}, or if your implementation does not support
+floats, then by using @code{nanosleep} instead.
 @end defopt
 
 @node Using With-Editor commands
