@@ -293,7 +293,7 @@ like so:
   eval \"$EDITOR\" file
 
 And some tools that do not handle $EDITOR properly also break."
-  :package-version '(with-editor . "2.8.0")
+  :package-version '(with-editor . "2.7.1")
   :group 'with-editor
   :type 'boolean)
 
