@@ -332,11 +332,13 @@ And some tools that do not handle $EDITOR properly also break."
   (when (run-hook-with-args-until-failure
          'with-editor-finish-query-functions force)
     (let ((with-editor-post-finish-hook-1
-           (ignore-errors (delq t with-editor-post-finish-hook))))
+           (ignore-errors (delq t with-editor-post-finish-hook)))
+          (dir default-directory))
       (run-hooks 'with-editor-pre-finish-hook)
       (with-editor-return nil)
       (accept-process-output nil 0.1)
-      (run-hooks 'with-editor-post-finish-hook-1))))
+      (let ((default-directory dir))
+        (run-hooks 'with-editor-post-finish-hook-1)))))
 
 (defun with-editor-cancel (force)
   "Cancel the current edit session."
@@ -348,11 +350,13 @@ And some tools that do not handle $EDITOR properly also break."
         (setq message (funcall message)))
       (let ((with-editor-post-cancel-hook-1
              (ignore-errors (delq t with-editor-post-cancel-hook)))
-            (with-editor-cancel-alist nil))
+            (with-editor-cancel-alist nil)
+            (dir default-directory))
         (run-hooks 'with-editor-pre-cancel-hook)
         (with-editor-return t)
         (accept-process-output nil 0.1)
-        (run-hooks 'with-editor-post-cancel-hook-1))
+        (let ((default-directory dir))
+          (run-hooks 'with-editor-post-cancel-hook-1)))
       (message (or message "Canceled by user")))))
 
 (defun with-editor-return (cancel)
