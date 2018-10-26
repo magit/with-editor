@@ -19,6 +19,7 @@ This document is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE@.  See the GNU
 General Public License for more details.
+
 @end quotation
 @end copying
 
@@ -30,7 +31,7 @@ General Public License for more details.
 @finalout
 @titlepage
 @title With-Editor User Manual
-@subtitle for version 2.7.4 (v2.7.4-2-g48e1b2d+1)
+@subtitle for version 2.7.4 (v2.7.4-5-gac6b2e3+1)
 @author Jonas Bernoulli
 @page
 @vskip 0pt plus 1filll
@@ -59,7 +60,7 @@ additional functionality which makes it useful even for end-users, who
 don't use Magit or another package which uses it internally.
 
 @noindent
-This manual is for With-Editor version 2.7.4 (v2.7.4-2-g48e1b2d+1).
+This manual is for With-Editor version 2.7.4 (v2.7.4-5-gac6b2e3+1).
 
 @quotation
 Copyright (C) 2015-2018 Jonas Bernoulli <jonas@@bernoul.li>
@@ -73,6 +74,7 @@ This document is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE@.  See the GNU
 General Public License for more details.
+
 @end quotation
 @end ifnottex
 
@@ -80,6 +82,7 @@ General Public License for more details.
 * Using the With-Editor package::
 * Using With-Editor as a library::
 * Debugging::
+* _::
 
 @detailmenu
 --- The Detailed Node Listing ---
@@ -316,10 +319,19 @@ used as the editor of child processes, effectively teaching them to
 call home to the current Emacs instance when they require that the
 user edits a file.
 
-This is essentially done by establishing a local binding for
-@code{process-environment} and changing the value of the @code{$EDITOR}
-environment variable in that scope.  This affects all asynchronous
-processes started by forms (dynamically) inside BODY@.
+This is done by establishing a local binding for @code{process-environment}
+and changing the value of the @code{EDITOR} environment variable in that
+scope.  This affects all (asynchronous) processes started by forms
+(dynamically) inside BODY@.
+
+If BODY begins with a literal string, then that variable is set
+instead of @code{EDITOR}.
+@end defmac
+
+@defmac with-editor envvar &rest body
+
+This macro is like @code{with-editor} instead that the ENVVAR argument is
+required and that it is evaluated at run-time.
 @end defmac
 
 @defun with-editor-set-process-filter process filter
@@ -346,5 +358,8 @@ in Magit, then please open a new issue at
 @uref{https://github.com/magit/with-editor/issues} and provide information
 about your Emacs installation.  Most importantly how did you install
 Emacs and what is the output of @code{M-x with-editor-debug RET}.
+
+@node _
+@chapter _ :ignore:
 
 @bye

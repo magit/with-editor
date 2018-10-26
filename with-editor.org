@@ -8,7 +8,7 @@
 #+TEXINFO_DIR_CATEGORY: Emacs
 #+TEXINFO_DIR_TITLE: With-Editor: (with-editor).
 #+TEXINFO_DIR_DESC: Using the Emacsclient as $EDITOR
-#+SUBTITLE: for version 2.7.4 (v2.7.4-2-g48e1b2d+1)
+#+SUBTITLE: for version 2.7.4 (v2.7.4-5-gac6b2e3+1)
 #+BIND: ox-texinfo+-before-export-hook ox-texinfo+-update-version-strings
 
 #+TEXINFO_DEFFN: t
@@ -30,7 +30,7 @@ additional functionality which makes it useful even for end-users, who
 don't use Magit or another package which uses it internally.
 
 #+TEXINFO: @noindent
-This manual is for With-Editor version 2.7.4 (v2.7.4-2-g48e1b2d+1).
+This manual is for With-Editor version 2.7.4 (v2.7.4-5-gac6b2e3+1).
 
 #+BEGIN_QUOTE
 Copyright (C) 2015-2018 Jonas Bernoulli <jonas@bernoul.li>
@@ -248,10 +248,18 @@ package]].
   call home to the current Emacs instance when they require that the
   user edits a file.
 
-  This is essentially done by establishing a local binding for
-  ~process-environment~ and changing the value of the ~$EDITOR~
-  environment variable in that scope.  This affects all asynchronous
-  processes started by forms (dynamically) inside BODY.
+  This is done by establishing a local binding for ~process-environment~
+  and changing the value of the ~EDITOR~ environment variable in that
+  scope.  This affects all (asynchronous) processes started by forms
+  (dynamically) inside BODY.
+
+  If BODY begins with a literal string, then that variable is set
+  instead of ~EDITOR~.
+
+- Macro: with-editor envvar &rest body
+
+  This macro is like ~with-editor~ instead that the ENVVAR argument is
+  required and that it is evaluated at run-time.
 
 - Function: with-editor-set-process-filter process filter
 
