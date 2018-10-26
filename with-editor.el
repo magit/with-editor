@@ -448,12 +448,26 @@ or \\[with-editor-cancel] to cancel"))))))
   "Use the Emacsclient as $EDITOR while evaluating BODY.
 Modify the `process-environment' for processes started in BODY,
 instructing them to use the Emacsclient as $EDITOR.  If optional
-ENVVAR is provided then bind that environment variable instead.
+ENVVAR is a literal string then bind that environment variable
+instead.
 \n(fn [ENVVAR] BODY...)"
   (declare (indent defun) (debug (body)))
   `(let ((with-editor--envvar ,(if (stringp (car body))
                                    (pop body)
                                  '(or with-editor--envvar "EDITOR")))
+         (process-environment process-environment))
+     (with-editor--setup)
+     ,@body))
+
+(defmacro with-editor* (envvar &rest body)
+  "Use the Emacsclient as the editor while evaluating BODY.
+Modify the `process-environment' for processes started in BODY,
+instructing them to use the Emacsclient as editor.  ENVVAR is the
+environment variable that is exported to do so, it is evaluated
+at run-time.
+\n(fn [ENVVAR] BODY...)"
+  (declare (indent defun) (debug (body)))
+  `(let ((with-editor--envvar ,envvar)
          (process-environment process-environment))
      (with-editor--setup)
      ,@body))
