@@ -43,7 +43,6 @@ help:
 	$(info make publish      - publish snapshot manuals)
 	$(info make release      - publish release manuals)
 	$(info make clean        - remove most generated files)
-	@printf "$(VERSION)\n"
 
 lisp: $(ELCS) loaddefs
 
