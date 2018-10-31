@@ -8,7 +8,7 @@
 #+TEXINFO_DIR_CATEGORY: Emacs
 #+TEXINFO_DIR_TITLE: With-Editor: (with-editor).
 #+TEXINFO_DIR_DESC: Using the Emacsclient as $EDITOR
-#+SUBTITLE: for version 2.7.4 (v2.7.4-5-gac6b2e3+1)
+#+SUBTITLE: for version 2.8.0
 #+BIND: ox-texinfo+-before-export-hook ox-texinfo+-update-version-strings
 
 #+TEXINFO_DEFFN: t
@@ -30,7 +30,7 @@ additional functionality which makes it useful even for end-users, who
 don't use Magit or another package which uses it internally.
 
 #+TEXINFO: @noindent
-This manual is for With-Editor version 2.7.4 (v2.7.4-5-gac6b2e3+1).
+This manual is for With-Editor version 2.8.0.
 
 #+BEGIN_QUOTE
 Copyright (C) 2015-2018 Jonas Bernoulli <jonas@bernoul.li>

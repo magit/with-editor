@@ -31,7 +31,7 @@ General Public License for more details.
 @finalout
 @titlepage
 @title With-Editor User Manual
-@subtitle for version 2.7.4 (v2.7.4-5-gac6b2e3+1)
+@subtitle for version 2.8.0
 @author Jonas Bernoulli
 @page
 @vskip 0pt plus 1filll
@@ -60,7 +60,7 @@ additional functionality which makes it useful even for end-users, who
 don't use Magit or another package which uses it internally.
 
 @noindent
-This manual is for With-Editor version 2.7.4 (v2.7.4-5-gac6b2e3+1).
+This manual is for With-Editor version 2.8.0.
 
 @quotation
 Copyright (C) 2015-2018 Jonas Bernoulli <jonas@@bernoul.li>
@@ -82,7 +82,6 @@ General Public License for more details.
 * Using the With-Editor package::
 * Using With-Editor as a library::
 * Debugging::
-* _::
 
 @detailmenu
 --- The Detailed Node Listing ---
@@ -358,8 +357,5 @@ in Magit, then please open a new issue at
 @uref{https://github.com/magit/with-editor/issues} and provide information
 about your Emacs installation.  Most importantly how did you install
 Emacs and what is the output of @code{M-x with-editor-debug RET}.
-
-@node _
-@chapter _ :ignore:
 
 @bye
