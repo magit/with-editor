@@ -332,6 +332,7 @@ And some tools that do not handle $EDITOR properly also break."
   (when (run-hook-with-args-until-failure
          'with-editor-finish-query-functions force)
     (let ((post-finish-hook with-editor-post-finish-hook)
+          (post-commit-hook (bound-and-true-p git-commit-post-finish-hook))
           (dir default-directory))
       (run-hooks 'with-editor-pre-finish-hook)
       (with-editor-return nil)
@@ -339,6 +340,8 @@ And some tools that do not handle $EDITOR properly also break."
       (with-temp-buffer
         (setq default-directory dir)
         (setq-local with-editor-post-finish-hook post-finish-hook)
+        (when (bound-and-true-p git-commit-post-finish-hook)
+          (setq-local git-commit-post-finish-hook post-commit-hook))
         (run-hooks 'with-editor-post-finish-hook)))))
 
 (defun with-editor-cancel (force)
