@@ -331,14 +331,15 @@ And some tools that do not handle $EDITOR properly also break."
   (interactive "P")
   (when (run-hook-with-args-until-failure
          'with-editor-finish-query-functions force)
-    (let ((with-editor-post-finish-hook-1
-           (ignore-errors (delq t with-editor-post-finish-hook)))
+    (let ((post-finish-hook with-editor-post-finish-hook)
           (dir default-directory))
       (run-hooks 'with-editor-pre-finish-hook)
       (with-editor-return nil)
       (accept-process-output nil 0.1)
-      (let ((default-directory dir))
-        (run-hooks 'with-editor-post-finish-hook-1)))))
+      (with-temp-buffer
+        (setq default-directory dir)
+        (setq-local with-editor-post-finish-hook post-finish-hook)
+        (run-hooks 'with-editor-post-finish-hook)))))
 
 (defun with-editor-cancel (force)
   "Cancel the current edit session."
@@ -348,15 +349,16 @@ And some tools that do not handle $EDITOR properly also break."
     (let ((message with-editor-cancel-message))
       (when (functionp message)
         (setq message (funcall message)))
-      (let ((with-editor-post-cancel-hook-1
-             (ignore-errors (delq t with-editor-post-cancel-hook)))
+      (let ((post-cancel-hook with-editor-post-cancel-hook)
             (with-editor-cancel-alist nil)
             (dir default-directory))
         (run-hooks 'with-editor-pre-cancel-hook)
         (with-editor-return t)
         (accept-process-output nil 0.1)
-        (let ((default-directory dir))
-          (run-hooks 'with-editor-post-cancel-hook-1)))
+        (with-temp-buffer
+          (setq default-directory dir)
+          (setq-local with-editor-post-cancel-hook post-cancel-hook)
+          (run-hooks 'with-editor-post-cancel-hook)))
       (message (or message "Canceled by user")))))
 
 (defun with-editor-return (cancel)
