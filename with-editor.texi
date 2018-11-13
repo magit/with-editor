@@ -31,7 +31,7 @@ General Public License for more details.
 @finalout
 @titlepage
 @title With-Editor User Manual
-@subtitle for version 2.8.0
+@subtitle for version 2.8.0 (v2.8.0-2-g87c96b3+1)
 @author Jonas Bernoulli
 @page
 @vskip 0pt plus 1filll
@@ -60,7 +60,7 @@ additional functionality which makes it useful even for end-users, who
 don't use Magit or another package which uses it internally.
 
 @noindent
-This manual is for With-Editor version 2.8.0.
+This manual is for With-Editor version 2.8.0 (v2.8.0-2-g87c96b3+1).
 
 @quotation
 Copyright (C) 2015-2018 Jonas Bernoulli <jonas@@bernoul.li>
@@ -231,10 +231,9 @@ command with the current Emacs instance exported as @code{$EDITOR}.
 @cindex with-editor-shell-command
 @deffn Command with-editor-shell-command
 
-This command is like @code{async-shell-command}, but it runs the shell
-command with the current Emacs instance exported as @code{$EDITOR}.  This
-only has an effect if the shell command is run asynchronously,
-i.e. when the command ends with @code{&}.
+This command is like @code{shell-command}, but if the shell command ends
+with @code{&} and is therefore run asynchronously, then the current Emacs
+instance is exported as @code{$EDITOR}.
 @end deffn
 
 To always use these variants add this to you init file:
