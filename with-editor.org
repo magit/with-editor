@@ -2,16 +2,17 @@
 :PREAMBLE:
 #+AUTHOR: Jonas Bernoulli
 #+EMAIL: jonas@bernoul.li
-#+DATE: 2015-2018
+#+DATE: 2015-2019
 #+LANGUAGE: en
 
 #+TEXINFO_DIR_CATEGORY: Emacs
 #+TEXINFO_DIR_TITLE: With-Editor: (with-editor).
 #+TEXINFO_DIR_DESC: Using the Emacsclient as $EDITOR
-#+SUBTITLE: for version 2.8.0 (v2.8.0-2-g87c96b3+1)
-#+BIND: ox-texinfo+-before-export-hook ox-texinfo+-update-version-strings
+#+SUBTITLE: for version 2.8.1 (v2.8.1+1)
 
 #+TEXINFO_DEFFN: t
+#+BIND: ox-texinfo+-before-export-hook ox-texinfo+-update-copyright-years
+#+BIND: ox-texinfo+-before-export-hook ox-texinfo+-update-version-strings
 #+OPTIONS: H:4 num:4 toc:2
 
 The library ~with-editor~ makes it easy to use the Emacsclient as the
@@ -30,10 +31,10 @@ additional functionality which makes it useful even for end-users, who
 don't use Magit or another package which uses it internally.
 
 #+TEXINFO: @noindent
-This manual is for With-Editor version 2.8.0 (v2.8.0-2-g87c96b3+1).
+This manual is for With-Editor version 2.8.1 (v2.8.1+1).
 
 #+BEGIN_QUOTE
-Copyright (C) 2015-2018 Jonas Bernoulli <jonas@bernoul.li>
+Copyright (C) 2015-2019 Jonas Bernoulli <jonas@bernoul.li>
 
 You can redistribute this document and/or modify it under the terms
 of the GNU General Public License as published by the Free Software
@@ -296,7 +297,7 @@ Emacs and what is the output of ~M-x with-editor-debug RET~.
 :END:
 
 #+BEGIN_QUOTE
-Copyright (C) 2015-2018 Jonas Bernoulli <jonas@bernoul.li>
+Copyright (C) 2015-2019 Jonas Bernoulli <jonas@bernoul.li>
 
 You can redistribute this document and/or modify it under the terms
 of the GNU General Public License as published by the Free Software
