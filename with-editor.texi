@@ -31,7 +31,7 @@ General Public License for more details.
 @finalout
 @titlepage
 @title With-Editor User Manual
-@subtitle for version 2.8.1 (v2.8.1-1-gef0ef43+1)
+@subtitle for version 2.8.2
 @author Jonas Bernoulli
 @page
 @vskip 0pt plus 1filll
@@ -60,7 +60,7 @@ additional functionality which makes it useful even for end-users, who
 don't use Magit or another package which uses it internally.
 
 @noindent
-This manual is for With-Editor version 2.8.1 (v2.8.1-1-gef0ef43+1).
+This manual is for With-Editor version 2.8.2.
 
 @quotation
 Copyright (C) 2015-2019 Jonas Bernoulli <jonas@@bernoul.li>
