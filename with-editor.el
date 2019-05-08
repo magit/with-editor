@@ -1,6 +1,6 @@
 ;;; with-editor.el --- Use the Emacsclient as $EDITOR -*- lexical-binding: t -*-
 
-;; Copyright (C) 2014-2018  The Magit Project Contributors
+;; Copyright (C) 2014-2019  The Magit Project Contributors
 ;;
 ;; You should have received a copy of the AUTHORS.md file.  If not,
 ;; see https://github.com/magit/with-editor/blob/master/AUTHORS.md.
@@ -432,8 +432,13 @@ And some tools that do not handle $EDITOR properly also break."
 (put 'with-editor-mode 'permanent-local t)
 
 (defun with-editor-kill-buffer-noop ()
-  (user-error (substitute-command-keys "\
-Don't kill this buffer.  Instead cancel using \\[with-editor-cancel]")))
+  (if (memq this-command '(save-buffers-kill-terminal
+                           save-buffers-kill-emacs))
+      (let ((run-hook-with-args-until-failure nil))
+        (with-editor-cancel nil)
+        t)
+    (user-error (substitute-command-keys "\
+Don't kill this buffer.  Instead cancel using \\[with-editor-cancel]"))))
 
 (defun with-editor-usage-message ()
   ;; Run after `server-execute', which is run using
