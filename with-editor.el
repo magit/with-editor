@@ -434,7 +434,7 @@ And some tools that do not handle $EDITOR properly also break."
 (defun with-editor-kill-buffer-noop ()
   (if (memq this-command '(save-buffers-kill-terminal
                            save-buffers-kill-emacs))
-      (let ((run-hook-with-args-until-failure nil))
+      (let ((with-editor-cancel-query-functions nil))
         (with-editor-cancel nil)
         t)
     (user-error (substitute-command-keys "\
