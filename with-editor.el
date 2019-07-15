@@ -444,7 +444,7 @@ Don't kill this buffer.  Instead cancel using \\[with-editor-cancel]"))))
   ;; Run after `server-execute', which is run using
   ;; a timer which starts immediately.
   (run-with-timer
-   0.01 nil `(lambda ()
+   0.05 nil `(lambda ()
                (with-current-buffer ,(current-buffer)
                  (message (substitute-command-keys "\
 Type \\[with-editor-finish] to finish, \
