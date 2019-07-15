@@ -447,11 +447,12 @@ or \\[with-editor-cancel] to cancel")
 (defun with-editor-usage-message ()
   ;; Run after `server-execute', which is run using
   ;; a timer which starts immediately.
-  (run-with-timer
-   0.05 nil
-   `(lambda ()
-      (with-current-buffer ,(current-buffer)
-        (message (substitute-command-keys with-editor-usage-message))))))
+  (let ((buffer (current-buffer)))
+    (run-with-timer
+     0.05 nil
+     (lambda ()
+       (with-current-buffer buffer
+         (message (substitute-command-keys with-editor-usage-message)))))))
 
 ;;; Wrappers
 
