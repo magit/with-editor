@@ -1,4 +1,4 @@
-sudo: false
+dist: xenial # Explicitly ask for the new default.
 language: generic
 env:
   global:
