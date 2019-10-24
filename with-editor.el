@@ -435,13 +435,22 @@ And some tools that do not handle $EDITOR properly also break."
 (put 'with-editor-mode 'permanent-local t)
 
 (defun with-editor-kill-buffer-noop ()
-  (if (memq this-command '(save-buffers-kill-terminal
-                           save-buffers-kill-emacs))
-      (let ((with-editor-cancel-query-functions nil))
-        (with-editor-cancel nil)
-        t)
-    (user-error (substitute-command-keys "\
-Don't kill this buffer.  Instead cancel using \\[with-editor-cancel]"))))
+  ;; We started doing this in response to #64, but it is not safe
+  ;; to do so, because the client has already been killed, causing
+  ;; `with-editor-return' (called by `with-editor-cancel') to delete
+  ;; the file, see #66.  The reason we delete the file in the first
+  ;; place are https://github.com/magit/magit/issues/2258 and
+  ;; https://github.com/magit/magit/issues/2248.
+  ;; (if (memq this-command '(save-buffers-kill-terminal
+  ;;                          save-buffers-kill-emacs))
+  ;;     (let ((with-editor-cancel-query-functions nil))
+  ;;       (with-editor-cancel nil)
+  ;;       t)
+  ;;   ...)
+  ;; So go back to always doing this instead:
+  (user-error (substitute-command-keys (format "\
+Don't kill this buffer %S.  Instead cancel using \\[with-editor-cancel]"
+                                               (current-buffer)))))
 
 (defvar-local with-editor-usage-message "\
 Type \\[with-editor-finish] to finish, \
