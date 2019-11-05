@@ -210,7 +210,7 @@ performant implementation:
   trap \\\"exit 1\" USR2; \\
   while true; do sleep 1; done'\"
 
-Note that the unit seperator character () right after the file
+Note that the unit separator character () right after the file
 name ($0) is required.
 
 Also note that using this alternative implementation leads to a
@@ -582,7 +582,7 @@ the appropriate editor environment variable."
 (defun with-editor-set-process-filter (process filter)
   "Like `set-process-filter' but keep `with-editor-process-filter'.
 Give PROCESS the new FILTER but keep `with-editor-process-filter'
-if that was added earlier by the adviced `start-file-process'.
+if that was added earlier by the advised `start-file-process'.
 
 Do so by wrapping the two filter functions using a lambda, which
 becomes the actual filter.  It calls `with-editor-process-filter'
