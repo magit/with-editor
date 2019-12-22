@@ -343,7 +343,7 @@ And some tools that do not handle $EDITOR properly also break."
       (with-temp-buffer
         (setq default-directory dir)
         (setq-local with-editor-post-finish-hook post-finish-hook)
-        (when (bound-and-true-p git-commit-post-finish-hook)
+        (when post-commit-hook
           (setq-local git-commit-post-finish-hook post-commit-hook))
         (run-hooks 'with-editor-post-finish-hook)))))
 
