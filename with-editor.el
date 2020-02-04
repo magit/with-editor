@@ -176,7 +176,7 @@ please see https://github.com/magit/magit/wiki/Emacsclient."))))
 
 (defcustom with-editor-sleeping-editor "\
 sh -c '\
-echo \"WITH-EDITOR: $$ OPEN $0 IN $(pwd)\"; \
+echo -e \"WITH-EDITOR: $$ OPEN $0\\037 IN $(pwd)\"; \
 sleep 604800 & sleep=$!; \
 trap \"kill $sleep; exit 0\" USR1; \
 trap \"kill $sleep; exit 1\" USR2; \
