@@ -101,6 +101,7 @@
 (declare-function dired-get-filename 'dired)
 (declare-function term-emulate-terminal 'term)
 (defvar eshell-preoutput-filter-functions)
+(defvar git-commit-post-finish-hook)
 
 ;;; Options
 
