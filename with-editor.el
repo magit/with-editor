@@ -580,6 +580,47 @@ the appropriate editor environment variable."
 (advice-add 'start-file-process :around
             'start-file-process--with-editor-process-filter)
 
+(cl-defun make-process--with-editor-process-filter
+    (fn &rest keys &key name buffer command coding noquery stop
+        connection-type filter sentinel stderr file-handler)
+  "When called inside a `with-editor' form and the Emacsclient
+cannot be used, then give the process the filter function
+`with-editor-process-filter'.  To avoid overriding the filter
+being added here you should use `with-editor-set-process-filter'
+instead of `set-process-filter' inside `with-editor' forms.
+
+When the `default-directory' is located on a remote machine and
+FILE-HANDLER is non-nil, then also manipulate COMMAND in order
+to set the appropriate editor environment variable."
+  (if (or (not file-handler) (not with-editor--envvar))
+      (apply fn keys)
+    (when (file-remote-p default-directory)
+      (unless (equal (car command) "env")
+        (push "env" command))
+      (push (concat with-editor--envvar "=" with-editor-sleeping-editor)
+            (cdr command)))
+    (let* ((filter (if filter
+                       (lambda (process output)
+                         (funcall filter process output)
+                         (with-editor-process-filter process output t))
+                     #'with-editor-process-filter))
+           (process (funcall fn
+                             :name name
+                             :buffer buffer
+                             :command command
+                             :coding coding
+                             :noquery noquery
+                             :stop stop
+                             :connection-type connection-type
+                             :filter filter
+                             :sentinel sentinel
+                             :stderr stderr
+                             :file-handler file-handler)))
+      (process-put process 'default-dir default-directory)
+      process)))
+
+(advice-add #'make-process :around #'make-process--with-editor-process-filter)
+
 (defun with-editor-set-process-filter (process filter)
   "Like `set-process-filter' but keep `with-editor-process-filter'.
 Give PROCESS the new FILTER but keep `with-editor-process-filter'
