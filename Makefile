@@ -185,10 +185,7 @@ $(PKG)-autoloads.el: $(ELS)
 	(setq find-file-visit-truename t)\
 	(update-directory-autoloads default-directory))"
 
-check: all $(ELS:.el=-tests.stamp)
-.PHONY: check
-
-%-tests.stamp: %-tests.elc lisp
-	$(EMACS) --quick --batch $(EMACS_ARGS) $(LOAD_PATH) \
-	  --load=ert --load=$< --funcall=ert-run-tests-batch-and-exit
-	touch $@
+.PHONY: test
+test:
+	@$(EMACS) --quick --batch $(EMACS_ARGS) $(LOAD_PATH) \
+	-l ert -l with-editor-tests --funcall=ert-run-tests-batch-and-exit
