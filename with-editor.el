@@ -588,7 +588,7 @@ if that was added earlier by the advised `start-file-process'.
 Do so by wrapping the two filter functions using a lambda, which
 becomes the actual filter.  It calls `with-editor-process-filter'
 first, passing t as NO-STANDARD-FILTER.  Then it calls FILTER,
-which may or may not insert the text into the PROCESS' buffer."
+which may or may not insert the text into the PROCESS's buffer."
   (set-process-filter
    process
    (if (eq (process-filter process) 'with-editor-process-filter)
