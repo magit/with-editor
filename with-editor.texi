@@ -31,7 +31,7 @@ General Public License for more details.
 @finalout
 @titlepage
 @title With-Editor User Manual
-@subtitle for version 2.9.3 (v2.9.3+1)
+@subtitle for version 2.9.3 (v2.9.3-1-gc5e2141+1)
 @author Jonas Bernoulli
 @page
 @vskip 0pt plus 1filll
@@ -60,7 +60,7 @@ additional functionality which makes it useful even for end-users, who
 don't use Magit or another package which uses it internally.
 
 @noindent
-This manual is for With-Editor version 2.9.3 (v2.9.3+1).
+This manual is for With-Editor version 2.9.3 (v2.9.3-1-gc5e2141+1).
 
 @quotation
 Copyright (C) 2015-2020 Jonas Bernoulli <jonas@@bernoul.li>
@@ -82,6 +82,9 @@ General Public License for more details.
 * Using the With-Editor package::
 * Using With-Editor as a library::
 * Debugging::
+* Command Index::
+* Function Index::
+* Variable Index::
 
 @detailmenu
 --- The Detailed Node Listing ---
@@ -356,5 +359,20 @@ in Magit, then please open a new issue at
 @uref{https://github.com/magit/with-editor/issues} and provide information
 about your Emacs installation.  Most importantly how did you install
 Emacs and what is the output of @code{M-x with-editor-debug RET}.
+
+@node Command Index
+@appendix Command Index
+
+@printindex cp
+
+@node Function Index
+@appendix Function Index
+
+@printindex fn
+
+@node Variable Index
+@appendix Variable Index
+
+@printindex vr
 
 @bye

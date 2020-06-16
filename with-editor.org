@@ -8,7 +8,7 @@
 #+TEXINFO_DIR_CATEGORY: Emacs
 #+TEXINFO_DIR_TITLE: With-Editor: (with-editor).
 #+TEXINFO_DIR_DESC: Using the Emacsclient as $EDITOR
-#+SUBTITLE: for version 2.9.3 (v2.9.3+1)
+#+SUBTITLE: for version 2.9.3 (v2.9.3-1-gc5e2141+1)
 
 #+TEXINFO_DEFFN: t
 #+PROPERTY: header-args :eval never
@@ -32,7 +32,7 @@ additional functionality which makes it useful even for end-users, who
 don't use Magit or another package which uses it internally.
 
 #+TEXINFO: @noindent
-This manual is for With-Editor version 2.9.3 (v2.9.3+1).
+This manual is for With-Editor version 2.9.3 (v2.9.3-1-gc5e2141+1).
 
 #+BEGIN_QUOTE
 Copyright (C) 2015-2020 Jonas Bernoulli <jonas@bernoul.li>
@@ -285,6 +285,21 @@ https://github.com/magit/with-editor/issues and provide information
 about your Emacs installation.  Most importantly how did you install
 Emacs and what is the output of ~M-x with-editor-debug RET~.
 
+* Command Index
+:PROPERTIES:
+:APPENDIX:   t
+:INDEX:      cp
+:END:
+* Function Index
+:PROPERTIES:
+:APPENDIX:   t
+:INDEX:      fn
+:END:
+* Variable Index
+:PROPERTIES:
+:APPENDIX:   t
+:INDEX:      vr
+:END:
 * _ Copying
 :PROPERTIES:
 :COPYING:    t
