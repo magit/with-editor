@@ -582,7 +582,8 @@ the appropriate editor environment variable."
 
 (cl-defun make-process--with-editor-process-filter
     (fn &rest keys &key name buffer command coding noquery stop
-        connection-type filter sentinel stderr file-handler)
+        connection-type filter sentinel stderr file-handler
+        &allow-other-keys)
   "When called inside a `with-editor' form and the Emacsclient
 cannot be used, then give the process the filter function
 `with-editor-process-filter'.  To avoid overriding the filter
