@@ -540,7 +540,7 @@ at run-time.
       server-window))
 
 (defun server-switch-buffer--with-editor-server-window-alist
-    (fn &optional next-buffer killed-one filepos)
+    (fn &optional next-buffer &rest args)
   "Honor `with-editor-server-window-alist' (which see)."
   (let ((server-window (with-current-buffer
                            (or next-buffer (current-buffer))
@@ -548,7 +548,7 @@ at run-time.
                            (setq with-editor-previous-winconf
                                  (current-window-configuration)))
                          (with-editor-server-window))))
-    (funcall fn next-buffer killed-one filepos)))
+    (apply fn next-buffer args)))
 
 (advice-add 'server-switch-buffer :around
             'server-switch-buffer--with-editor-server-window-alist)
