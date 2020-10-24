@@ -31,7 +31,7 @@ General Public License for more details.
 @finalout
 @titlepage
 @title With-Editor User Manual
-@subtitle for version 2.9.4
+@subtitle for version 2.9.4 (v2.9.4-2-gc4768f5+1)
 @author Jonas Bernoulli
 @page
 @vskip 0pt plus 1filll
@@ -60,7 +60,7 @@ additional functionality which makes it useful even for end-users, who
 don't use Magit or another package which uses it internally.
 
 @noindent
-This manual is for With-Editor version 2.9.4.
+This manual is for With-Editor version 2.9.4 (v2.9.4-2-gc4768f5+1).
 
 @quotation
 Copyright (C) 2015-2020 Jonas Bernoulli <jonas@@bernoul.li>
@@ -258,17 +258,18 @@ command.  This affects most variants of that command, whether they
 are defined in Emacs or in some third-party package.
 @end defvar
 
-The command @code{with-editor-export-editor} exports @code{$EDITOR} or
-another such environment variable in @code{shell-mode}, @code{term-mode} and
-@code{eshell-mode} buffers.  Use this Emacs command before executing a
-shell command which needs the editor set, or always arrange for the
-current Emacs instance to be used as editor by adding it to the
-appropriate mode hooks:
+The command @code{with-editor-export-editor} exports @code{$EDITOR} or another
+such environment variable in @code{shell-mode}, @code{eshell-mode}, @code{term-mode} and
+@code{vterm-mode} buffers.  Use this Emacs command before executing a shell
+command which needs the editor set, or always arrange for the current
+Emacs instance to be used as editor by adding it to the appropriate
+mode hooks:
 
 @lisp
 (add-hook 'shell-mode-hook  'with-editor-export-editor)
-(add-hook 'term-exec-hook   'with-editor-export-editor)
 (add-hook 'eshell-mode-hook 'with-editor-export-editor)
+(add-hook 'term-exec-hook   'with-editor-export-editor)
+(add-hook 'vterm-exec-hook  'with-editor-export-editor)
 @end lisp
 
 Some variants of this function exist; these two forms are equivalent:
@@ -282,9 +283,9 @@ Some variants of this function exist; these two forms are equivalent:
 @cindex with-editor-export-editor
 @deffn Command with-editor-export-editor
 
-When invoked in a @code{shell-mode}, @code{term-mode}, or @code{eshell-mode} buffer, this
-command teaches shell commands to use the current Emacs instance as
-the editor, by exporting @code{$EDITOR}.
+When invoked in a @code{shell-mode}, @code{eshell-mode}, @code{term-mode} or @code{vterm-mode}
+buffer, this command teaches shell commands to use the current Emacs
+instance as the editor, by exporting @code{$EDITOR}.
 @end deffn
 
 @cindex with-editor-export-git-editor

@@ -8,7 +8,7 @@
 #+TEXINFO_DIR_CATEGORY: Emacs
 #+TEXINFO_DIR_TITLE: With-Editor: (with-editor).
 #+TEXINFO_DIR_DESC: Using the Emacsclient as $EDITOR
-#+SUBTITLE: for version 2.9.4
+#+SUBTITLE: for version 2.9.4 (v2.9.4-2-gc4768f5+1)
 
 #+TEXINFO_DEFFN: t
 #+PROPERTY: header-args :eval never
@@ -32,7 +32,7 @@ additional functionality which makes it useful even for end-users, who
 don't use Magit or another package which uses it internally.
 
 #+TEXINFO: @noindent
-This manual is for With-Editor version 2.9.4.
+This manual is for With-Editor version 2.9.4 (v2.9.4-2-gc4768f5+1).
 
 #+BEGIN_QUOTE
 Copyright (C) 2015-2020 Jonas Bernoulli <jonas@bernoul.li>
@@ -193,17 +193,18 @@ Alternatively use the global ~shell-command-with-editor-mode~.
   command.  This affects most variants of that command, whether they
   are defined in Emacs or in some third-party package.
 
-The command ~with-editor-export-editor~ exports ~$EDITOR~ or
-another such environment variable in ~shell-mode~, ~term-mode~ and
-~eshell-mode~ buffers.  Use this Emacs command before executing a
-shell command which needs the editor set, or always arrange for the
-current Emacs instance to be used as editor by adding it to the
-appropriate mode hooks:
+The command ~with-editor-export-editor~ exports ~$EDITOR~ or another
+such environment variable in ~shell-mode~, ~eshell-mode~, ~term-mode~ and
+~vterm-mode~ buffers.  Use this Emacs command before executing a shell
+command which needs the editor set, or always arrange for the current
+Emacs instance to be used as editor by adding it to the appropriate
+mode hooks:
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'shell-mode-hook  'with-editor-export-editor)
-  (add-hook 'term-exec-hook   'with-editor-export-editor)
   (add-hook 'eshell-mode-hook 'with-editor-export-editor)
+  (add-hook 'term-exec-hook   'with-editor-export-editor)
+  (add-hook 'vterm-exec-hook  'with-editor-export-editor)
 #+END_SRC
 
 Some variants of this function exist; these two forms are equivalent:
@@ -216,9 +217,9 @@ Some variants of this function exist; these two forms are equivalent:
 
 - Command: with-editor-export-editor
 
-  When invoked in a ~shell-mode~, ~term-mode~, or ~eshell-mode~ buffer, this
-  command teaches shell commands to use the current Emacs instance as
-  the editor, by exporting ~$EDITOR~.
+  When invoked in a ~shell-mode~, ~eshell-mode~, ~term-mode~ or ~vterm-mode~
+  buffer, this command teaches shell commands to use the current Emacs
+  instance as the editor, by exporting ~$EDITOR~.
 
 - Command: with-editor-export-git-editor
 
