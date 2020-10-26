@@ -81,8 +81,9 @@
 ;;; Code:
 
 (require 'cl-lib)
-;; `pcase-dolist' is not autoloaded on Emacs 24.
-(eval-when-compile (require 'pcase))
+(eval-when-compile
+  (require 'pcase) ; `pcase-dolist' is not autoloaded on Emacs 24.
+  (require 'subr-x))
 (require 'server)
 (require 'shell)
 
