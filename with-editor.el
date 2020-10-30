@@ -99,6 +99,9 @@
   (progn (require 'dired nil t)
          (require 'eshell nil t)
          (require 'term nil t)
+         (condition-case err
+             (require 'vterm nil t)
+           (error (message "Error: %S" err)))
          (require 'vterm nil t)
          (require 'warnings nil t)))
 (declare-function dired-get-filename 'dired)
