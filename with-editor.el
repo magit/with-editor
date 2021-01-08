@@ -697,7 +697,7 @@ This works in `shell-mode', `term-mode', `eshell-mode' and
   (interactive (list (with-editor-read-envvar)))
   (cond
    ((derived-mode-p 'comint-mode 'term-mode)
-    (let ((process (get-buffer-process (current-buffer))))
+    (when-let ((process (get-buffer-process (current-buffer))))
       (goto-char (process-mark process))
       (process-send-string
        process (format " export %s=%s\n" envvar
