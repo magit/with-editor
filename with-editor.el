@@ -1,6 +1,6 @@
 ;;; with-editor.el --- Use the Emacsclient as $EDITOR -*- lexical-binding: t -*-
 
-;; Copyright (C) 2014-2020  The Magit Project Contributors
+;; Copyright (C) 2014-2021  The Magit Project Contributors
 ;;
 ;; You should have received a copy of the AUTHORS.md file.  If not,
 ;; see https://github.com/magit/with-editor/blob/master/AUTHORS.md.
@@ -101,8 +101,7 @@
          (require 'term nil t)
          (condition-case err
              (require 'vterm nil t)
-           (error (message "Error: %S" err)))
-         (require 'vterm nil t)
+           (error (message "Error(vterm): %S" err)))
          (require 'warnings nil t)))
 (declare-function dired-get-filename 'dired)
 (declare-function term-emulate-terminal 'term)
