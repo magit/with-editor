@@ -2,7 +2,7 @@
 :PREAMBLE:
 #+AUTHOR: Jonas Bernoulli
 #+EMAIL: jonas@bernoul.li
-#+DATE: 2015-2020
+#+DATE: 2015-2021
 #+LANGUAGE: en
 
 #+TEXINFO_DIR_CATEGORY: Emacs
@@ -11,10 +11,10 @@
 #+SUBTITLE: for version 2.9.4 (v2.9.4-2-gc4768f5+1)
 
 #+TEXINFO_DEFFN: t
+#+OPTIONS: H:4 num:4 toc:2
 #+PROPERTY: header-args :eval never
 #+BIND: ox-texinfo+-before-export-hook ox-texinfo+-update-copyright-years
 #+BIND: ox-texinfo+-before-export-hook ox-texinfo+-update-version-strings
-#+OPTIONS: H:4 num:4 toc:2
 
 The library ~with-editor~ makes it easy to use the Emacsclient as the
 ~$EDITOR~ of child processes, making sure they know how to call home.
@@ -35,7 +35,7 @@ don't use Magit or another package which uses it internally.
 This manual is for With-Editor version 2.9.4 (v2.9.4-2-gc4768f5+1).
 
 #+BEGIN_QUOTE
-Copyright (C) 2015-2020 Jonas Bernoulli <jonas@bernoul.li>
+Copyright (C) 2015-2021 Jonas Bernoulli <jonas@bernoul.li>
 
 You can redistribute this document and/or modify it under the terms
 of the GNU General Public License as published by the Free Software
@@ -307,7 +307,7 @@ Emacs and what is the output of ~M-x with-editor-debug RET~.
 :END:
 
 #+BEGIN_QUOTE
-Copyright (C) 2015-2020 Jonas Bernoulli <jonas@bernoul.li>
+Copyright (C) 2015-2021 Jonas Bernoulli <jonas@bernoul.li>
 
 You can redistribute this document and/or modify it under the terms
 of the GNU General Public License as published by the Free Software
