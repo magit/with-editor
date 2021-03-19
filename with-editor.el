@@ -318,12 +318,9 @@ And some tools that do not handle $EDITOR properly also break."
 (put 'with-editor-post-finish-hook 'permanent-local t)
 (put 'with-editor-post-cancel-hook 'permanent-local t)
 
-(defvar with-editor-show-usage t)
-(defvar with-editor-cancel-message nil)
-(defvar with-editor-previous-winconf nil)
-(make-variable-buffer-local 'with-editor-show-usage)
-(make-variable-buffer-local 'with-editor-cancel-message)
-(make-variable-buffer-local 'with-editor-previous-winconf)
+(defvar-local with-editor-show-usage t)
+(defvar-local with-editor-cancel-message nil)
+(defvar-local with-editor-previous-winconf nil)
 (put 'with-editor-cancel-message 'permanent-local t)
 (put 'with-editor-previous-winconf 'permanent-local t)
 
