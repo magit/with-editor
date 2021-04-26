@@ -11,6 +11,7 @@
 ;; Package-Requires: ((emacs "24.4"))
 ;; Keywords: tools
 ;; Homepage: https://github.com/magit/with-editor
+;; SPDX-License-Identifier: GPL-3.0-or-later
 
 ;; This file is not part of GNU Emacs.
 
