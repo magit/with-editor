@@ -148,6 +148,7 @@ clean:
 	@printf "Cleaning...\n"
 	@rm -rf $(CLEAN)
 
+.PHONY: authors AUTHORS.md
 authors: AUTHORS.md
 
 AUTHORS.md:
