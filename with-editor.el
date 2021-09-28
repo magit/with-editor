@@ -722,7 +722,9 @@ This works in `shell-mode', `term-mode', `eshell-mode' and
             (vterm-send-return))
           (when-let ((v (getenv "EMACS_SERVER_FILE")))
             (vterm-send-string (format "export EMACS_SERVER_FILE=%S" v))
-            (vterm-send-return)))
+            (vterm-send-return))
+          (vterm-send-string "clear")
+          (vterm-send-return))
       (error "Cannot use sleeping editor in this buffer")))
    (t
     (error "Cannot export environment variables in this buffer")))
