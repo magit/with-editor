@@ -3,6 +3,7 @@ Authors
 
 - Barak A. Pearlmutter <barak+git@pearlmutter.net>
 - Christian Johansson <christian@cvj.se>
+- Itai Y. Efrat <itai3397@gmail.com>
 - Jonas Bernoulli <jonas@bernoul.li>
 - Justin Burkett <justin@burkett.cc>
 - Kyle Meyer <kyle@kyleam.com>
