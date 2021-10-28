@@ -757,8 +757,8 @@ This works in `shell-mode', `term-mode', `eshell-mode' and
 
 (defun with-editor-emulate-terminal (process string)
   "Like `term-emulate-terminal' but also handle edit requests."
-  (when (with-editor-sleeping-editor-filter process string)
-    (term-emulate-terminal process string)))
+  (with-editor-sleeping-editor-filter process string)
+  (term-emulate-terminal process string))
 
 (defvar with-editor-envvars '("EDITOR" "GIT_EDITOR" "HG_EDITOR"))
 
