@@ -644,9 +644,6 @@ may not insert the text into the PROCESS's buffer.  Then it calls
 (defconst with-editor-sleeping-editor-regexp
   "^WITH-EDITOR: \\([0-9]+\\) OPEN \\([^]+?\\)\\(?: IN \\([^\r]+?\\)\\)?\r?$")
 
-(defun with-editor-output-filter (string)
-  (with-editor-sleeping-editor-filter nil string))
-
 (defun with-editor-sleeping-editor-filter (process string)
   (when-let ((incomplete (and process (process-get process 'incomplete))))
     (setq string (concat incomplete string)))
@@ -753,6 +750,10 @@ This works in `shell-mode', `term-mode', `eshell-mode' and
   "Like `with-editor-export-editor' but always set `$HG_EDITOR'."
   (interactive)
   (with-editor-export-editor "HG_EDITOR"))
+
+(defun with-editor-output-filter (string)
+  "Handle edit requests on behalf of `comint-mode' and `eshell-mode'."
+  (with-editor-sleeping-editor-filter nil string))
 
 (defun with-editor-emulate-terminal (process string)
   "Like `term-emulate-terminal' but also handle edit requests."
