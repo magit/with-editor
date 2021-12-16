@@ -1,7 +1,7 @@
 -include config.mk
 include default.mk
 
-.PHONY: lisp docs clean
+.PHONY: lisp docs
 
 all: lisp docs
 
