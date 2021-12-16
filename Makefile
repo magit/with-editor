@@ -37,6 +37,7 @@ help:
 	$(info make html         - generate html manual file)
 	$(info make html-dir     - generate html manual directory)
 	$(info make pdf          - generate pdf manual)
+	$(info make stats        - generate statistics)
 	$(info make authors      - generate AUTHORS.md)
 	$(info make publish      - publish snapshot manuals)
 	$(info make release      - publish release manuals)
@@ -106,6 +107,11 @@ html-dir: $(PKG).texi
 %.pdf: %.texi
 	@printf "Generating $@\n"
 	@texi2pdf --clean $< > /dev/null
+
+.PHONY: stats
+stats:
+	@printf "Generating statistics\n"
+	@gitstats -c style=https://magit.vc/assets/stats.css -c max_authors=999 . stats
 
 DOMAIN         ?= magit.vc
 PUBLISH_PATH   ?= /manual/
