@@ -644,12 +644,19 @@ may not insert the text into the PROCESS's buffer.  Then it calls
 (defconst with-editor-sleeping-editor-regexp
   "^WITH-EDITOR: \\([0-9]+\\) OPEN \\([^]+?\\)\\(?: IN \\([^\r]+?\\)\\)?\r?$")
 
+(defvar with-editor--max-incomplete-length 1000)
+
 (defun with-editor-sleeping-editor-filter (process string)
   (when-let ((incomplete (and process (process-get process 'incomplete))))
     (setq string (concat incomplete string)))
   (save-match-data
     (cond
      ((and process (not (string-match-p "\n\\'" string)))
+      (let ((length (length string)))
+        (when (> length with-editor--max-incomplete-length)
+          (setq string
+                (substring string
+                           (- length with-editor--max-incomplete-length)))))
       (process-put process 'incomplete string)
       nil)
      ((string-match with-editor-sleeping-editor-regexp string)
