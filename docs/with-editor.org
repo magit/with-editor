@@ -1,20 +1,20 @@
-#+TITLE: With-Editor User Manual
+#+title: With-Editor User Manual
 :PREAMBLE:
-#+AUTHOR: Jonas Bernoulli
-#+EMAIL: jonas@bernoul.li
-#+DATE: 2015-{{{year}}}
-#+LANGUAGE: en
+#+author: Jonas Bernoulli
+#+email: jonas@bernoul.li
+#+date: 2015-{{{year}}}
+#+language: en
 
-#+TEXINFO_DIR_CATEGORY: Emacs
-#+TEXINFO_DIR_TITLE: With-Editor: (with-editor).
-#+TEXINFO_DIR_DESC: Using the Emacsclient as $EDITOR
-#+SUBTITLE: for version {{{version}}}
+#+texinfo_dir_category: Emacs
+#+texinfo_dir_title: With-Editor: (with-editor).
+#+texinfo_dir_desc: Using the Emacsclient as $EDITOR
+#+subtitle: for version {{{version}}}
 
-#+TEXINFO_DEFFN: t
-#+OPTIONS: H:4 num:4 toc:2
-#+PROPERTY: header-args :eval never
-#+MACRO: version (eval (ox-texinfo+-get-version 'mixed))
-#+MACRO: year (eval (format-time-string "%Y"))
+#+texinfo_deffn: t
+#+options: H:4 num:4 toc:2
+#+property: header-args :eval never
+#+macro: version (eval (ox-texinfo+-get-version 'mixed))
+#+macro: year (eval (format-time-string "%Y"))
 
 The library ~with-editor~ makes it easy to use the Emacsclient as the
 ~$EDITOR~ of child processes, making sure they know how to call home.
@@ -31,10 +31,10 @@ library is made available as a separate package.  It also defines some
 additional functionality which makes it useful even for end-users, who
 don't use Magit or another package which uses it internally.
 
-#+TEXINFO: @noindent
+#+texinfo: @noindent
 This manual is for With-Editor version {{{version}}}.
 
-#+BEGIN_QUOTE
+#+begin_quote
 Copyright (C) 2015-{{{year}}} Jonas Bernoulli <jonas@bernoul.li>
 
 You can redistribute this document and/or modify it under the terms
@@ -46,7 +46,7 @@ This document is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 General Public License for more details.
-#+END_QUOTE
+#+end_quote
 :END:
 * Using the With-Editor package
 
@@ -177,12 +177,12 @@ prompt for an alternative environment variable such as ~$GIT_EDITOR~.
 
 To always use these variants add this to you init file:
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (define-key (current-global-map)
     [remap async-shell-command] 'with-editor-async-shell-command)
   (define-key (current-global-map)
     [remap shell-command] 'with-editor-shell-command)
-#+END_SRC
+#+end_src
 
 Alternatively use the global ~shell-command-with-editor-mode~.
 
@@ -200,20 +200,20 @@ command which needs the editor set, or always arrange for the current
 Emacs instance to be used as editor by adding it to the appropriate
 mode hooks:
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (add-hook 'shell-mode-hook  'with-editor-export-editor)
   (add-hook 'eshell-mode-hook 'with-editor-export-editor)
   (add-hook 'term-exec-hook   'with-editor-export-editor)
   (add-hook 'vterm-exec-hook  'with-editor-export-editor)
-#+END_SRC
+#+end_src
 
 Some variants of this function exist; these two forms are equivalent:
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (add-hook 'shell-mode-hook
             (apply-partially 'with-editor-export-editor "GIT_EDITOR"))
   (add-hook 'shell-mode-hook 'with-editor-export-git-editor)
-#+END_SRC
+#+end_src
 
 - Command: with-editor-export-editor
 
@@ -307,7 +307,7 @@ Emacs and what is the output of ~M-x with-editor-debug RET~.
 :COPYING:    t
 :END:
 
-#+BEGIN_QUOTE
+#+begin_quote
 Copyright (C) 2015-{{{year}}} Jonas Bernoulli <jonas@bernoul.li>
 
 You can redistribute this document and/or modify it under the terms
@@ -319,7 +319,7 @@ This document is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 General Public License for more details.
-#+END_QUOTE
+#+end_quote
 
 # LocalWords: LocalWords
 # LocalWords: Magit Emacs emacsclient FreeBSD macOS texinfo
