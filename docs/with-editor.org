@@ -62,7 +62,7 @@ most likely reason is that someone found yet another way to package
 Emacs (most likely on macOS) without putting the executable on ~$PATH~,
 and we have to add another kludge to find it anyway.
 
-- User Option: with-editor-emacsclient-executable
+- User Option: with-editor-emacsclient-executable ::
 
   The ~emacsclient~ executable used as the editor by child process of
   this Emacs instance.  By using this executable, child processes can
@@ -91,7 +91,7 @@ and we have to add another kludge to find it anyway.
   this except in "emergencies", i.e. before we had a change to add a
   kludge appropriate for you setup.
 
-- Function: with-editor-locate-emacsclient
+- Function: with-editor-locate-emacsclient ::
 
   The function used to set the initial value of the option
   ~with-editor-emacsclient-executable~.  There's a lot of voodoo here.
@@ -106,7 +106,7 @@ remote processes in much the same way as local processes use an
 editor" because it is implemented as a shell script which sleeps until
 it receives a signal.
 
-- User Option: with-editor-sleeping-editor
+- User Option: with-editor-sleeping-editor ::
 
   The sleeping editor is a shell script used as the editor of child
   processes when the ~emacsclient~ executable cannot be used.
@@ -159,12 +159,12 @@ The commands ~with-editor-async-shell-command~ and
 instance as "the editor".  With a prefix argument these commands
 prompt for an alternative environment variable such as ~$GIT_EDITOR~.
 
-- Command: with-editor-async-shell-command
+- Command: with-editor-async-shell-command ::
 
   This command is like ~async-shell-command~, but it runs the shell
   command with the current Emacs instance exported as ~$EDITOR~.
 
-- Command: with-editor-shell-command
+- Command: with-editor-shell-command ::
 
   This command is like ~shell-command~, but if the shell command ends
   with ~&~ and is therefore run asynchronously, then the current Emacs
@@ -181,7 +181,7 @@ To always use these variants add this to you init file:
 
 Alternatively use the global ~shell-command-with-editor-mode~.
 
-- Variable: shell-command-with-editor-mode
+- Variable: shell-command-with-editor-mode ::
 
   When this mode is active, then ~$EDITOR~ is exported whenever
   ultimately ~shell-command~ is called to asynchronously run some shell
@@ -210,18 +210,18 @@ Some variants of this function exist; these two forms are equivalent:
   (add-hook 'shell-mode-hook 'with-editor-export-git-editor)
 #+end_src
 
-- Command: with-editor-export-editor
+- Command: with-editor-export-editor ::
 
   When invoked in a ~shell-mode~, ~eshell-mode~, ~term-mode~ or ~vterm-mode~
   buffer, this command teaches shell commands to use the current Emacs
   instance as the editor, by exporting ~$EDITOR~.
 
-- Command: with-editor-export-git-editor
+- Command: with-editor-export-git-editor ::
 
   This command is like ~with-editor-export-editor~ but exports
   ~$GIT_EDITOR~.
 
-- Command: with-editor-export-hg-editor
+- Command: with-editor-export-hg-editor ::
 
   This command is like ~with-editor-export-editor~ but exports
   ~$HG_EDITOR~.
@@ -238,7 +238,7 @@ For information about interactive use and options that affect both
 interactive and non-interactive use, see [[*Using the With-Editor
 package]].
 
-- Macro: with-editor &rest body
+- Macro: with-editor &rest body ::
 
   This macro arranges for the ~emacsclient~ or the sleeping editor to be
   used as the editor of child processes, effectively teaching them to
@@ -253,12 +253,12 @@ package]].
   If BODY begins with a literal string, then that variable is set
   instead of ~EDITOR~.
 
-- Macro: with-editor envvar &rest body
+- Macro: with-editor envvar &rest body ::
 
   This macro is like ~with-editor~ instead that the ENVVAR argument is
   required and that it is evaluated at run-time.
 
-- Function: with-editor-set-process-filter process filter
+- Function: with-editor-set-process-filter process filter ::
 
   This function is like ~set-process-filter~ but ensures that adding the
   new FILTER does not remove the ~with-editor-process-filter~.  This is
@@ -282,12 +282,7 @@ https://github.com/magit/with-editor/issues and provide information
 about your Emacs installation.  Most importantly how did you install
 Emacs and what is the output of ~M-x with-editor-debug RET~.
 
-* Command Index
-:PROPERTIES:
-:APPENDIX:   t
-:INDEX:      cp
-:END:
-* Function Index
+* Function and Command Index
 :PROPERTIES:
 :APPENDIX:   t
 :INDEX:      fn
@@ -323,7 +318,6 @@ General Public License for more details.
 # IMPORTANT: Also update ORG_ARGS and ORG_EVAL in the Makefile.
 # Local Variables:
 # eval: (require 'magit-utils nil t)
-# eval: (require 'ox-texinfo+ nil t)
 # indent-tabs-mode: nil
 # org-src-preserve-indentation: nil
 # End:
