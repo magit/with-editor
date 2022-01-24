@@ -865,11 +865,11 @@ else like the former."
                 (not (file-remote-p default-directory)))
            (with-editor (funcall fn command output-buffer error-buffer)))
           (t
-           (apply fn (format "%s=%s %s"
-                             (or with-editor--envvar "EDITOR")
-                             (shell-quote-argument with-editor-sleeping-editor)
-                             command)
-                  output-buffer error-buffer)
+           (funcall fn (format "%s=%s %s"
+                               (or with-editor--envvar "EDITOR")
+                               (shell-quote-argument with-editor-sleeping-editor)
+                               command)
+                    output-buffer error-buffer)
            (ignore-errors
              (let ((process (get-buffer-process
                              (or output-buffer
