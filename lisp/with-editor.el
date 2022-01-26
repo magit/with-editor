@@ -180,7 +180,7 @@ please see https://github.com/magit/magit/wiki/Emacsclient."))))
 
 (defcustom with-editor-sleeping-editor "\
 sh -c '\
-printf \"WITH-EDITOR: $$ OPEN $0\\037 IN $(pwd)\\n\"; \
+printf \"\\nWITH-EDITOR: $$ OPEN $0\\037 IN $(pwd)\\n\"; \
 sleep 604800 & sleep=$!; \
 trap \"kill $sleep; exit 0\" USR1; \
 trap \"kill $sleep; exit 1\" USR2; \
@@ -209,7 +209,7 @@ with \"bash\" (and install that), or you can use the older, less
 performant implementation:
 
   \"sh -c '\\
-  echo \\\"WITH-EDITOR: $$ OPEN $0 IN $(pwd)\\\"; \\
+  echo -e \\\"\\nWITH-EDITOR: $$ OPEN $0 IN $(pwd)\\n\\\"; \\
   trap \\\"exit 0\\\" USR1; \\
   trap \\\"exit 1\" USR2; \\
   while true; do sleep 1; done'\"
