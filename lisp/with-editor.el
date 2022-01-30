@@ -11,7 +11,7 @@
 ;; Homepage: https://github.com/magit/with-editor
 
 ;; Package-Requires: ((emacs "24.4"))
-;; Package-Version: 3.1.1
+;; Package-Version: 3.1.1-git
 
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
