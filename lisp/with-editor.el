@@ -672,6 +672,8 @@ may not insert the text into the PROCESS's buffer.  Then it calls
         (with-current-buffer (find-file-noselect file)
           (with-editor-mode 1)
           (setq with-editor--pid pid)
+          (setq with-editor-previous-winconf
+                (current-window-configuration))
           (run-hooks 'with-editor-filter-visit-hook)
           (funcall (or (with-editor-server-window) #'switch-to-buffer)
                    (current-buffer))
