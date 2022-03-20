@@ -91,14 +91,3 @@ CLEAN = $(PKG).info dir $(PKG) $(PKG).html $(PKG).pdf
 clean:
 	@printf "Cleaning docs/*...\n"
 	@rm -rf $(CLEAN)
-
-.PHONY: authors AUTHORS.md
-authors: AUTHORS.md
-
-AUTHORS.md:
-	@ printf "Authors\n=======\n\n" > $@
-	@ ( printf "%s\n" "- Barak A. Pearlmutter <barak+git@pearlmutter.net>" && \
-	    printf "%s\n" "- Lele Gaifax <lele@metapensiero.it>" && \
-	    printf "%s\n" "- Rémi Vanicat <vanicat@debian.org>" && \
-	    git log --pretty=format:'- %aN <%aE>' \
-	  ) | sort -u >> $@

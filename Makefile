@@ -14,7 +14,6 @@ help:
 	$(info make html         - generate html manual file)
 	$(info make html-dir     - generate html manual directory)
 	$(info make pdf          - generate pdf manual)
-	$(info make authors      - generate AUTHORS.md)
 	$(info make stats        - generate statistics)
 	$(info make publish      - publish snapshot manuals)
 	$(info make release      - publish release manuals)
@@ -36,8 +35,6 @@ html-dir:
 	@$(MAKE) -C docs html-dir
 pdf:
 	@$(MAKE) -C docs pdf
-authors:
-	@$(MAKE) -C docs authors
 stats:
 	@$(MAKE) -C docs stats
 
