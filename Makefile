@@ -17,6 +17,8 @@ help:
 	$(info make stats        - generate statistics)
 	$(info make publish      - publish snapshot manuals)
 	$(info make release      - publish release manuals)
+	$(info make stats        - generate statistics)
+	$(info make stats-upload - publish statistics)
 	$(info make clean        - remove most generated files)
 	@printf "\n"
 
@@ -35,13 +37,16 @@ html-dir:
 	@$(MAKE) -C docs html-dir
 pdf:
 	@$(MAKE) -C docs pdf
-stats:
-	@$(MAKE) -C docs stats
 
 publish:
 	@$(MAKE) -C docs publish
 release:
 	@$(MAKE) VERSION=$(VERSION) -C docs release
+
+stats:
+	@$(MAKE) -C docs stats
+stats-upload:
+	@$(MAKE) -C docs stats-upload
 
 clean:
 	@$(MAKE) -C lisp clean
