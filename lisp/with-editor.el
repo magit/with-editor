@@ -48,9 +48,9 @@
 ;; file:
 ;;
 ;;   (define-key (current-global-map)
-;;     [remap async-shell-command] 'with-editor-async-shell-command)
+;;     [remap async-shell-command] #'with-editor-async-shell-command)
 ;;   (define-key (current-global-map)
-;;     [remap shell-command] 'with-editor-shell-command)
+;;     [remap shell-command] #'with-editor-shell-command)
 
 ;; Alternatively use the global `shell-command-with-editor-mode',
 ;; which always sets `$EDITOR' for all Emacs commands which ultimately
@@ -63,17 +63,17 @@
 ;; always arrange for the current Emacs instance to be used as editor
 ;; by adding it to the appropriate mode hooks:
 ;;
-;;   (add-hook 'shell-mode-hook  'with-editor-export-editor)
-;;   (add-hook 'eshell-mode-hook 'with-editor-export-editor)
-;;   (add-hook 'term-exec-hook   'with-editor-export-editor)
-;;   (add-hook 'vterm-mode-hook  'with-editor-export-editor)
+;;   (add-hook 'shell-mode-hook  #'with-editor-export-editor)
+;;   (add-hook 'eshell-mode-hook #'with-editor-export-editor)
+;;   (add-hook 'term-exec-hook   #'with-editor-export-editor)
+;;   (add-hook 'vterm-mode-hook  #'with-editor-export-editor)
 
 ;; Some variants of this function exist, these two forms are
 ;; equivalent:
 ;;
 ;;   (add-hook 'shell-mode-hook
-;;             (apply-partially 'with-editor-export-editor "GIT_EDITOR"))
-;;   (add-hook 'shell-mode-hook 'with-editor-export-git-editor)
+;;             (apply-partially #'with-editor-export-editor "GIT_EDITOR"))
+;;   (add-hook 'shell-mode-hook #'with-editor-export-git-editor)
 
 ;; This library can also be used by other packages which need to use
 ;; the current Emacs instance as editor.  In fact this library was
@@ -170,7 +170,7 @@ please see https://github.com/magit/magit/wiki/Emacsclient."))))
           (let ((dir (expand-file-name "../../../bin" invocation-directory)))
             (when (file-directory-p dir)
               (push dir path))))))
-    (cl-remove-duplicates path :test 'equal)))
+    (cl-remove-duplicates path :test #'equal)))
 
 (defcustom with-editor-emacsclient-executable (with-editor-locate-emacsclient)
   "The Emacsclient executable used by the `with-editor' macro."
@@ -374,7 +374,7 @@ And some tools that do not handle $EDITOR properly also break."
         (dir default-directory)
         (pid with-editor--pid))
     (remove-hook 'kill-buffer-query-functions
-                 'with-editor-kill-buffer-noop t)
+                 #'with-editor-kill-buffer-noop t)
     (cond (cancel
            (save-buffer)
            (if clients
@@ -407,15 +407,15 @@ And some tools that do not handle $EDITOR properly also break."
 
 (defvar with-editor-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "\C-c\C-c"                           'with-editor-finish)
-    (define-key map [remap server-edit]                  'with-editor-finish)
-    (define-key map [remap evil-save-and-close]          'with-editor-finish)
-    (define-key map [remap evil-save-modified-and-close] 'with-editor-finish)
-    (define-key map "\C-c\C-k"                           'with-editor-cancel)
-    (define-key map [remap kill-buffer]                  'with-editor-cancel)
-    (define-key map [remap ido-kill-buffer]              'with-editor-cancel)
-    (define-key map [remap iswitchb-kill-buffer]         'with-editor-cancel)
-    (define-key map [remap evil-quit]                    'with-editor-cancel)
+    (define-key map "\C-c\C-c"                           #'with-editor-finish)
+    (define-key map [remap server-edit]                  #'with-editor-finish)
+    (define-key map [remap evil-save-and-close]          #'with-editor-finish)
+    (define-key map [remap evil-save-modified-and-close] #'with-editor-finish)
+    (define-key map "\C-c\C-k"                           #'with-editor-cancel)
+    (define-key map [remap kill-buffer]                  #'with-editor-cancel)
+    (define-key map [remap ido-kill-buffer]              #'with-editor-cancel)
+    (define-key map [remap iswitchb-kill-buffer]         #'with-editor-cancel)
+    (define-key map [remap evil-quit]                    #'with-editor-cancel)
     map))
 
 (define-minor-mode with-editor-mode
@@ -427,7 +427,7 @@ And some tools that do not handle $EDITOR properly also break."
   (unless with-editor-mode
     (user-error "With-Editor mode cannot be turned off"))
   (add-hook 'kill-buffer-query-functions
-            'with-editor-kill-buffer-noop nil t)
+            #'with-editor-kill-buffer-noop nil t)
   ;; `server-execute' displays a message which is not
   ;; correct when using this mode.
   (when with-editor-show-usage
@@ -551,7 +551,7 @@ at run-time.
     (apply fn next-buffer args)))
 
 (advice-add 'server-switch-buffer :around
-            'server-switch-buffer--with-editor-server-window-alist)
+            #'server-switch-buffer--with-editor-server-window-alist)
 
 (defun start-file-process--with-editor-process-filter
     (fn name buffer program &rest program-args)
@@ -573,12 +573,12 @@ the appropriate editor environment variable."
       (push (concat with-editor--envvar "=" with-editor-sleeping-editor)
             program-args))
     (let ((process (apply fn name buffer program program-args)))
-      (set-process-filter process 'with-editor-process-filter)
+      (set-process-filter process #'with-editor-process-filter)
       (process-put process 'default-dir default-directory)
       process)))
 
 (advice-add 'start-file-process :around
-            'start-file-process--with-editor-process-filter)
+            #'start-file-process--with-editor-process-filter)
 
 (cl-defun make-process--with-editor-process-filter
     (fn &rest keys &key name buffer command coding noquery stop
@@ -673,7 +673,7 @@ may not insert the text into the PROCESS's buffer.  Then it calls
           (with-editor-mode 1)
           (setq with-editor--pid pid)
           (run-hooks 'with-editor-filter-visit-hook)
-          (funcall (or (with-editor-server-window) 'switch-to-buffer)
+          (funcall (or (with-editor-server-window) #'switch-to-buffer)
                    (current-buffer))
           (kill-local-variable 'server-window)))
       nil)
@@ -688,7 +688,7 @@ may not insert the text into the PROCESS's buffer.  Then it calls
     (internal-default-process-filter process string)))
 
 (advice-add 'server-visit-files :after
-            'server-visit-files--with-editor-file-name-history-exclude)
+            #'server-visit-files--with-editor-file-name-history-exclude)
 
 (defun server-visit-files--with-editor-file-name-history-exclude
     (files _proc &optional _nowait)
@@ -720,12 +720,12 @@ This works in `shell-mode', `term-mode', `eshell-mode' and
                        (shell-quote-argument with-editor-sleeping-editor)))
       (while (accept-process-output process 0.1))
       (if (derived-mode-p 'term-mode)
-          (with-editor-set-process-filter process 'with-editor-emulate-terminal)
-        (add-hook 'comint-output-filter-functions 'with-editor-output-filter
+          (with-editor-set-process-filter process #'with-editor-emulate-terminal)
+        (add-hook 'comint-output-filter-functions #'with-editor-output-filter
                   nil t))))
    ((derived-mode-p 'eshell-mode)
     (add-to-list 'eshell-preoutput-filter-functions
-                 'with-editor-output-filter)
+                 #'with-editor-output-filter)
     (setenv envvar with-editor-sleeping-editor))
    ((derived-mode-p 'vterm-mode)
     (if with-editor-emacsclient-executable
@@ -881,7 +881,7 @@ else like the former."
                process))))))
 
 (advice-add 'shell-command :around
-            'shell-command--shell-command-with-editor-mode)
+            #'shell-command--shell-command-with-editor-mode)
 
 ;;; _
 
