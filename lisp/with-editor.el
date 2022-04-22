@@ -10,7 +10,7 @@
 ;; Keywords: tools
 ;; Homepage: https://github.com/magit/with-editor
 
-;; Package-Requires: ((emacs "25.1"))
+;; Package-Requires: ((emacs "25.1") (compat "28.1.1.0"))
 ;; Package-Version: 3.2.0-git
 
 ;; SPDX-License-Identifier: GPL-3.0-or-later
@@ -84,6 +84,7 @@
 ;;; Code:
 
 (require 'cl-lib)
+(require 'compat)
 (require 'server)
 (require 'shell)
 (eval-when-compile (require 'subr-x))

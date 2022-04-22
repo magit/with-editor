@@ -5,7 +5,8 @@ PKG = with-editor
 ELS   = $(PKG).el
 ELCS  = $(ELS:.el=.elc)
 
-DEPS  = dash
+DEPS  = compat
+DEPS += dash
 
 DOMAIN      ?= magit.vc
 CFRONT_DIST ?= E2LUHBKU1FBV02
