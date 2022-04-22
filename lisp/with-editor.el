@@ -10,7 +10,7 @@
 ;; Keywords: tools
 ;; Homepage: https://github.com/magit/with-editor
 
-;; Package-Requires: ((emacs "24.4"))
+;; Package-Requires: ((emacs "25.1"))
 ;; Package-Version: 3.2.0-git
 
 ;; SPDX-License-Identifier: GPL-3.0-or-later
@@ -84,11 +84,9 @@
 ;;; Code:
 
 (require 'cl-lib)
-(eval-when-compile
-  (require 'pcase) ; `pcase-dolist' is not autoloaded on Emacs 24.
-  (require 'subr-x))
 (require 'server)
 (require 'shell)
+(eval-when-compile (require 'subr-x))
 
 (eval-when-compile
   (progn (require 'dired nil t)
