@@ -651,7 +651,7 @@ may not insert the text into the PROCESS's buffer.  Then it calls
     (setq string (concat incomplete string)))
   (save-match-data
     (cond
-     ((and process (not (string-match-p "\n\\'" string)))
+     ((and process (not (string-suffix-p "\n" string)))
       (let ((length (length string)))
         (when (> length with-editor--max-incomplete-length)
           (setq string
@@ -860,7 +860,7 @@ else like the former."
   ;; running, so it has to be remove here.
   (let ((shell-mode-hook (remove 'with-editor-export-editor shell-mode-hook)))
     (cond ((or (not (or with-editor--envvar shell-command-with-editor-mode))
-               (not (string-match-p "&\\'" command)))
+               (not (string-suffix-p "&" command)))
            (funcall fn command output-buffer error-buffer))
           ((and with-editor-shell-command-use-emacsclient
                 with-editor-emacsclient-executable
