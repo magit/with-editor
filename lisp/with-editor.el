@@ -83,21 +83,16 @@
 (require 'shell)
 (eval-when-compile (require 'subr-x))
 
-(eval-when-compile
-  (progn (require 'dired nil t)
-         (require 'eshell nil t)
-         (require 'term nil t)
-         (condition-case err
-             (require 'vterm nil t)
-           (error (message "Error(vterm): %S" err)))
-         (require 'warnings nil t)))
-(declare-function dired-get-filename 'dired)
-(declare-function term-emulate-terminal 'term)
-(declare-function vterm-send-return 'vterm)
-(declare-function vterm-send-string 'vterm)
+(declare-function dired-get-filename "dired"
+                  (&optional localp no-error-if-not-filep))
+(declare-function term-emulate-terminal "term" (proc str))
+(declare-function vterm-send-return "vterm" ())
+(declare-function vterm-send-string "vterm" (string &optional paste-p))
 (defvar eshell-preoutput-filter-functions)
 (defvar git-commit-post-finish-hook)
 (defvar vterm--process)
+(defvar warning-minimum-level)
+(defvar warning-minimum-log-level)
 
 ;;; Options
 
@@ -884,6 +879,7 @@ else like the former."
   "Debug configuration issues.
 See info node `(with-editor)Debugging' for instructions."
   (interactive)
+  (require 'warnings)
   (with-current-buffer (get-buffer-create "*with-editor-debug*")
     (pop-to-buffer (current-buffer))
     (erase-buffer)
