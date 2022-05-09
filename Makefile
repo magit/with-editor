@@ -14,7 +14,6 @@ help:
 	$(info make html         - generate html manual file)
 	$(info make html-dir     - generate html manual directory)
 	$(info make pdf          - generate pdf manual)
-	$(info make stats        - generate statistics)
 	$(info make publish      - publish snapshot manuals)
 	$(info make release      - publish release manuals)
 	$(info make stats        - generate statistics)
