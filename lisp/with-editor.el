@@ -366,10 +366,14 @@ And some tools that do not handle $EDITOR properly also break."
     (cond (cancel
            (save-buffer)
            (if clients
-               (dolist (client clients)
-                 (ignore-errors
-                   (server-send-string client "-error Canceled by user"))
-                 (delete-process client))
+               (let ((buf (current-buffer)))
+                 (dolist (client clients)
+                   (message "client %S" client)
+                   (ignore-errors
+                     (server-send-string client "-error Canceled by user"))
+                   (delete-process client))
+                 (when (buffer-live-p buf)
+                   (kill-buffer buf)))
              ;; Fallback for when emacs was used as $EDITOR
              ;; instead of emacsclient or the sleeping editor.
              ;; See https://github.com/magit/magit/issues/2258.
