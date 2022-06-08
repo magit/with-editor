@@ -280,7 +280,7 @@ When t, then use the emacsclient.  This has the disadvantage that
 `with-editor-mode' won't be enabled because we don't know whether
 this package was involved at all in the call to the emacsclient,
 and when it is not, then we really should.  The problem is that
-the emacsclient doesn't pass a long any environment variables to
+the emacsclient doesn't pass along any environment variables to
 the server.  This will hopefully be fixed in Emacs eventually.
 
 When nil, then use the sleeping editor.  Because in this case we
@@ -849,7 +849,7 @@ else like the former."
   ;; that mode, even though it only runs the shell to run a single
   ;; command.  The `with-editor-export-editor' hook function is only
   ;; intended to be used in buffers in which an interactive shell is
-  ;; running, so it has to be remove here.
+  ;; running, so it has to be removed here.
   (let ((shell-mode-hook (remove 'with-editor-export-editor shell-mode-hook)))
     (cond ((or (not (or with-editor--envvar shell-command-with-editor-mode))
                (not (string-suffix-p "&" command)))
