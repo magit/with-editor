@@ -508,7 +508,8 @@ at run-time.
       (server-start))
     ;; Tell $EDITOR to use the Emacsclient.
     (push (concat with-editor--envvar "="
-                  (shell-quote-argument with-editor-emacsclient-executable)
+                  (replace-regexp-in-string
+                   "\s" "\\\\\\&" with-editor-emacsclient-executable)
                   ;; Tell the process where the server file is.
                   (and (not server-use-tcp)
                        (concat " --socket-name="
