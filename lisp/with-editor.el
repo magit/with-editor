@@ -266,7 +266,7 @@ used when reading a filename in the minibuffer.")
 (defcustom with-editor-shell-command-use-emacsclient t
   "Whether to use the emacsclient when running shell commands.
 
-This affects `with-editor-shell-command-async' and, if the input
+This affects `with-editor-async-shell-command' and, if the input
 ends with \"&\" `with-editor-shell-command' .
 
 If `shell-command-with-editor-mode' is enabled, then it also
