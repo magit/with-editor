@@ -120,14 +120,14 @@ it receives a signal.
 
   #+BEGIN_SRC emacs-lisp
     "sh -c '\
-    echo \"WITH-EDITOR: $$ OPEN $0 IN $(pwd)\"; \
+    echo \"WITH-EDITOR: $$ OPEN $0$1 IN $(pwd)\"; \
     trap \"exit 0\" USR1; \
     trap \"exit 1\" USR2; \
     while true; do sleep 1; done'"
   #+END_SRC
 
   Note that the unit separator character () right after the file
-  name ($0) is required.
+  name ($0) is required. TODO
 
   Also note that using this alternative implementation leads to a
   delay of up to a second.  The delay can be shortened by replacing
