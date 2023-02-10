@@ -511,8 +511,10 @@ at run-time.
       (server-start))
     ;; Tell $EDITOR to use the Emacsclient.
     (push (concat with-editor--envvar "="
-                  (replace-regexp-in-string
-                   "\s" "\\\\\\&" with-editor-emacsclient-executable)
+                  ;; Quoting is the right thing to do.  Applications that
+                  ;; fail because of that, are the ones that need fixing,
+                  ;; e.g., by using 'eval "$EDITOR" file'.  See #121.
+                  (shell-quote-argument with-editor-emacsclient-executable)
                   ;; Tell the process where the server file is.
                   (and (not server-use-tcp)
                        (concat " --socket-name="
