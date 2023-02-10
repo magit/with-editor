@@ -514,7 +514,13 @@ at run-time.
                   ;; Quoting is the right thing to do.  Applications that
                   ;; fail because of that, are the ones that need fixing,
                   ;; e.g., by using 'eval "$EDITOR" file'.  See #121.
-                  (shell-quote-argument with-editor-emacsclient-executable)
+                  (shell-quote-argument
+                   ;; If users set the executable manually, they might
+                   ;; begin the path with "~", which would get quoted.
+                   (if (string-prefix-p "~" with-editor-emacsclient-executable)
+                       (concat (expand-file-name "~")
+                               (substring with-editor-emacsclient-executable 1))
+                     with-editor-emacsclient-executable))
                   ;; Tell the process where the server file is.
                   (and (not server-use-tcp)
                        (concat " --socket-name="
