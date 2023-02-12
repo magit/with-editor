@@ -400,18 +400,16 @@ And some tools that do not handle $EDITOR properly also break."
 
 ;;; Mode
 
-(defvar with-editor-mode-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "\C-c\C-c"                           #'with-editor-finish)
-    (define-key map [remap server-edit]                  #'with-editor-finish)
-    (define-key map [remap evil-save-and-close]          #'with-editor-finish)
-    (define-key map [remap evil-save-modified-and-close] #'with-editor-finish)
-    (define-key map "\C-c\C-k"                           #'with-editor-cancel)
-    (define-key map [remap kill-buffer]                  #'with-editor-cancel)
-    (define-key map [remap ido-kill-buffer]              #'with-editor-cancel)
-    (define-key map [remap iswitchb-kill-buffer]         #'with-editor-cancel)
-    (define-key map [remap evil-quit]                    #'with-editor-cancel)
-    map))
+(defvar-keymap with-editor-mode-map
+  "C-c C-c"                                #'with-editor-finish
+  "<remap> <server-edit>"                  #'with-editor-finish
+  "<remap> <evil-save-and-close>"          #'with-editor-finish
+  "<remap> <evil-save-modified-and-close>" #'with-editor-finish
+  "C-c C-k"                                #'with-editor-cancel
+  "<remap> <kill-buffer>"                  #'with-editor-cancel
+  "<remap> <ido-kill-buffer>"              #'with-editor-cancel
+  "<remap> <iswitchb-kill-buffer>"         #'with-editor-cancel
+  "<remap> <evil-quit>"                    #'with-editor-cancel)
 
 (define-minor-mode with-editor-mode
   "Edit a file as the $EDITOR of an external process."
