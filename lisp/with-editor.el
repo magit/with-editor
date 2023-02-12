@@ -7,7 +7,7 @@
 ;; Keywords: processes terminals
 
 ;; Package-Version: 3.2.0.50-git
-;; Package-Requires: ((emacs "25.1") (compat "28.1.1.0"))
+;; Package-Requires: ((emacs "25.1") (compat "29.1.3.4"))
 
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
