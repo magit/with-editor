@@ -127,7 +127,7 @@ it receives a signal.
   #+END_SRC
 
   Note that the unit separator character () right after the file
-  name ($0) is required. TODO
+  name ($0) is required.
 
   Also note that using this alternative implementation leads to a
   delay of up to a second.  The delay can be shortened by replacing
