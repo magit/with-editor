@@ -178,7 +178,7 @@ implementation:
 
 @lisp
 "sh -c '\
-echo \"WITH-EDITOR: $$ OPEN $0 IN $(pwd)\"; \
+echo \"WITH-EDITOR: $$ OPEN $0$1 IN $(pwd)\"; \
 trap \"exit 0\" USR1; \
 trap \"exit 1\" USR2; \
 while true; do sleep 1; done'"
