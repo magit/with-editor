@@ -178,7 +178,7 @@ wait $sleep'"
 This fallback is used for asynchronous processes started inside
 the macro `with-editor', when the process runs on a remote machine
 or for local processes when `with-editor-emacsclient-executable'
-is nil (i.e. when no suitable Emacsclient was found, or the user
+is nil (i.e., when no suitable Emacsclient was found, or the user
 decided not to use it).
 
 Where the latter uses a socket to communicate with Emacs' server,
@@ -191,7 +191,7 @@ Some shells do not execute traps immediately when waiting for a
 child process, but by default we do use such a blocking child
 process.
 
-If you use such a shell (e.g. `csh' on FreeBSD, but not Debian),
+If you use such a shell (e.g., `csh' on FreeBSD, but not Debian),
 then you have to edit this option.  You can either replace \"sh\"
 with \"bash\" (and install that), or you can use the older, less
 performant implementation:

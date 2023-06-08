@@ -134,7 +134,7 @@ to go through the same trouble.
 Note that there also is a nuclear option; setting this variable to
 @code{nil} causes the "sleeping editor" described below to be used even for
 local child processes.  Obviously we don't recommend that you use
-this except in "emergencies", i.e. before we had a change to add a
+this except in "emergencies", i.e., before we had a change to add a
 kludge appropriate for you setup.
 @end defopt
 
@@ -171,7 +171,7 @@ Some shells do not execute traps immediately when waiting for a
 child process, but by default we do use such a blocking child
 process.
 
-If you use such a shell (e.g. @code{csh} on FreeBSD, but not Debian), then
+If you use such a shell (e.g., @code{csh} on FreeBSD, but not Debian), then
 you have to edit this option.  You can either replace @code{sh} with @code{bash}
 (and install that), or you can use the older, less performant
 implementation:
@@ -325,7 +325,7 @@ the most likely reason is that someone found yet another way to
 package Emacs (most likely on macOS) without putting the executable on
 @code{$PATH}, and we have to add another kludge to find it anyway.
 
-If you are having problems using @code{with-editor}, e.g. you cannot commit
+If you are having problems using @code{with-editor}, e.g., you cannot commit
 in Magit, then please open a new issue at
 @uref{https://github.com/magit/with-editor/issues} and provide information
 about your Emacs installation.  Most importantly how did you install
