@@ -961,7 +961,7 @@ See info node `(with-editor)Debugging' for instructions."
               (format " funcall: %s (%s)\n" fun
                       (and fun (with-editor-emacsclient-version fun)))))
     (insert "path:\n"
-            (format "  $PATH: %S\n" (getenv "PATH"))
+            (format "  $PATH:     %s\n" (split-string (getenv "PATH") ":"))
             (format "  exec-path: %s\n" exec-path))
     (insert (format "  with-editor-emacsclient-path:\n"))
     (dolist (dir (with-editor-emacsclient-path))
