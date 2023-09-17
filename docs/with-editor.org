@@ -161,10 +161,10 @@ prompt for an alternative environment variable such as ~$GIT_EDITOR~.
 To always use these variants add this to you init file:
 
 #+begin_src emacs-lisp
-  (define-key (current-global-map)
-    [remap async-shell-command] 'with-editor-async-shell-command)
-  (define-key (current-global-map)
-    [remap shell-command] 'with-editor-shell-command)
+  (keymap-global-set "<remap> <async-shell-command>"
+                     #'with-editor-async-shell-command)
+  (keymap-global-set "<remap> <shell-command>"
+                     #'with-editor-shell-command)
 #+end_src
 
 Alternatively use the global ~shell-command-with-editor-mode~.

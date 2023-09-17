@@ -41,10 +41,10 @@
 ;; `$GIT_EDITOR'.  To always use these variants add this to your init
 ;; file:
 ;;
-;;   (define-key (current-global-map)
-;;     [remap async-shell-command] #'with-editor-async-shell-command)
-;;   (define-key (current-global-map)
-;;     [remap shell-command] #'with-editor-shell-command)
+;;   (keymap-global-set "<remap> <async-shell-command>"
+;;                      #'with-editor-async-shell-command)
+;;   (keymap-global-set "<remap> <shell-command>"
+;;                      #'with-editor-shell-command)
 
 ;; Alternatively use the global `shell-command-with-editor-mode',
 ;; which always sets `$EDITOR' for all Emacs commands which ultimately

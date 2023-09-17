@@ -221,10 +221,10 @@ instance is exported as @code{$EDITOR}.
 To always use these variants add this to you init file:
 
 @lisp
-(define-key (current-global-map)
-  [remap async-shell-command] 'with-editor-async-shell-command)
-(define-key (current-global-map)
-  [remap shell-command] 'with-editor-shell-command)
+(keymap-global-set "<remap> <async-shell-command>"
+                   #'with-editor-async-shell-command)
+(keymap-global-set "<remap> <shell-command>"
+                   #'with-editor-shell-command)
 @end lisp
 
 Alternatively use the global @code{shell-command-with-editor-mode}.
