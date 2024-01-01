@@ -1,6 +1,6 @@
 ;;; with-editor.el --- Use the Emacsclient as $EDITOR  -*- lexical-binding:t -*-
 
-;; Copyright (C) 2014-2023 The Magit Project Contributors
+;; Copyright (C) 2014-2024 The Magit Project Contributors
 
 ;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Homepage: https://github.com/magit/with-editor
