@@ -58,6 +58,6 @@ for a simple example.
 #+html: <br><br>
 #+html: <a href="https://github.com/magit/with-editor/actions/workflows/compile.yml"><img alt="Compile" src="https://github.com/magit/with-editor/actions/workflows/compile.yml/badge.svg"/></a>
 #+html: <a href="https://github.com/magit/with-editor/actions/workflows/manual.yml"><img alt="Manual" src="https://github.com/magit/with-editor/actions/workflows/manual.yml/badge.svg"/></a>
-#+html: <a href="https://elpa.nongnu.org/nongnu/with-editor.html"><img alt="NonGNU ELPA" src="https://elpa.nongnu.org/nongnu/with-editor.svg"/></a>
+#+html: <a href="https://elpa.nongnu.org/nongnu/with-editor.html"><img alt="NonGNU ELPA" src="https://emacsair.me/assets/badges/nongnu-elpa.svg"/></a>
 #+html: <a href="https://stable.melpa.org/#/with-editor"><img alt="MELPA Stable" src="https://stable.melpa.org/packages/with-editor-badge.svg"/></a>
 #+html: <a href="https://melpa.org/#/with-editor"><img alt="MELPA" src="https://melpa.org/packages/with-editor-badge.svg"/></a>
