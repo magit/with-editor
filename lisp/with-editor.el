@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 2014-2024 The Magit Project Contributors
 
-;; Author: Jonas Bernoulli <jonas@bernoul.li>
+;; Author: Jonas Bernoulli <emacs.with-editor@jonas.bernoulli.dev>
 ;; Homepage: https://github.com/magit/with-editor
 ;; Keywords: processes terminals
 
