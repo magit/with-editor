@@ -86,8 +86,6 @@
 (declare-function dired-get-filename "dired"
                   (&optional localp no-error-if-not-filep))
 (declare-function term-emulate-terminal "term" (proc str))
-(declare-function vterm-send-return "vterm" ())
-(declare-function vterm-send-string "vterm" (string &optional paste-p))
 (defvar eshell-preoutput-filter-functions)
 (defvar git-commit-post-finish-hook)
 (defvar vterm--process)
@@ -756,7 +754,9 @@ This works in `shell-mode', `term-mode', `eshell-mode' and
     (add-to-list 'eshell-preoutput-filter-functions
                  #'with-editor-output-filter)
     (setenv envvar with-editor-sleeping-editor))
-   ((derived-mode-p 'vterm-mode)
+   ((and (derived-mode-p 'vterm-mode)
+         (fboundp 'vterm-send-return)
+         (fboundp 'vterm-send-string))
     (if with-editor-emacsclient-executable
         (let ((with-editor--envvar envvar)
               (process-environment process-environment))
