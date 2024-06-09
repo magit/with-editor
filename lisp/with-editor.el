@@ -713,6 +713,9 @@ OPEN \\([^]+?\\)\
 (define-advice server-visit-files
     (:after (files _proc &optional _nowait)
             with-editor-file-name-history-exclude)
+  "Prevent certain files from being added to `file-name-history'.
+Files matching a regexp in `with-editor-file-name-history-exclude'
+are prevented from being added to that list."
   (pcase-dolist (`(,file . ,_) files)
     (when (cl-find-if (lambda (regexp)
                         (string-match-p regexp file))
@@ -874,12 +877,12 @@ else like the former."
 (define-advice shell-command
     (:around (fn command &optional output-buffer error-buffer)
              shell-command-with-editor-mode)
-  ;; `shell-mode' and its hook are intended for buffers in which an
-  ;; interactive shell is running, but `shell-command' also turns on
-  ;; that mode, even though it only runs the shell to run a single
-  ;; command.  The `with-editor-export-editor' hook function is only
-  ;; intended to be used in buffers in which an interactive shell is
-  ;; running, so it has to be removed here.
+  "`shell-mode' and its hook are intended for buffers in which an
+interactive shell is running, but `shell-command' also turns on
+that mode, even though it only runs the shell to run a single
+command.  The `with-editor-export-editor' hook function is only
+intended to be used in buffers in which an interactive shell is
+running, so it has to be removed here."
   (let ((shell-mode-hook (remove 'with-editor-export-editor shell-mode-hook)))
     (cond ((or (not (or with-editor--envvar shell-command-with-editor-mode))
                (not (string-suffix-p "&" command)))
