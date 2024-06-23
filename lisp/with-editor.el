@@ -720,7 +720,8 @@ are prevented from being added to that list."
     (when (cl-find-if (lambda (regexp)
                         (string-match-p regexp file))
                       with-editor-file-name-history-exclude)
-      (setq file-name-history (delete file file-name-history)))))
+      (setq file-name-history
+            (delete (abbreviate-file-name file) file-name-history)))))
 
 ;;; Augmentations
 
