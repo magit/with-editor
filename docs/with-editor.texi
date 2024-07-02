@@ -91,7 +91,7 @@ commit messages and rebase sequences.  It also provides some commands
 and features which are useful by themselves, even if you don't use
 Magit.
 
-For information about using this library in you own package, see
+For information about using this library in your own package, see
 @ref{Using With-Editor as a library}.
 
 @menu
@@ -110,7 +110,7 @@ Emacs (most likely on macOS) without putting the executable on @code{$PATH},
 and we have to add another kludge to find it anyway.
 
 @defopt with-editor-emacsclient-executable
-The @code{emacsclient} executable used as the editor by child process of
+The @code{emacsclient} executable used as the editor by child processes of
 this Emacs instance.  By using this executable, child processes can
 call home to their parent process.
 
@@ -123,10 +123,10 @@ You should @strong{not} customize this option permanently.  If you have to do
 it, then you should consider that a temporary kludge and inform the
 Magit maintainer as described in @ref{Debugging}.
 
-If With-Editor fails to find a suitable @code{emacsclient} on you system,
+If With-Editor fails to find a suitable @code{emacsclient} on your system,
 then this should be fixed for all users at once, by teaching
 @code{with-editor-locate-emacsclient} how to do so on your system and
-system like yours. Doing it this way has the advantage, that you
+systems like yours. Doing it this way has the advantage, that you
 won't have do it again every time you update Emacs, and that other
 users who have installed Emacs the same way as you have, won't have
 to go through the same trouble.
@@ -135,7 +135,7 @@ Note that there also is a nuclear option; setting this variable to
 @code{nil} causes the "sleeping editor" described below to be used even for
 local child processes.  Obviously we don't recommend that you use
 this except in "emergencies", i.e., before we had a change to add a
-kludge appropriate for you setup.
+kludge appropriate for your setup.
 @end defopt
 
 @defun with-editor-locate-emacsclient
@@ -157,7 +157,7 @@ it receives a signal.
 The sleeping editor is a shell script used as the editor of child
 processes when the @code{emacsclient} executable cannot be used.
 
-This fallback is used for asynchronous process started inside the
+This fallback is used for asynchronous processes started inside the
 macro @code{with-editor}, when the process runs on a remote machine or for
 local processes when @code{with-editor-emacsclient-executable} is @code{nil}.
 
@@ -218,7 +218,7 @@ with @code{&} and is therefore run asynchronously, then the current Emacs
 instance is exported as @code{$EDITOR}.
 @end deffn
 
-To always use these variants add this to you init file:
+To always use these variants add this to your init file:
 
 @lisp
 (keymap-global-set "<remap> <async-shell-command>"
@@ -301,7 +301,7 @@ If BODY begins with a literal string, then that variable is set
 instead of @code{EDITOR}.
 @end defmac
 
-@defmac with-editor envvar &rest body
+@defmac with-editor* envvar &rest body
 This macro is like @code{with-editor} instead that the ENVVAR argument is
 required and that it is evaluated at run-time.
 @end defmac
@@ -312,7 +312,7 @@ new FILTER does not remove the @code{with-editor-process-filter}.  This is
 done by wrapping the two filter functions using a lambda, which
 becomes the actual filter.  It calls FILTER first, which may or
 may not insert the text into the PROCESS's buffer.  Then it calls
-@code{with-editor-process-filter}, passing t as NO-STANDARD-FILTER@.
+@code{with-editor-process-filter}, passing @code{t} as NO-STANDARD-FILTER@.
 @end defun
 
 @node Debugging
