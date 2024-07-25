@@ -413,11 +413,15 @@ And some tools that do not handle $EDITOR properly also break."
 (define-minor-mode with-editor-mode
   "Edit a file as the $EDITOR of an external process."
   :lighter with-editor-mode-lighter
-  ;; Protect the user from killing the buffer without using
-  ;; either `with-editor-finish' or `with-editor-cancel',
-  ;; and from removing the key bindings for these commands.
-  (unless with-editor-mode
-    (user-error "With-Editor mode cannot be turned off"))
+  ;; Protect the user from enabling or disabling the mode interactively.
+  ;; Manually enabling the mode is dangerous because canceling the buffer
+  ;; deletes the visited file.  The mode must not be disabled manually,
+  ;; either `with-editor-finish' or `with-editor-cancel' must be used.
+  :interactive nil                    ; >= 28.1
+  (when (called-interactively-p 'any) ; <  28.1
+    (setq with-editor-mode (not with-editor-mode))
+    (user-error "With-Editor mode is not intended for interactive use"))
+  ;; The buffer must also not be killed using regular kill commands.
   (add-hook 'kill-buffer-query-functions
             #'with-editor-kill-buffer-noop nil t)
   ;; `server-execute' displays a message which is not
