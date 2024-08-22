@@ -747,7 +747,7 @@ This works in `shell-mode', `term-mode', `eshell-mode' and
       (process-send-string
        process (format " export %s=%s\n" envvar
                        (shell-quote-argument with-editor-sleeping-editor)))
-      (while (accept-process-output process 0.1))
+      (while (accept-process-output process 1 nil t))
       (if (derived-mode-p 'term-mode)
           (with-editor-set-process-filter process #'with-editor-emulate-terminal)
         (add-hook 'comint-output-filter-functions #'with-editor-output-filter
@@ -763,7 +763,7 @@ This works in `shell-mode', `term-mode', `eshell-mode' and
         (let ((with-editor--envvar envvar)
               (process-environment process-environment))
           (with-editor--setup)
-          (while (accept-process-output vterm--process 0.1))
+          (while (accept-process-output vterm--process 1 nil t))
           (when-let ((v (getenv envvar)))
             (vterm-send-string (format " export %s=%S" envvar v))
             (vterm-send-return))
