@@ -1,0 +1,7 @@
+# -*- mode: org -*-
+* v3.4.2    UNRELEASED
+
+- ~with-editor-export-editor~ now waits longer for the terminal to get
+  ready.  #130
+
+- Updated tooling.
