@@ -1,6 +1,8 @@
 # -*- mode: org -*-
 * v3.4.2    UNRELEASED
 
+- Fix ~shell-command-with-editor-mode~ for remote processes.  #129
+
 - ~with-editor-export-editor~ now waits longer for the terminal to get
   ready.  #130
 
