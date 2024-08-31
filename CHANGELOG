@@ -1,5 +1,5 @@
 # -*- mode: org -*-
-* v3.4.2    UNRELEASED
+* v3.4.2    2024-09-01
 
 - Fix ~shell-command-with-editor-mode~ for remote processes.  #129
 
