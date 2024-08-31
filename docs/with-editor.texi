@@ -302,7 +302,7 @@ instead of @code{EDITOR}.
 @end defmac
 
 @defmac with-editor* envvar &rest body
-This macro is like @code{with-editor} instead that the ENVVAR argument is
+This macro is like @code{with-editor}, except that the ENVVAR argument is
 required and that it is evaluated at run-time.
 @end defmac
 

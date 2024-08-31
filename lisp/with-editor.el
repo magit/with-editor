@@ -488,7 +488,7 @@ Modify the `process-environment' for processes started in BODY,
 instructing them to use the Emacsclient as editor.  ENVVAR is the
 environment variable that is exported to do so, it is evaluated
 at run-time.
-\n(fn [ENVVAR] BODY...)"
+\n(fn ENVVAR BODY...)"
   (declare (indent defun) (debug (sexp body)))
   `(let ((with-editor--envvar ,envvar)
          (process-environment process-environment))
