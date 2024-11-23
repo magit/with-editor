@@ -111,6 +111,10 @@ Determining an Emacsclient executable suitable for the
 current Emacs instance failed.  For more information
 please see https://github.com/magit/magit/wiki/Emacsclient."))))
 
+(defvar with-editor-emacsclient-program-suffixes
+  (list "-snapshot" ".emacs-snapshot")
+  "Suffixes to append to append when looking for a Emacsclient executables.")
+
 (defun with-editor-locate-emacsclient-1 (path depth)
   (let* ((version-lst (cl-subseq (split-string emacs-version "\\.") 0 depth))
          (version-reg (concat "^" (string-join version-lst "\\."))))
@@ -128,7 +132,7 @@ please see https://github.com/magit/magit/wiki/Emacsclient."))))
                               (setq v (string-join (reverse v) "."))
                               (list v (concat "-" v) (concat ".emacs" v)))
                             (reverse version-lst))
-                 (list "" "-snapshot" ".emacs-snapshot")))
+                 (cons "" with-editor-emacsclient-program-suffixes)))
          (lambda (exec)
            (ignore-errors
              (string-match-p version-reg
