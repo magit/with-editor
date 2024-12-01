@@ -7,7 +7,7 @@
 #+texinfo_dir_category: Emacs
 #+texinfo_dir_title: With-Editor: (with-editor).
 #+texinfo_dir_desc: Using the Emacsclient as $EDITOR
-#+subtitle: for version 3.4.2
+#+subtitle: for version 3.4.3
 
 #+setupfile: .orgconfig
 
@@ -27,7 +27,7 @@ additional functionality which makes it useful even for end-users, who
 don't use Magit or another package which uses it internally.
 
 #+texinfo: @noindent
-This manual is for With-Editor version 3.4.2.
+This manual is for With-Editor version 3.4.3.
 
 #+texinfo: @insertcopying
 :END:
