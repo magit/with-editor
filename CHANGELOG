@@ -1,4 +1,8 @@
 # -*- mode: org -*-
+* v3.4.3    UNRELEASED
+
+- Added support for Nix on macOS.  #134
+
 * v3.4.3    2024-12-01
 
 - Added new variable ~with-editor-emacsclient-program-suffixes~.  #132
