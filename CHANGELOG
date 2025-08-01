@@ -1,4 +1,8 @@
 # -*- mode: org -*-
+* v3.4.5    2025-08-01
+
+- No longer add "clear" to the shell's history when using vterm. #135
+
 * v3.4.4    2025-06-01
 
 - Added kludge for Nix on macOS.  #134
