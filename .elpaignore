@@ -1,0 +1,13 @@
+.dir-locals.el
+.elpaignore
+.github
+.gitignore
+.mailmap
+LICENSE
+Makefile
+default.mk
+docs/.orgconfig
+docs/Makefile
+docs/htmlxref.cnf
+docs/with-editor.texi
+lisp/Makefile
