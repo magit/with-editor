@@ -1,4 +1,8 @@
 # -*- mode: org -*-
+* v3.4.6    2025-09-01
+
+- Thoughts and whitespace.
+
 * v3.4.5    2025-08-01
 
 - No longer add "clear" to the shell's history when using vterm. #135
