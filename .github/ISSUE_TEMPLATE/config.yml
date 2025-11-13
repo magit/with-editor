@@ -10,8 +10,8 @@ contact_links:
     url: https://github.com/magit/with-editor/discussions
     about: Please keep in mind that our bandwidth is limited.
   - name: "😢 \"I am unable to commit with Magit\""
-    url: https://magit.vc/manual/with-editor/Debugging.html
+    url: https://docs.magit.vc/with-editor/Debugging.html
     about: Others might have had the same question before.
   - name: "ℹ️ With-Editor Manual"
-    url: https://magit.vc/manual/with-editor/#Top
+    url: https://docs.magit.vc/with-editor/#Top
     about: The fine manual may also be of use.
