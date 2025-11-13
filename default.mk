@@ -1,5 +1,7 @@
 TOP := $(dir $(lastword $(MAKEFILE_LIST)))
 
+DOMAIN ?= magit.vc
+
 PKG = with-editor
 
 ELS   = $(PKG).el
@@ -7,9 +9,6 @@ ELCS  = $(ELS:.el=.elc)
 
 DEPS  = compat
 DEPS += vterm
-
-DOMAIN      ?= magit.vc
-CFRONT_DIST ?= E2LUHBKU1FBV02
 
 VERSION ?= $(shell test -e $(TOP).git && git describe --tags --abbrev=0 | cut -c2-)
 REVDESC := $(shell test -e $(TOP).git && git describe --tags)
@@ -32,3 +31,6 @@ MANUAL_HTML_ARGS ?= --css-ref /assets/page.css
 GITSTATS      ?= gitstats
 GITSTATS_DIR  ?= $(TOP)docs/stats
 GITSTATS_ARGS ?= -c style=https://magit.vc/assets/stats.css -c max_authors=999
+
+RCLONE      ?= rclone
+RCLONE_ARGS ?= -v
