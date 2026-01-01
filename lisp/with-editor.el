@@ -159,14 +159,14 @@ please see https://github.com/magit/magit/wiki/Emacsclient."))))
           (when (file-directory-p dir)
             (push dir path)))
         (cond
-         ((string-search "Cellar" invocation-directory)
-          (let ((dir (expand-file-name "../../../bin" invocation-directory)))
-            (when (file-directory-p dir)
-              (push dir path))))
-         ((string-search "Emacs.app" invocation-directory)
-          (let ((dir (expand-file-name "../../../../bin" invocation-directory)))
-            (when (file-directory-p dir)
-              (push dir path)))))))
+          ((string-search "Cellar" invocation-directory)
+           (let ((dir (expand-file-name "../../../bin" invocation-directory)))
+             (when (file-directory-p dir)
+               (push dir path))))
+          ((string-search "Emacs.app" invocation-directory)
+           (let ((dir (expand-file-name "../../../../bin" invocation-directory)))
+             (when (file-directory-p dir)
+               (push dir path)))))))
     (cl-remove-duplicates path :test #'equal)))
 
 (defcustom with-editor-emacsclient-executable (with-editor-locate-emacsclient)
@@ -665,56 +665,56 @@ OPEN \\([^]+?\\)\
     (setq string (concat incomplete string)))
   (save-match-data
     (cond
-     ((and process (not (string-suffix-p "\n" string)))
-      (let ((length (length string)))
-        (when (> length with-editor--max-incomplete-length)
-          (setq string
-                (substring string
-                           (- length with-editor--max-incomplete-length)))))
-      (process-put process 'incomplete string)
-      nil)
-     ((string-match with-editor-sleeping-editor-regexp string)
-      (when process
-        (process-put process 'incomplete nil))
-      (let ((pid  (match-string 1 string))
-            (arg0 (match-string 2 string))
-            (arg1 (match-string 3 string))
-            (dir  (match-string 4 string))
-            file line column)
-        (cond ((string-match "\\`\\+\\([0-9]+\\)\\(?::\\([0-9]+\\)\\)?\\'" arg0)
-               (setq file arg1)
-               (setq line (string-to-number (match-string 1 arg0)))
-               (setq column (match-string 2 arg0))
-               (setq column (and column (string-to-number column))))
-              ((setq file arg0)))
-        (unless (file-name-absolute-p file)
-          (setq file (expand-file-name file dir)))
-        (when default-directory
-          (setq file (concat (file-remote-p default-directory) file)))
-        (with-current-buffer (find-file-noselect file)
-          (with-editor-mode 1)
-          (setq with-editor--pid pid)
-          (setq with-editor-previous-winconf
-                (current-window-configuration))
-          (when line
-            (let ((pos (save-excursion
-                         (save-restriction
-                           (goto-char (point-min))
-                           (forward-line (1- line))
-                           (when column
-                             (move-to-column column))
-                           (point)))))
-              (when (and (buffer-narrowed-p)
-                         widen-automatically
-                         (not (<= (point-min) pos (point-max))))
-                (widen))
-              (goto-char pos)))
-          (run-hooks 'with-editor-filter-visit-hook)
-          (funcall (or (with-editor-server-window) #'switch-to-buffer)
-                   (current-buffer))
-          (kill-local-variable 'server-window)))
-      nil)
-     (t string))))
+      ((and process (not (string-suffix-p "\n" string)))
+       (let ((length (length string)))
+         (when (> length with-editor--max-incomplete-length)
+           (setq string
+                 (substring string
+                            (- length with-editor--max-incomplete-length)))))
+       (process-put process 'incomplete string)
+       nil)
+      ((string-match with-editor-sleeping-editor-regexp string)
+       (when process
+         (process-put process 'incomplete nil))
+       (let ((pid  (match-string 1 string))
+             (arg0 (match-string 2 string))
+             (arg1 (match-string 3 string))
+             (dir  (match-string 4 string))
+             file line column)
+         (cond ((string-match "\\`\\+\\([0-9]+\\)\\(?::\\([0-9]+\\)\\)?\\'" arg0)
+                (setq file arg1)
+                (setq line (string-to-number (match-string 1 arg0)))
+                (setq column (match-string 2 arg0))
+                (setq column (and column (string-to-number column))))
+               ((setq file arg0)))
+         (unless (file-name-absolute-p file)
+           (setq file (expand-file-name file dir)))
+         (when default-directory
+           (setq file (concat (file-remote-p default-directory) file)))
+         (with-current-buffer (find-file-noselect file)
+           (with-editor-mode 1)
+           (setq with-editor--pid pid)
+           (setq with-editor-previous-winconf
+                 (current-window-configuration))
+           (when line
+             (let ((pos (save-excursion
+                          (save-restriction
+                            (goto-char (point-min))
+                            (forward-line (1- line))
+                            (when column
+                              (move-to-column column))
+                            (point)))))
+               (when (and (buffer-narrowed-p)
+                          widen-automatically
+                          (not (<= (point-min) pos (point-max))))
+                 (widen))
+               (goto-char pos)))
+           (run-hooks 'with-editor-filter-visit-hook)
+           (funcall (or (with-editor-server-window) #'switch-to-buffer)
+                    (current-buffer))
+           (kill-local-variable 'server-window)))
+       nil)
+      (t string))))
 
 (defun with-editor-process-filter
     (process string &optional no-default-filter)
@@ -751,40 +751,40 @@ This works in `shell-mode', `term-mode', `eshell-mode' and
 `vterm'."
   (interactive (list (with-editor-read-envvar)))
   (cond
-   ((derived-mode-p 'comint-mode 'term-mode)
-    (when-let ((process (get-buffer-process (current-buffer))))
-      (goto-char (process-mark process))
-      (process-send-string
-       process (format " export %s=%s\n" envvar
-                       (shell-quote-argument with-editor-sleeping-editor)))
-      (while (accept-process-output process 1 nil t))
-      (if (derived-mode-p 'term-mode)
-          (with-editor-set-process-filter process #'with-editor-emulate-terminal)
-        (add-hook 'comint-output-filter-functions #'with-editor-output-filter
-                  nil t))))
-   ((derived-mode-p 'eshell-mode)
-    (add-to-list 'eshell-preoutput-filter-functions
-                 #'with-editor-output-filter)
-    (setenv envvar with-editor-sleeping-editor))
-   ((and (derived-mode-p 'vterm-mode)
-         (fboundp 'vterm-send-return)
-         (fboundp 'vterm-send-string))
-    (if with-editor-emacsclient-executable
-        (let ((with-editor--envvar envvar)
-              (process-environment process-environment))
-          (with-editor--setup)
-          (while (accept-process-output vterm--process 1 nil t))
-          (when-let ((v (getenv envvar)))
-            (vterm-send-string (format " export %s=%S" envvar v))
-            (vterm-send-return))
-          (when-let ((v (getenv "EMACS_SERVER_FILE")))
-            (vterm-send-string (format " export EMACS_SERVER_FILE=%S" v))
-            (vterm-send-return))
-          (vterm-send-string " clear")
-          (vterm-send-return))
-      (error "Cannot use sleeping editor in this buffer")))
-   (t
-    (error "Cannot export environment variables in this buffer")))
+    ((derived-mode-p 'comint-mode 'term-mode)
+     (when-let ((process (get-buffer-process (current-buffer))))
+       (goto-char (process-mark process))
+       (process-send-string
+        process (format " export %s=%s\n" envvar
+                        (shell-quote-argument with-editor-sleeping-editor)))
+       (while (accept-process-output process 1 nil t))
+       (if (derived-mode-p 'term-mode)
+           (with-editor-set-process-filter process #'with-editor-emulate-terminal)
+         (add-hook 'comint-output-filter-functions #'with-editor-output-filter
+                   nil t))))
+    ((derived-mode-p 'eshell-mode)
+     (add-to-list 'eshell-preoutput-filter-functions
+                  #'with-editor-output-filter)
+     (setenv envvar with-editor-sleeping-editor))
+    ((and (derived-mode-p 'vterm-mode)
+          (fboundp 'vterm-send-return)
+          (fboundp 'vterm-send-string))
+     (if with-editor-emacsclient-executable
+         (let ((with-editor--envvar envvar)
+               (process-environment process-environment))
+           (with-editor--setup)
+           (while (accept-process-output vterm--process 1 nil t))
+           (when-let ((v (getenv envvar)))
+             (vterm-send-string (format " export %s=%S" envvar v))
+             (vterm-send-return))
+           (when-let ((v (getenv "EMACS_SERVER_FILE")))
+             (vterm-send-string (format " export EMACS_SERVER_FILE=%S" v))
+             (vterm-send-return))
+           (vterm-send-string " clear")
+           (vterm-send-return))
+       (error "Cannot use sleeping editor in this buffer")))
+    (t
+     (error "Cannot export environment variables in this buffer")))
   (message "Successfully exported %s" envvar))
 
 ;;;###autoload
@@ -902,27 +902,27 @@ Also take care of that for `with-editor-[async-]shell-command'."
   ;; running, so it has to be removed here.
   (let ((shell-mode-hook (remove 'with-editor-export-editor shell-mode-hook)))
     (cond
-     ;; If `with-editor-async-shell-command' was used, then `with-editor'
-     ;; was used, and `with-editor--envvar'.  `with-editor-shell-command'
-     ;; only goes down that path if the command ends with "&".  We might
-     ;; still have to use `with-editor' here, for `async-shell-command'
-     ;; or `shell-command', if the mode is enabled.
-     ((and (string-suffix-p "&" command)
-           (or with-editor--envvar
-               shell-command-with-editor-mode))
-      (if with-editor--envvar
-          (funcall fn command output-buffer error-buffer)
-        (with-editor (funcall fn command output-buffer error-buffer)))
-      ;; The comint filter was overridden with our filter.  Use both.
-      (and-let* ((process (get-buffer-process
-                           (or output-buffer
-                               (get-buffer "*Async Shell Command*")))))
-        (prog1 process
-          (set-process-filter process
-                              (lambda (proc str)
-                                (comint-output-filter proc str)
-                                (with-editor-process-filter proc str t))))))
-     ((funcall fn command output-buffer error-buffer)))))
+      ;; If `with-editor-async-shell-command' was used, then `with-editor'
+      ;; was used, and `with-editor--envvar'.  `with-editor-shell-command'
+      ;; only goes down that path if the command ends with "&".  We might
+      ;; still have to use `with-editor' here, for `async-shell-command'
+      ;; or `shell-command', if the mode is enabled.
+      ((and (string-suffix-p "&" command)
+            (or with-editor--envvar
+                shell-command-with-editor-mode))
+       (if with-editor--envvar
+           (funcall fn command output-buffer error-buffer)
+         (with-editor (funcall fn command output-buffer error-buffer)))
+       ;; The comint filter was overridden with our filter.  Use both.
+       (and-let* ((process (get-buffer-process
+                            (or output-buffer
+                                (get-buffer "*Async Shell Command*")))))
+         (prog1 process
+           (set-process-filter process
+                               (lambda (proc str)
+                                 (comint-output-filter proc str)
+                                 (with-editor-process-filter proc str t))))))
+      ((funcall fn command output-buffer error-buffer)))))
 
 ;;; _
 
@@ -993,5 +993,6 @@ See info node `(with-editor)Debugging' for instructions."
 ;; Local Variables:
 ;; byte-compile-warnings: (not docstrings-control-chars)
 ;; indent-tabs-mode: nil
+;; lisp-indent-local-overrides: ((cond . 0) (interactive . 0))
 ;; End:
 ;;; with-editor.el ends here
