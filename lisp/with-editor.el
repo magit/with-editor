@@ -991,7 +991,7 @@ See info node `(with-editor)Debugging' for instructions."
 
 (provide 'with-editor)
 ;; Local Variables:
-;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not docstrings-control-chars)
+;; indent-tabs-mode: nil
 ;; End:
 ;;; with-editor.el ends here
