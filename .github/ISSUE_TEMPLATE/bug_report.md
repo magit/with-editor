@@ -4,7 +4,11 @@ name: 🪳 Bug report
 about: Report a defect. Do not use this for support requests and feature suggestions.
 ---
 
+Please use your own words.
+If you really must use a LLM, at least disclose that upfront.
+
 Please explain
+    (0) without using these lines as headings,
     (1) what behavior you expected
     (2) what behavior you observed
     (3) and how we can reproduce the issue.
