@@ -1,4 +1,9 @@
 # -*- mode: org -*-
+* v3.5.0    UNRELEASED
+
+- Append newline to emacsclient commands as required by Emacs 31.1.
+  #137
+
 * v3.4.9    2026-03-01
 
 - Thoughts and whitespace.
