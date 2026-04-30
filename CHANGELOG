@@ -1,5 +1,5 @@
 # -*- mode: org -*-
-* v3.5.0    UNRELEASED
+* v3.5.0    2026-05-01
 
 - Append newline to emacsclient commands as required by Emacs 31.1.
   #137
