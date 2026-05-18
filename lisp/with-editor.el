@@ -8,7 +8,7 @@
 
 ;; Package-Version: 3.5.0
 ;; Package-Requires: (
-;;     (emacs   "26.1")
+;;     (emacs   "28.1")
 ;;     (compat  "31.0")
 ;;     (cond-let "1.0"))
 
@@ -922,10 +922,9 @@ Also take care of that for `with-editor-[async-]shell-command'."
                            (or output-buffer
                                (get-buffer "*Async Shell Command*")))))
          (prog1 process
-           (set-process-filter process
-                               (lambda (proc str)
-                                 (comint-output-filter proc str)
-                                 (with-editor-process-filter proc str t))))))
+           (add-function :after (process-filter process)
+                         (lambda (proc str)
+                           (with-editor-process-filter proc str t))))))
       ((funcall fn command output-buffer error-buffer)))))
 
 ;;; _
