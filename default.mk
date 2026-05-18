@@ -8,6 +8,8 @@ ELS   = $(PKG).el
 ELCS  = $(ELS:.el=.elc)
 
 DEPS  = compat
+DEPS += cond-let
+# Optional:
 DEPS += vterm
 
 LOAD_PATH     ?= $(addprefix -L ../../,$(DEPS))
