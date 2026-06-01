@@ -1,4 +1,10 @@
 # -*- mode: org -*-
+* v3.5.1    2026-06-01
+
+- Advice shell-command process filter instead of replacing it.  #138
+
+- Dropped support for Emacs 26 and 27.
+
 * v3.5.0    2026-05-01
 
 - Append newline to emacsclient commands as required by Emacs 31.1.
