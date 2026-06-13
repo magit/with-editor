@@ -4,6 +4,8 @@ name: 🪳 Bug report
 about: Report a defect. Do not use this for support requests and feature suggestions.
 ---
 
+<!-- Do not use this for support requests and feature suggestions. -->
+
 Please use your own words.
 If you really must use a LLM, at least disclose that upfront.
 
@@ -21,4 +23,4 @@ Please include a backtrace in your report.  In most cases doing:
 
 and then going through the steps again should result in a backtrace.
 
----- now delete this line and everything above ----
+<!--- Now delete this line and everything above. -->
