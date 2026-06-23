@@ -10,7 +10,8 @@
 ;; Package-Requires: (
 ;;     (emacs   "28.1")
 ;;     (compat  "31.0")
-;;     (cond-let "1.1"))
+;;     (cond-let "1.1")
+;;     (llama    "1.0"))
 
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -83,6 +84,7 @@
 (require 'cl-lib)
 (require 'compat)
 (require 'cond-let)
+(require 'llama)
 (require 'server)
 (require 'shell)
 (eval-when-compile (require 'subr-x))
@@ -128,7 +130,7 @@ please see https://github.com/magit/magit/wiki/Emacsclient."))))
                ((bound-and-true-p emacsclient-program-name))
                ("emacsclient"))
          path
-         (mapcan (lambda (v) (cl-mapcar (lambda (e) (concat v e)) exec-suffixes))
+         (mapcan (lambda (v) (mapcar (##concat v %) exec-suffixes))
                  (nconc (and (boundp 'debian-emacs-flavor)
                              (list (format ".%s" debian-emacs-flavor)))
                         (cl-mapcon (lambda (v)
@@ -553,8 +555,7 @@ at run-time.
 
 (defun with-editor-server-window ()
   (or (and buffer-file-name
-           (cdr (cl-find-if (lambda (cons)
-                              (string-match-p (car cons) buffer-file-name))
+           (cdr (cl-find-if (##string-match-p (car %) buffer-file-name)
                             with-editor-server-window-alist)))
       server-window))
 
@@ -735,8 +736,7 @@ OPEN \\([^]+?\\)\
 Files matching a regexp in `with-editor-file-name-history-exclude'
 are prevented from being added to that list."
   (pcase-dolist (`(,file . ,_) files)
-    (when (cl-find-if (lambda (regexp)
-                        (string-match-p regexp file))
+    (when (cl-find-if (##string-match-p % file)
                       with-editor-file-name-history-exclude)
       (setq file-name-history
             (delete (abbreviate-file-name file) file-name-history)))))
