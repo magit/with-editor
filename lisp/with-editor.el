@@ -551,7 +551,10 @@ at run-time.
             process-environment))
     ;; As last resort fallback to the sleeping editor.
     (push (concat "ALTERNATE_EDITOR=" with-editor-sleeping-editor)
-          process-environment)))
+          process-environment)
+    ;; Work around bug in server.el of Emacs < 31.1.  #139
+    (when (member (getenv "TERM") '(nil ""))
+      (setenv "TERM" "dumb"))))
 
 (defun with-editor-server-window ()
   (or (and buffer-file-name

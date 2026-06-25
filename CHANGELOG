@@ -1,4 +1,9 @@
 # -*- mode: org -*-
+* v3.5.2    UNRELEASED
+
+- Added kludge to work around bug in "server.el", which was not fixed
+  until Emacs 31.1.  #139
+
 * v3.5.1    2026-06-01
 
 - Advice shell-command process filter instead of replacing it.  #138
