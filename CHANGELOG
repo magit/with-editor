@@ -1,5 +1,5 @@
 # -*- mode: org -*-
-* v3.5.2    UNRELEASED
+* v3.5.2    2026-07-01
 
 - Added kludge to work around bug in "server.el", which was not fixed
   until Emacs 31.1.  #139
