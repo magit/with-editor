@@ -270,6 +270,15 @@ https://github.com/magit/with-editor/issues and provide information
 about your Emacs installation.  Most importantly how did you install
 Emacs and what is the output of ~M-x with-editor-debug RET~.
 
+* FAQ
+:PROPERTIES:
+:APPENDIX:   t
+:END:
+
+** I am unable to commit with Magit
+
+See [[*Debugging]].
+
 * Function and Command Index
 :PROPERTIES:
 :APPENDIX:   t

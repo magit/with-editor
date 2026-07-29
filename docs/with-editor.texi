@@ -69,6 +69,7 @@ This manual is for With-Editor version 3.5.2.
 * Using the With-Editor package::
 * Using With-Editor as a library::
 * Debugging::
+* FAQ::
 * Function and Command Index::
 * Variable Index::
 
@@ -79,6 +80,10 @@ Using the With-Editor package
 
 * Configuring With-Editor::
 * Using With-Editor commands::
+
+FAQ
+
+* I am unable to commit with Magit::
 
 @end detailmenu
 @end menu
@@ -330,6 +335,18 @@ in Magit, then please open a new issue at
 @uref{https://github.com/magit/with-editor/issues} and provide information
 about your Emacs installation.  Most importantly how did you install
 Emacs and what is the output of @code{M-x with-editor-debug RET}.
+
+@node FAQ
+@appendix FAQ
+
+@menu
+* I am unable to commit with Magit::
+@end menu
+
+@node I am unable to commit with Magit
+@appendixsec I am unable to commit with Magit
+
+See @ref{Debugging}.
 
 @node Function and Command Index
 @appendix Function and Command Index
