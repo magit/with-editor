@@ -749,14 +749,17 @@ are prevented from being added to that list."
 ;;; Augmentations
 
 ;;;###autoload
-(cl-defun with-editor-export-editor (&optional (envvar "EDITOR") process)
+(cl-defun with-editor-export-editor
+    (&optional (envvar "EDITOR") process interactive)
   "Teach subsequent commands to use current Emacs instance as editor.
 
 Set and export the environment variable ENVVAR, by default \"EDITOR\".
 The value is automatically generated to teach commands to use the
 current Emacs instance as \"the editor\".
 
-PROCESS is only intended for use by `eat-exec-hook'.
+PROCESS is only intended for use by `eat-exec-hook'.  When invoked
+interactively, INTERACTIVE is non-nil, which supresses the call to
+\"clear\" (only relevant in `vterm-mode' and `eat-mode').
 
 This command can be used in `shell-mode', `term-mode', `eshell-mode',
 `vterm-mode' and `eat-mode'."
@@ -794,8 +797,9 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
        (when$ (getenv "EMACS_SERVER_FILE")
          (vterm-send-string (format " export EMACS_SERVER_FILE=%S" $))
          (vterm-send-return))
-       (vterm-send-string " clear")
-       (vterm-send-return)))
+       (unless interactive
+         (vterm-send-string " clear")
+         (vterm-send-return))))
     ((and (derived-mode-p 'eat-mode)
           (fboundp 'eat-self-input)
           (fboundp 'eat-term-parameter)
@@ -822,25 +826,30 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
          (eat-term-send-string eat-terminal
                                (format " export EMACS_SERVER_FILE=%S" $))
          (eat-self-input 1 'return))
-       (eat-term-send-string eat-terminal "clear")
-       (eat-self-input 1 'return))))
+       (unless interactive
+         (eat-term-send-string eat-terminal "clear")
+         (eat-self-input 1 'return)))))
   (message "Successfully exported %s" envvar))
 
 ;;;###autoload
-(defun with-editor-export-git-editor (&optional process)
+(defun with-editor-export-git-editor (&optional process interactive)
   "Like `with-editor-export-editor' but always set `$GIT_EDITOR'.
 
-PROCESS is only intended for use by `eat-exec-hook'."
-  (interactive)
-  (with-editor-export-editor "GIT_EDITOR" process))
+PROCESS is only intended for use by `eat-exec-hook'.  When invoked
+interactively, INTERACTIVE is non-nil, which supresses the call to
+\"clear\"."
+  (interactive (list nil t))
+  (with-editor-export-editor "GIT_EDITOR" process interactive))
 
 ;;;###autoload
-(defun with-editor-export-hg-editor (&optional process)
+(defun with-editor-export-hg-editor (&optional process interactive)
   "Like `with-editor-export-editor' but always set `$HG_EDITOR'.
 
-PROCESS is only intended for use by `eat-exec-hook'."
-  (interactive)
-  (with-editor-export-editor "HG_EDITOR" process))
+PROCESS is only intended for use by `eat-exec-hook'.  When invoked
+interactively, INTERACTIVE is non-nil, which supresses the call to
+\"clear\"."
+  (interactive (list nil t))
+  (with-editor-export-editor "HG_EDITOR" process interactive))
 
 (defun with-editor-output-filter (string)
   "Handle edit requests on behalf of `comint-mode' and `eshell-mode'."

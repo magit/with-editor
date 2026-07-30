@@ -3,6 +3,9 @@
 
 - Added support for Eat terminals.  #128
 
+- When called as commands ~with-editor-export-editor~ and its wrappers
+  no longer call ~clear~.  #128
+
 * v3.5.2    2026-07-01
 
 - Added kludge to work around bug in "server.el", which was not fixed
