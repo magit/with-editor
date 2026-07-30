@@ -67,7 +67,6 @@
 ;;   (add-hook 'vterm-mode-hook  #'with-editor-export-editor)
 ;;   (add-hook 'eat-exec-hook    #'with-editor-export-editor)
 
-
 ;; Some variants of this function exist, these two forms are
 ;; equivalent:
 ;;
@@ -750,16 +749,18 @@ are prevented from being added to that list."
 ;;; Augmentations
 
 ;;;###autoload
-(cl-defun with-editor-export-editor (&optional (envvar "EDITOR") arg2)
+(cl-defun with-editor-export-editor (&optional (envvar "EDITOR") process)
   "Teach subsequent commands to use current Emacs instance as editor.
 
-Set and export the environment variable ENVVAR, by default
-\"EDITOR\".  The value is automatically generated to teach
-commands to use the current Emacs instance as \"the editor\".
+Set and export the environment variable ENVVAR, by default \"EDITOR\".
+The value is automatically generated to teach commands to use the
+current Emacs instance as \"the editor\".
 
-This works in `shell-mode', `term-mode', `eshell-mode' and
-`vterm'."
-  (interactive (list (with-editor-read-envvar)))
+PROCESS is only intended for use by `eat-exec-hook'.
+
+This command can be used in `shell-mode', `term-mode', `eshell-mode',
+`vterm-mode' and `eat-mode'."
+  (interactive (list (with-editor-read-envvar) nil t))
   (cond
     ((derived-mode-p 'comint-mode 'term-mode)
      (when-let ((process (get-buffer-process (current-buffer))))
@@ -802,13 +803,13 @@ This works in `shell-mode', `term-mode', `eshell-mode' and
      (let* ((process-environment process-environment)
             ;; `eat-exec-hook' calls this function with one argument.  If
             ;; (apply-partially #'with-editor-export-editor "SOMEEDITOR"))
-            ;; was added to that hook, we receive that ARG2.  However, if
-            ;; this function is called via one of the commands below, then
-            ;; ENVVAR actually is an envvar, and the process has to be
-            ;; determined by other means.
+            ;; was added to that hook, we receive that as the PROCESS
+            ;; argument.  However, if this function is called via one of
+            ;; the commands below, then ENVVAR actually is an envvar, and
+            ;; the process has to be determined by other means.
             (process (cond ((processp envvar)
                             (prog1 envvar (setq envvar "EDITOR")))
-                           ((processp arg2) arg2)
+                           ((processp process) process)
                            ((eat-term-parameter eat-terminal 'eat--process))))
             (with-editor--envvar envvar))
        (with-editor--setup)
@@ -826,16 +827,20 @@ This works in `shell-mode', `term-mode', `eshell-mode' and
   (message "Successfully exported %s" envvar))
 
 ;;;###autoload
-(defun with-editor-export-git-editor ()
-  "Like `with-editor-export-editor' but always set `$GIT_EDITOR'."
+(defun with-editor-export-git-editor (&optional process)
+  "Like `with-editor-export-editor' but always set `$GIT_EDITOR'.
+
+PROCESS is only intended for use by `eat-exec-hook'."
   (interactive)
-  (with-editor-export-editor "GIT_EDITOR"))
+  (with-editor-export-editor "GIT_EDITOR" process))
 
 ;;;###autoload
-(defun with-editor-export-hg-editor ()
-  "Like `with-editor-export-editor' but always set `$HG_EDITOR'."
+(defun with-editor-export-hg-editor (&optional process)
+  "Like `with-editor-export-editor' but always set `$HG_EDITOR'.
+
+PROCESS is only intended for use by `eat-exec-hook'."
   (interactive)
-  (with-editor-export-editor "HG_EDITOR"))
+  (with-editor-export-editor "HG_EDITOR" process))
 
 (defun with-editor-output-filter (string)
   "Handle edit requests on behalf of `comint-mode' and `eshell-mode'."
