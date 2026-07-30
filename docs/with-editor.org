@@ -184,18 +184,18 @@ Emacs instance to be used as editor by adding it to the appropriate
 mode hooks:
 
 #+begin_src emacs-lisp
-  (add-hook 'shell-mode-hook  'with-editor-export-editor)
-  (add-hook 'eshell-mode-hook 'with-editor-export-editor)
-  (add-hook 'term-exec-hook   'with-editor-export-editor)
-  (add-hook 'vterm-mode-hook  'with-editor-export-editor)
+  (add-hook 'shell-mode-hook  #'with-editor-export-editor)
+  (add-hook 'eshell-mode-hook #'with-editor-export-editor)
+  (add-hook 'term-exec-hook   #'with-editor-export-editor)
+  (add-hook 'vterm-mode-hook  #'with-editor-export-editor)
 #+end_src
 
 Some variants of this function exist; these two forms are equivalent:
 
 #+begin_src emacs-lisp
   (add-hook 'shell-mode-hook
-            (apply-partially 'with-editor-export-editor "GIT_EDITOR"))
-  (add-hook 'shell-mode-hook 'with-editor-export-git-editor)
+            (apply-partially #'with-editor-export-editor "GIT_EDITOR"))
+  (add-hook 'shell-mode-hook #'with-editor-export-git-editor)
 #+end_src
 
 - Command: with-editor-export-editor ::
