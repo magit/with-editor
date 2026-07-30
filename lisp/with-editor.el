@@ -56,15 +56,17 @@
 
 ;; The command `with-editor-export-editor' exports `$EDITOR' or
 ;; another such environment variable in `shell-mode', `eshell-mode',
-;; `term-mode' and `vterm-mode' buffers.  Use this Emacs command
-;; before executing a shell command which needs the editor set, or
-;; always arrange for the current Emacs instance to be used as editor
-;; by adding it to the appropriate mode hooks:
+;; `term-mode', `vterm-mode' and `eat-mode' buffers.  Use this Emacs
+;; command before executing a shell command which needs the editor
+;; set, or always arrange for the current Emacs instance to be used
+;; as editor by adding it to the appropriate mode hooks:
 ;;
 ;;   (add-hook 'shell-mode-hook  #'with-editor-export-editor)
 ;;   (add-hook 'eshell-mode-hook #'with-editor-export-editor)
 ;;   (add-hook 'term-exec-hook   #'with-editor-export-editor)
 ;;   (add-hook 'vterm-mode-hook  #'with-editor-export-editor)
+;;   (add-hook 'eat-exec-hook    #'with-editor-export-editor)
+
 
 ;; Some variants of this function exist, these two forms are
 ;; equivalent:
@@ -92,6 +94,7 @@
 (declare-function dired-get-filename "dired"
                   (&optional localp no-error-if-not-filep))
 (declare-function term-emulate-terminal "term" (proc str))
+(defvar eat-terminal)
 (defvar eshell-preoutput-filter-functions)
 (defvar git-commit-post-finish-hook)
 (defvar vterm--process)
@@ -747,7 +750,7 @@ are prevented from being added to that list."
 ;;; Augmentations
 
 ;;;###autoload
-(cl-defun with-editor-export-editor (&optional (envvar "EDITOR"))
+(cl-defun with-editor-export-editor (&optional (envvar "EDITOR") arg2)
   "Teach subsequent commands to use current Emacs instance as editor.
 
 Set and export the environment variable ENVVAR, by default
@@ -774,7 +777,7 @@ This works in `shell-mode', `term-mode', `eshell-mode' and
                   #'with-editor-output-filter)
      (setenv envvar with-editor-sleeping-editor))
     ((not with-editor-emacsclient-executable)
-     (if (derived-mode-p 'vterm-mode)
+     (if (derived-mode-p 'vterm-mode 'eat-mode)
          (error "Cannot use sleeping editor in this buffer")
        (error "Cannot export environment variables in this buffer")))
     ((and (derived-mode-p 'vterm-mode)
@@ -791,7 +794,35 @@ This works in `shell-mode', `term-mode', `eshell-mode' and
          (vterm-send-string (format " export EMACS_SERVER_FILE=%S" $))
          (vterm-send-return))
        (vterm-send-string " clear")
-       (vterm-send-return))))
+       (vterm-send-return)))
+    ((and (derived-mode-p 'eat-mode)
+          (fboundp 'eat-self-input)
+          (fboundp 'eat-term-parameter)
+          (fboundp 'eat-term-send-string))
+     (let* ((process-environment process-environment)
+            ;; `eat-exec-hook' calls this function with one argument.  If
+            ;; (apply-partially #'with-editor-export-editor "SOMEEDITOR"))
+            ;; was added to that hook, we receive that ARG2.  However, if
+            ;; this function is called via one of the commands below, then
+            ;; ENVVAR actually is an envvar, and the process has to be
+            ;; determined by other means.
+            (process (cond ((processp envvar)
+                            (prog1 envvar (setq envvar "EDITOR")))
+                           ((processp arg2) arg2)
+                           ((eat-term-parameter eat-terminal 'eat--process))))
+            (with-editor--envvar envvar))
+       (with-editor--setup)
+       (while (accept-process-output process 1 nil t))
+       (when$ (getenv envvar)
+         (eat-term-send-string eat-terminal
+                               (format " export %s=%S" envvar $))
+         (eat-self-input 1 'return))
+       (when$ (getenv "EMACS_SERVER_FILE")
+         (eat-term-send-string eat-terminal
+                               (format " export EMACS_SERVER_FILE=%S" $))
+         (eat-self-input 1 'return))
+       (eat-term-send-string eat-terminal "clear")
+       (eat-self-input 1 'return))))
   (message "Successfully exported %s" envvar))
 
 ;;;###autoload

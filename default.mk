@@ -11,6 +11,7 @@ DEPS  = compat
 DEPS += cond-let
 DEPS += llama
 # Optional:
+DEPS += eat
 DEPS += vterm
 
 LOAD_PATH     ?= $(addprefix -L ../../,$(DEPS))

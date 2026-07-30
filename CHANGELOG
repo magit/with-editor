@@ -1,4 +1,8 @@
 # -*- mode: org -*-
+* v3.5.3    UNRELEASED
+
+- Added support for Eat terminals.  #128
+
 * v3.5.2    2026-07-01
 
 - Added kludge to work around bug in "server.el", which was not fixed
