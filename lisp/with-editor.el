@@ -102,6 +102,7 @@
 (defvar eshell-preoutput-filter-functions)
 (defvar git-commit-post-finish-hook)
 (defvar vterm--process)
+(defvar magit--default-directory)
 (defvar warning-minimum-level)
 (defvar warning-minimum-log-level)
 
@@ -356,6 +357,7 @@ And some tools that do not handle $EDITOR properly also break."
       (accept-process-output nil 0.1)
       (with-temp-buffer
         (setq default-directory dir)
+        (setq-local magit--default-directory dir)
         (setq-local with-editor-post-finish-hook post-finish-hook)
         (when post-commit-hook
           (setq-local git-commit-post-finish-hook post-commit-hook))
