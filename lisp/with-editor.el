@@ -776,10 +776,6 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
      (add-to-list 'eshell-preoutput-filter-functions
                   #'with-editor-output-filter)
      (setenv envvar with-editor-sleeping-editor))
-    ((not with-editor-emacsclient-executable)
-     (if (derived-mode-p 'vterm-mode 'eat-mode)
-         (error "Cannot use sleeping editor in this buffer")
-       (error "Cannot export environment variables in this buffer")))
     ((and (derived-mode-p 'vterm-mode)
           (fboundp 'vterm-send-return)
           (fboundp 'vterm-send-string))
@@ -787,11 +783,17 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
            (with-editor--envvar envvar))
        (with-editor--setup)
        (while (accept-process-output vterm--process 1 nil t))
+       (when (or (not with-editor-emacsclient-executable)
+                 (file-remote-p default-directory))
+         (add-function :before (process-filter vterm--process)
+                       #'with-editor-sleeping-editor-filter))
        (when$ (getenv envvar)
-         (vterm-send-string (format " export %s=%S" envvar $))
+         (vterm-send-string (format " export %s=%s" envvar
+                                    (shell-quote-argument $)))
          (vterm-send-return))
        (when$ (getenv "EMACS_SERVER_FILE")
-         (vterm-send-string (format " export EMACS_SERVER_FILE=%S" $))
+         (vterm-send-string (format " export EMACS_SERVER_FILE=%s"
+                                    (shell-quote-argument $)))
          (vterm-send-return))
        (unless interactive
          (vterm-send-string " clear")
@@ -814,13 +816,19 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
             (with-editor--envvar envvar))
        (with-editor--setup)
        (while (accept-process-output process 1 nil t))
+       (when (or (not with-editor-emacsclient-executable)
+                 (file-remote-p default-directory))
+         (add-function :before (process-filter process)
+                       #'with-editor-sleeping-editor-filter))
        (when$ (getenv envvar)
          (eat-term-send-string eat-terminal
-                               (format " export %s=%S" envvar $))
+                               (format " export %s=%s" envvar
+                                       (shell-quote-argument $)))
          (eat-self-input 1 'return))
        (when$ (getenv "EMACS_SERVER_FILE")
          (eat-term-send-string eat-terminal
-                               (format " export EMACS_SERVER_FILE=%S" $))
+                               (format " export EMACS_SERVER_FILE=%s"
+                                       (shell-quote-argument $)))
          (eat-self-input 1 'return))
        (unless interactive
          (eat-term-send-string eat-terminal " clear")
