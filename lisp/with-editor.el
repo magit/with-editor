@@ -832,7 +832,9 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
          (eat-self-input 1 'return))
        (unless interactive
          (eat-term-send-string eat-terminal " clear")
-         (eat-self-input 1 'return)))))
+         (eat-self-input 1 'return))))
+    ((error "with-editor-export-editor cannot be used in %s buffers"
+            major-mode)))
   (message "Successfully exported %s" envvar))
 
 ;;;###autoload
