@@ -765,8 +765,7 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
      (when-let ((process (get-buffer-process (current-buffer))))
        (goto-char (process-mark process))
        (process-send-string
-        process (format " export %s=%s\n" envvar
-                        (shell-quote-argument with-editor-sleeping-editor)))
+        process (with-editor--format-export envvar with-editor-sleeping-editor t))
        (while (accept-process-output process 1 nil t))
        (if (derived-mode-p 'term-mode)
            (with-editor-set-process-filter process #'with-editor-emulate-terminal)
@@ -788,12 +787,10 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
          (add-function :before (process-filter vterm--process)
                        #'with-editor-sleeping-editor-filter))
        (when$ (getenv envvar)
-         (vterm-send-string (format " export %s=%s" envvar
-                                    (shell-quote-argument $)))
+         (vterm-send-string (with-editor--format-export envvar $))
          (vterm-send-return))
        (when$ (getenv "EMACS_SERVER_FILE")
-         (vterm-send-string (format " export EMACS_SERVER_FILE=%s"
-                                    (shell-quote-argument $)))
+         (vterm-send-string (with-editor--format-export "EMACS_SERVER_FILE" $))
          (vterm-send-return))
        (unless interactive
          (vterm-send-string " clear")
@@ -821,14 +818,12 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
          (add-function :before (process-filter process)
                        #'with-editor-sleeping-editor-filter))
        (when$ (getenv envvar)
-         (eat-term-send-string eat-terminal
-                               (format " export %s=%s" envvar
-                                       (shell-quote-argument $)))
+         (eat-term-send-string
+          eat-terminal (with-editor--format-export envvar $))
          (eat-self-input 1 'return))
        (when$ (getenv "EMACS_SERVER_FILE")
-         (eat-term-send-string eat-terminal
-                               (format " export EMACS_SERVER_FILE=%s"
-                                       (shell-quote-argument $)))
+         (eat-term-send-string
+          eat-terminal (with-editor--format-export "EMACS_SERVER_FILE" $))
          (eat-self-input 1 'return))
        (unless interactive
          (eat-term-send-string eat-terminal " clear")
@@ -836,6 +831,9 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
     ((error "with-editor-export-editor cannot be used in %s buffers"
             major-mode)))
   (message "Successfully exported %s" envvar))
+
+(defun with-editor--format-export (envvar val &optional lf)
+  (format " export %s=%s%s" envvar (shell-quote-argument val) (if lf "\n" "")))
 
 ;;;###autoload
 (defun with-editor-export-git-editor (&optional process interactive)
