@@ -91,7 +91,13 @@
 
 (declare-function dired-get-filename "dired"
                   (&optional localp no-error-if-not-filep))
+(declare-function eat-self-input "ext:eat" (n &optional e))
+(declare-function eat-term-parameter "ext:eat" (terminal parameter))
+(declare-function eat-term-send-string "ext:eat" (terminal string))
 (declare-function term-emulate-terminal "term" (proc str))
+(declare-function vterm-send-return "ext:vterm" ())
+(declare-function vterm-send-string "ext:vterm" (string &optional paste-p))
+
 (defvar eat-terminal)
 (defvar eshell-preoutput-filter-functions)
 (defvar git-commit-post-finish-hook)
@@ -760,77 +766,83 @@ interactively, INTERACTIVE is non-nil, which suppresses the call to
 This command can be used in `shell-mode', `term-mode', `eshell-mode',
 `vterm-mode' and `eat-mode'."
   (interactive (list (with-editor-read-envvar) nil t))
-  (cond
-    ((derived-mode-p 'comint-mode 'term-mode)
-     (when-let ((process (get-buffer-process (current-buffer))))
-       (goto-char (process-mark process))
-       (process-send-string
-        process (with-editor--format-export envvar with-editor-sleeping-editor t))
-       (while (accept-process-output process 1 nil t))
-       (if (derived-mode-p 'term-mode)
-           (with-editor-set-process-filter process #'with-editor-emulate-terminal)
-         (add-hook 'comint-output-filter-functions #'with-editor-output-filter
-                   nil t))))
-    ((derived-mode-p 'eshell-mode)
-     (add-to-list 'eshell-preoutput-filter-functions
-                  #'with-editor-output-filter)
-     (setenv envvar with-editor-sleeping-editor))
-    ((and (derived-mode-p 'vterm-mode)
-          (fboundp 'vterm-send-return)
-          (fboundp 'vterm-send-string))
-     (let ((process-environment process-environment)
-           (with-editor--envvar envvar))
-       (with-editor--setup)
-       (while (accept-process-output vterm--process 1 nil t))
-       (when (or (not with-editor-emacsclient-executable)
-                 (file-remote-p default-directory))
-         (add-function :before (process-filter vterm--process)
-                       #'with-editor-sleeping-editor-filter))
-       (when$ (getenv envvar)
-         (vterm-send-string (with-editor--format-export envvar $))
-         (vterm-send-return))
-       (when$ (getenv "EMACS_SERVER_FILE")
-         (vterm-send-string (with-editor--format-export "EMACS_SERVER_FILE" $))
-         (vterm-send-return))
-       (unless interactive
-         (vterm-send-string " clear")
-         (vterm-send-return))))
-    ((and (derived-mode-p 'eat-mode)
-          (fboundp 'eat-self-input)
-          (fboundp 'eat-term-parameter)
-          (fboundp 'eat-term-send-string))
-     (let* ((process-environment process-environment)
-            ;; `eat-exec-hook' calls this function with one argument.  If
-            ;; (apply-partially #'with-editor-export-editor "SOMEEDITOR"))
-            ;; was added to that hook, we receive that as the PROCESS
-            ;; argument.  However, if this function is called via one of
-            ;; the commands below, then ENVVAR actually is an envvar, and
-            ;; the process has to be determined by other means.
-            (process (cond ((processp envvar)
-                            (prog1 envvar (setq envvar "EDITOR")))
-                           ((processp process) process)
-                           ((eat-term-parameter eat-terminal 'eat--process))))
-            (with-editor--envvar envvar))
-       (with-editor--setup)
-       (while (accept-process-output process 1 nil t))
-       (when (or (not with-editor-emacsclient-executable)
-                 (file-remote-p default-directory))
-         (add-function :before (process-filter process)
-                       #'with-editor-sleeping-editor-filter))
-       (when$ (getenv envvar)
-         (eat-term-send-string
-          eat-terminal (with-editor--format-export envvar $))
-         (eat-self-input 1 'return))
-       (when$ (getenv "EMACS_SERVER_FILE")
-         (eat-term-send-string
-          eat-terminal (with-editor--format-export "EMACS_SERVER_FILE" $))
-         (eat-self-input 1 'return))
-       (unless interactive
-         (eat-term-send-string eat-terminal " clear")
-         (eat-self-input 1 'return))))
-    ((error "with-editor-export-editor cannot be used in %s buffers"
-            major-mode)))
+  (with-editor--export-editor envvar interactive process)
   (message "Successfully exported %s" envvar))
+
+(cl-defmethod with-editor--export-editor
+  (envvar _ _ &context (major-mode comint-mode))
+  (when-let ((process (get-buffer-process (current-buffer))))
+    (goto-char (process-mark process))
+    (process-send-string
+     process (with-editor--format-export envvar with-editor-sleeping-editor t))
+    (while (accept-process-output process 1 nil t))
+    (add-hook 'comint-output-filter-functions #'with-editor-output-filter nil t)))
+
+(cl-defmethod with-editor--export-editor
+  (envvar _ _ &context (major-mode term-mode))
+  (when-let ((process (get-buffer-process (current-buffer))))
+    (goto-char (process-mark process))
+    (process-send-string
+     process (with-editor--format-export envvar with-editor-sleeping-editor t))
+    (while (accept-process-output process 1 nil t))
+    (with-editor-set-process-filter process #'with-editor-emulate-terminal)))
+
+(cl-defmethod with-editor--export-editor
+  (envvar _ _ &context (major-mode eshell-mode))
+  (add-to-list 'eshell-preoutput-filter-functions #'with-editor-output-filter)
+  (setenv envvar with-editor-sleeping-editor))
+
+(cl-defmethod with-editor--export-editor
+  (envvar interactive _ &context (major-mode vterm-mode))
+  (let ((process-environment process-environment)
+        (with-editor--envvar envvar))
+    (with-editor--setup)
+    (while (accept-process-output vterm--process 1 nil t))
+    (when (or (not with-editor-emacsclient-executable)
+              (file-remote-p default-directory))
+      (add-function :before (process-filter vterm--process)
+                    #'with-editor-sleeping-editor-filter))
+    (when$ (getenv envvar)
+      (vterm-send-string (with-editor--format-export envvar $))
+      (vterm-send-return))
+    (when$ (getenv "EMACS_SERVER_FILE")
+      (vterm-send-string (with-editor--format-export "EMACS_SERVER_FILE" $))
+      (vterm-send-return))
+    (unless interactive
+      (vterm-send-string " clear")
+      (vterm-send-return))))
+
+(cl-defmethod with-editor--export-editor
+  (envvar interactive process &context (major-mode eat-mode))
+  (let* ((process-environment process-environment)
+         ;; `eat-exec-hook' calls this function with one argument.  If
+         ;; (apply-partially #'with-editor-export-editor "SOMEEDITOR"))
+         ;; was added to that hook, we receive that as the PROCESS
+         ;; argument.  However, if this function is called via one of
+         ;; the commands below, then ENVVAR actually is an envvar, and
+         ;; the process has to be determined by other means.
+         (process (cond ((processp envvar)
+                         (prog1 envvar (setq envvar "EDITOR")))
+                        ((processp process) process)
+                        ((eat-term-parameter eat-terminal 'eat--process))))
+         (with-editor--envvar envvar))
+    (with-editor--setup)
+    (while (accept-process-output process 1 nil t))
+    (when (or (not with-editor-emacsclient-executable)
+              (file-remote-p default-directory))
+      (add-function :before (process-filter process)
+                    #'with-editor-sleeping-editor-filter))
+    (when$ (getenv envvar)
+      (eat-term-send-string
+       eat-terminal (with-editor--format-export envvar $))
+      (eat-self-input 1 'return))
+    (when$ (getenv "EMACS_SERVER_FILE")
+      (eat-term-send-string
+       eat-terminal (with-editor--format-export "EMACS_SERVER_FILE" $))
+      (eat-self-input 1 'return))
+    (unless interactive
+      (eat-term-send-string eat-terminal " clear")
+      (eat-self-input 1 'return))))
 
 (defun with-editor--format-export (envvar val &optional lf)
   (format " export %s=%s%s" envvar (shell-quote-argument val) (if lf "\n" "")))
