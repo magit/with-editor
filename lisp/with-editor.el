@@ -400,7 +400,7 @@ And some tools that do not handle $EDITOR properly also break."
                    (message "client %S" client)
                    (ignore-errors
                      (server-send-string client "-error Canceled by user\n"))
-                   (delete-process client))
+                   (server-delete-client client))
                  (when (buffer-live-p buf)
                    (kill-buffer buf)))
              ;; Fallback for when emacs was used as $EDITOR
