@@ -397,7 +397,6 @@ And some tools that do not handle $EDITOR properly also break."
            (if clients
                (let ((buf (current-buffer)))
                  (dolist (client clients)
-                   (message "client %S" client)
 	           (when-let* ((terminal (process-get client 'terminal))
                                (_(eq (terminal-live-p terminal) t)))
 	             (delete-terminal terminal))
