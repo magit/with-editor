@@ -398,8 +398,10 @@ And some tools that do not handle $EDITOR properly also break."
                (let ((buf (current-buffer)))
                  (dolist (client clients)
                    (message "client %S" client)
-                   (ignore-errors
-                     (server-send-string client "-error Canceled by user\n"))
+	           (when-let* ((terminal (process-get client 'terminal))
+                               (_(eq (terminal-live-p terminal) t)))
+	             (delete-terminal terminal))
+                   (server-send-string client "-error Canceled by user\n")
                    (server-delete-client client))
                  (when (buffer-live-p buf)
                    (kill-buffer buf)))
