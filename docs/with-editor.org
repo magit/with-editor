@@ -201,9 +201,9 @@ Some variants of this function exist; these two forms are equivalent:
 
 - Command: with-editor-export-editor ::
 
-  When invoked in a ~shell-mode~, ~eshell-mode~, ~term-mode~ or ~vterm-mode~
-  buffer, this command teaches shell commands to use the current Emacs
-  instance as the editor, by exporting ~$EDITOR~.
+  When invoked in a ~shell-mode~, ~eshell-mode~, ~term-mode~, ~vterm-mode~
+  or ~eat-mode~ buffer, this command teaches shell commands to use
+  the current Emacs instance as the editor, by exporting ~$EDITOR~.
 
 - Command: with-editor-export-git-editor ::
 

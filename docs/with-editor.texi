@@ -265,9 +265,9 @@ Some variants of this function exist; these two forms are equivalent:
 @end lisp
 
 @deffn Command with-editor-export-editor
-When invoked in a @code{shell-mode}, @code{eshell-mode}, @code{term-mode} or @code{vterm-mode}
-buffer, this command teaches shell commands to use the current Emacs
-instance as the editor, by exporting @code{$EDITOR}.
+When invoked in a @code{shell-mode}, @code{eshell-mode}, @code{term-mode}, @code{vterm-mode}
+or @code{eat-mode} buffer, this command teaches shell commands to use
+the current Emacs instance as the editor, by exporting @code{$EDITOR}.
 @end deffn
 
 @deffn Command with-editor-export-git-editor
