@@ -54,18 +54,19 @@
 ;; which always sets `$EDITOR' for all Emacs commands which ultimately
 ;; use `shell-command' to asynchronously run some shell command.
 
-;; The command `with-editor-export-editor' exports `$EDITOR' or
-;; another such environment variable in `shell-mode', `eshell-mode',
-;; `term-mode', `vterm-mode' and `eat-mode' buffers.  Use this Emacs
-;; command before executing a shell command which needs the editor
-;; set, or always arrange for the current Emacs instance to be used
-;; as editor by adding it to the appropriate mode hooks:
+;; The command `with-editor-export-editor' exports `$EDITOR' or another
+;; such environment variable in `shell-mode', `eshell-mode', `term-mode',
+;; `vterm-mode', `eat-mode' and `ghostel-mode' buffers.  Use this Emacs
+;; command before executing a shell command which needs the editor set,
+;; or always arrange for the current Emacs instance to be used as editor
+;; by adding it to the appropriate mode hooks:
 ;;
-;;   (add-hook 'shell-mode-hook  #'with-editor-export-editor)
-;;   (add-hook 'eshell-mode-hook #'with-editor-export-editor)
-;;   (add-hook 'term-exec-hook   #'with-editor-export-editor)
-;;   (add-hook 'vterm-mode-hook  #'with-editor-export-editor)
-;;   (add-hook 'eat-exec-hook    #'with-editor-export-editor)
+;;   (add-hook 'shell-mode-hook        #'with-editor-export-editor)
+;;   (add-hook 'eshell-mode-hook       #'with-editor-export-editor)
+;;   (add-hook 'term-exec-hook         #'with-editor-export-editor)
+;;   (add-hook 'vterm-mode-hook        #'with-editor-export-editor)
+;;   (add-hook 'eat-exec-hook          #'with-editor-export-editor)
+;;   (add-hook 'ghostel-pre-spawn-hook #'with-editor-export-editor)
 
 ;; Some variants of this function exist, these two forms are
 ;; equivalent:
@@ -94,6 +95,8 @@
 (declare-function eat-self-input "ext:eat" (n &optional e))
 (declare-function eat-term-parameter "ext:eat" (terminal parameter))
 (declare-function eat-term-send-string "ext:eat" (terminal string))
+(declare-function ghostel-send-key "ext:ghostel" (key-name &optional mods))
+(declare-function ghostel-send-string "ext:ghostel" (string))
 (declare-function term-emulate-terminal "term" (proc str))
 (declare-function vterm-send-return "ext:vterm" ())
 (declare-function vterm-send-string "ext:vterm" (string &optional paste-p))
@@ -763,10 +766,10 @@ current Emacs instance as \"the editor\".
 
 PROCESS is only intended for use by `eat-exec-hook'.  When invoked
 interactively, INTERACTIVE is non-nil, which suppresses the call to
-\"clear\" (only relevant in `vterm-mode' and `eat-mode').
+\"clear\" (only relevant in `vterm-mode', `eat-mode', and `ghostel-mode').
 
 This command can be used in `shell-mode', `term-mode', `eshell-mode',
-`vterm-mode' and `eat-mode'."
+`vterm-mode', `eat-mode' and `ghostel-mode'."
   (interactive (list (with-editor-read-envvar) nil t))
   (with-editor--export-editor envvar interactive process))
 
@@ -848,6 +851,26 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
     (unless interactive
       (eat-term-send-string eat-terminal " clear")
       (eat-self-input 1 'return))))
+
+(cl-defmethod with-editor--export-editor
+  (envvar interactive _ &context (major-mode ghostel-mode))
+  (cond
+    ((file-remote-p default-directory)
+     (message "With-editor cannot be used in ghostel on remote systems"))
+    ((not with-editor-emacsclient-executable)
+     (message "With-editor cannot be used in ghostel with sleeping editor"))
+    (interactive
+     (let ((process-environment process-environment)
+           (with-editor--envvar envvar))
+       (with-editor--setup)
+       (when$ (getenv envvar)
+         (ghostel-send-string (with-editor--format-export envvar $))
+         (ghostel-send-key "return"))
+       (when$ (getenv "EMACS_SERVER_FILE")
+         (ghostel-send-string (with-editor--format-export "EMACS_SERVER_FILE" $))
+         (ghostel-send-key "return"))))
+    ((let ((with-editor--envvar envvar))
+       (with-editor--setup)))))
 
 (defun with-editor--format-export (envvar val &optional lf)
   (format " export %s=%s%s" envvar (shell-quote-argument val) (if lf "\n" "")))
