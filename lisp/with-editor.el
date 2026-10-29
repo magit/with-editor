@@ -771,6 +771,10 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
   (with-editor--export-editor envvar interactive process)
   (message "Successfully exported %s" envvar))
 
+(cl-defmethod with-editor--export-editor (_ _ _)
+  (user-error "with-editor-export-editor cannot be used in %s buffers"
+              major-mode))
+
 (cl-defmethod with-editor--export-editor
   (envvar _ _ &context (major-mode comint-mode))
   (when-let ((process (get-buffer-process (current-buffer))))
