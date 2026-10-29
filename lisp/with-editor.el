@@ -768,8 +768,7 @@ interactively, INTERACTIVE is non-nil, which suppresses the call to
 This command can be used in `shell-mode', `term-mode', `eshell-mode',
 `vterm-mode' and `eat-mode'."
   (interactive (list (with-editor-read-envvar) nil t))
-  (with-editor--export-editor envvar interactive process)
-  (message "Successfully exported %s" envvar))
+  (with-editor--export-editor envvar interactive process))
 
 (cl-defmethod with-editor--export-editor (_ _ _)
   (user-error "with-editor-export-editor cannot be used in %s buffers"
