@@ -777,7 +777,7 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
   (user-error "with-editor-export-editor cannot be used in %s buffers"
               major-mode))
 
-(cl-defmethod with-editor--export-editor
+(cl-defmethod with-editor--export-editor ;commit-mode
   (envvar _ _ &context (major-mode comint-mode))
   (when-let ((process (get-buffer-process (current-buffer))))
     (goto-char (process-mark process))
@@ -786,7 +786,7 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
     (while (accept-process-output process 1 nil t))
     (add-hook 'comint-output-filter-functions #'with-editor-output-filter nil t)))
 
-(cl-defmethod with-editor--export-editor
+(cl-defmethod with-editor--export-editor ;term-mode
   (envvar _ _ &context (major-mode term-mode))
   (when-let ((process (get-buffer-process (current-buffer))))
     (goto-char (process-mark process))
@@ -795,12 +795,12 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
     (while (accept-process-output process 1 nil t))
     (with-editor-set-process-filter process #'with-editor-emulate-terminal)))
 
-(cl-defmethod with-editor--export-editor
+(cl-defmethod with-editor--export-editor ;eshell-mode
   (envvar _ _ &context (major-mode eshell-mode))
   (add-to-list 'eshell-preoutput-filter-functions #'with-editor-output-filter)
   (setenv envvar with-editor-sleeping-editor))
 
-(cl-defmethod with-editor--export-editor
+(cl-defmethod with-editor--export-editor ;vterm-mode
   (envvar interactive _ &context (major-mode vterm-mode))
   (let ((process-environment process-environment)
         (with-editor--envvar envvar))
@@ -820,7 +820,7 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
       (vterm-send-string " clear")
       (vterm-send-return))))
 
-(cl-defmethod with-editor--export-editor
+(cl-defmethod with-editor--export-editor ;eat-mode
   (envvar interactive process &context (major-mode eat-mode))
   (let* ((process-environment process-environment)
          ;; `eat-exec-hook' calls this function with one argument.  If
@@ -852,7 +852,7 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
       (eat-term-send-string eat-terminal " clear")
       (eat-self-input 1 'return))))
 
-(cl-defmethod with-editor--export-editor
+(cl-defmethod with-editor--export-editor ;ghostel-mode
   (envvar interactive _ &context (major-mode ghostel-mode))
   (cond
     ((file-remote-p default-directory)
