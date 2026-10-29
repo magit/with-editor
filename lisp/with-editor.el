@@ -523,8 +523,7 @@ at run-time.
 (defun with-editor--setup ()
   (if (or (not with-editor-emacsclient-executable)
           (file-remote-p default-directory))
-      (push (concat with-editor--envvar "=" with-editor-sleeping-editor)
-            process-environment)
+      (setenv with-editor--envvar with-editor-sleeping-editor)
     ;; Make sure server-use-tcp's value is valid.
     (unless (featurep 'make-network-process '(:family local))
       (setq server-use-tcp t))
@@ -536,31 +535,29 @@ at run-time.
           (server-force-delete server-name)))
       (server-start))
     ;; Tell $EDITOR to use the Emacsclient.
-    (push (concat with-editor--envvar "="
-                  ;; Quoting is the right thing to do.  Applications that
-                  ;; fail because of that, are the ones that need fixing,
-                  ;; e.g., by using 'eval "$EDITOR" file'.  See #121.
-                  (shell-quote-argument
-                   ;; If users set the executable manually, they might
-                   ;; begin the path with "~", which would get quoted.
-                   (if (string-prefix-p "~" with-editor-emacsclient-executable)
-                       (concat (expand-file-name "~")
-                               (substring with-editor-emacsclient-executable 1))
-                     with-editor-emacsclient-executable))
-                  ;; Tell the process where the server file is.
-                  (and (not server-use-tcp)
-                       (concat " --socket-name="
-                               (shell-quote-argument
-                                (expand-file-name server-name
-                                                  server-socket-dir)))))
-          process-environment)
+    (setenv with-editor--envvar
+            (concat
+             ;; Quoting is the right thing to do.  Applications that
+             ;; fail because of that, are the ones that need fixing,
+             ;; e.g., by using 'eval "$EDITOR" file'.  See #121.
+             (shell-quote-argument
+              ;; If users set the executable manually, they might
+              ;; begin the path with "~", which would get quoted.
+              (if (string-prefix-p "~" with-editor-emacsclient-executable)
+                  (concat (expand-file-name "~")
+                          (substring with-editor-emacsclient-executable 1))
+                with-editor-emacsclient-executable))
+             ;; Tell the process where the server file is.
+             (and (not server-use-tcp)
+                  (concat " --socket-name="
+                          (shell-quote-argument
+                           (expand-file-name server-name
+                                             server-socket-dir))))))
     (when server-use-tcp
-      (push (concat "EMACS_SERVER_FILE="
-                    (expand-file-name server-name server-auth-dir))
-            process-environment))
+      (setenv "EMACS_SERVER_FILE"
+              (expand-file-name server-name server-auth-dir)))
     ;; As last resort fallback to the sleeping editor.
-    (push (concat "ALTERNATE_EDITOR=" with-editor-sleeping-editor)
-          process-environment)
+    (setenv "ALTERNATE_EDITOR" with-editor-sleeping-editor)
     ;; Work around bug in server.el of Emacs < 31.1.  #139
     (when (member (getenv "TERM") '(nil ""))
       (setenv "TERM" "dumb"))))
