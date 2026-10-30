@@ -506,7 +506,7 @@ instead.
   `(let ((with-editor--envvar ,(if (stringp (car body))
                                    (pop body)
                                  '(or with-editor--envvar "EDITOR")))
-         (process-environment process-environment))
+         (process-environment (copy-sequence process-environment)))
      (with-editor--setup)
      ,@body))
 
@@ -519,7 +519,7 @@ at run-time.
 \n(fn ENVVAR BODY...)"
   (declare (indent defun) (debug (sexp body)))
   `(let ((with-editor--envvar ,envvar)
-         (process-environment process-environment))
+         (process-environment (copy-sequence process-environment)))
      (with-editor--setup)
      ,@body))
 
@@ -802,7 +802,7 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
 
 (cl-defmethod with-editor--export-editor ;vterm-mode
   (envvar interactive _ &context (major-mode vterm-mode))
-  (let ((process-environment process-environment)
+  (let ((process-environment (copy-sequence process-environment))
         (with-editor--envvar envvar))
     (with-editor--setup)
     (while (accept-process-output vterm--process 1 nil t))
@@ -822,7 +822,7 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
 
 (cl-defmethod with-editor--export-editor ;eat-mode
   (envvar interactive process &context (major-mode eat-mode))
-  (let* ((process-environment process-environment)
+  (let* ((process-environment (copy-sequence process-environment))
          ;; `eat-exec-hook' calls this function with one argument.  If
          ;; (apply-partially #'with-editor-export-editor "SOMEEDITOR"))
          ;; was added to that hook, we receive that as the PROCESS
@@ -860,7 +860,7 @@ This command can be used in `shell-mode', `term-mode', `eshell-mode',
     ((not with-editor-emacsclient-executable)
      (message "With-editor cannot be used in ghostel with sleeping editor"))
     (interactive
-     (let ((process-environment process-environment)
+     (let ((process-environment (copy-sequence process-environment))
            (with-editor--envvar envvar))
        (with-editor--setup)
        (when$ (getenv envvar)
