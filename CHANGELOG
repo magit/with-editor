@@ -1,4 +1,16 @@
 # -*- mode: org -*-
+* v3.6.0    2026-11-01
+
+- The sleeping editor is now supported in vterm and eat.  #142
+
+- Using Magit to create a signed commit over Tramp resulted in a
+  "forbidden reentrant call of Tramp" error.  #140
+
+- Aborting a session did not properly clean up the terminal.  #143
+
+- Added partial support for ghostel.  The sleeping editor can not
+  be supported.  #144
+
 * v3.5.4    2026-09-01
 
 - Thoughts and whitespace.
